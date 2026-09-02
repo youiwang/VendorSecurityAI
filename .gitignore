@@ -1,0 +1,42 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# IDEs and editors
+.vscode/
+.idea/
+*.sublime-workspace
+
+# Byte-compiled / optimized / DLL files
+*.so
+*.dylib
+
+# Distribution / packaging
+build/
+dist/
+*.egg-info/
+
+# Logs and databases
+*.log
+*.sqlite3
+
+# Test / coverage
+.pytest_cache/
+htmlcov/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Experiment outputs (large generated files)
+outputs/
+
+# Local secrets
+.env
+secrets.json.env
