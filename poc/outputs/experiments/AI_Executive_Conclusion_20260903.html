@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>AI Executive Conclusion</title>
     <style>
+      html {
+        scroll-behavior: smooth;
+      }
       body {
         font-family:
           -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
@@ -177,6 +180,26 @@
       ol {
         margin-left: 1.5rem;
       }
+
+      .view-controls {
+        display: flex;
+        justify-content: flex-end;
+        margin-bottom: 0.75rem;
+      }
+
+      .view-controls button {
+        border: 1px solid #cbd5e1;
+        background: #ffffff;
+        color: #334155;
+        border-radius: 6px;
+        padding: 0.4rem 0.7rem;
+        font-size: 0.85rem;
+        cursor: pointer;
+      }
+
+      .view-controls button:hover {
+        background: #f8fafc;
+      }
     </style>
   </head>
   <body>
@@ -184,6 +207,10 @@
     <p style="color: #6b7280; margin-top: -10px; margin-bottom: 30px">
       Generated on 20260903
     </p>
+
+    <div class="view-controls">
+      <button id="toggle-sections" type="button">Collapse all sections</button>
+    </div>
 
     <div id="content">
       <h2>Executive Summary</h2>
@@ -1277,11 +1304,33 @@
           }
         });
 
-        // Open the first section by default
-        const firstH2 = document.querySelector("h2");
-        if (firstH2) {
-          firstH2.classList.add("active");
-          firstH2.nextElementSibling.classList.add("active");
+        const allHeadings = Array.from(document.querySelectorAll("h2"));
+        const toggleButton = document.getElementById("toggle-sections");
+        let allExpanded = true;
+
+        const setAllSections = (open) => {
+          allHeadings.forEach((heading) => {
+            heading.classList.toggle("active", open);
+            const content = heading.nextElementSibling;
+            if (content) {
+              content.classList.toggle("active", open);
+            }
+          });
+          allExpanded = open;
+          if (toggleButton) {
+            toggleButton.textContent = open
+              ? "Collapse all sections"
+              : "Expand all sections";
+          }
+        };
+
+        // Open all sections by default for linear top-to-bottom reading.
+        setAllSections(true);
+
+        if (toggleButton) {
+          toggleButton.addEventListener("click", () => {
+            setAllSections(!allExpanded);
+          });
         }
       });
     </script>
