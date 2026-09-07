@@ -1,5 +1,6 @@
 import os
 import json
+import re
 import requests
 import pandas as pd
 import markdown
@@ -215,6 +216,9 @@ Based on this data, please write the final evaluation report."""
 
         # Combine AI content and Hardcoded Appendix
         full_report_md = ai_content + appendix_md
+
+        # Ensure list markers become real markdown lists when the model omits a blank line.
+        full_report_md = re.sub(r'([^\n])\n([\*\-]\s+)', r'\1\n\n\2', full_report_md)
 
         # 6. Generate Filenames with Date
         date_str = datetime.now().strftime("%Y%m%d")
