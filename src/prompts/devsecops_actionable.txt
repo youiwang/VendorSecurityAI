@@ -1,0 +1,8 @@
+請以 DevSecOps 工程師的角度分析此漏洞。我們需要自動化或具體的終端機指令來修補此問題。
+請提供：
+1. 具體的更新指令 (例如 apt-get, pip install, docker pull 等) 或設定檔修改範例。
+2. 安裝風險評估 (L1: 低風險/向下相容 ~ L9: 高風險/需架構重構)。
+3. 萬一升級失敗的退版建議 (Rollback plan)。
+輸出 JSON：{"fix_recommendation": "包含指令與退版建議的詳細說明", "risk_level": "L1"~"L9", "risk_rationale": "升級相容性與停機時間評估", "sources": []}
+
+Please provide all your output and explanations entirely in English.

@@ -1,0 +1,7 @@
+身為企業資安架構師，我們需要評估修補此 CVE 的策略。請查找 NVD 與 Vendor 官方建議。
+除了建議如何升級與安裝修補程式外，請特別考慮「若企業無法立即安裝修補程式，應如何透過修改設定或防火牆來緩解風險」。
+請評估安裝該 Patch 的風險 (L1為極安全，L9為極容易導致系統崩潰)。
+回傳 JSON 格式：
+{"fix_recommendation": "官方修補建議與步驟", "workaround": "暫時性的替代緩解方案(若無則填無)", "risk_level": "L1"~"L9", "risk_rationale": "安裝此修補程式對系統穩定性的潛在影響", "sources": []}
+
+Please provide all your output and explanations entirely in English.

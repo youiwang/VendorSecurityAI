@@ -1,16 +1,34 @@
-# Project: Prompt Experiments & Automatic Comparison
+# Project: Vendor Security AI - CVE Remediation Pipeline
 
 ## Overview
 
-This project provides a repeatable workflow to run, summarize, and visualize experiments comparing different Phase-2 prompts and LLM models on CVE data.
+This project automates the extraction of remediation steps and risk assessments for software vulnerabilities (CVEs) using Large Language Models.
 
-The architecture is split into three distinct stages to allow different teams (Data Collection, Analysis, and Visualization) to own each part of the pipeline:
+The project is divided into two phases:
 
-1. **Data Collection (`do_experiment.py`)** — Generates per-run JSON outputs by running prompt variants against selected models.
-2. **Summarization (`summarize_experiments.py`)** — Extracts metrics and judge scores into a unified CSV and HTML report.
-3. **Visualization (`visualize_experiments.py`)** — Generates performance and cost-analysis plots from the summarized data.
+1. **Phase 1 (POC):** Experimental phase to determine the best model and prompt variant. (Archived in `poc/`)
+2. **Phase 2 (Production):** The real-world pipeline using the winning configuration (`gemini-3.5-flash` with the `criteria_defined` prompt) to process production data.
 
 ---
+
+## Repository Structure
+
+```text
+VendorSecurityAI/
+├── data/
+│   ├── poc/                  # POC data (VendorDeploymentCVE_20250901.csv)
+│   └── raw/                  # Real-world data (admyncec0904.csv)
+├── poc/                      # Archived Phase 1 experiments and scripts
+│   ├── scripts/              # do_experiment.py, summarize_experiments.py, etc.
+│   └── outputs/              # POC JSON outputs and reports
+├── src/                      # Phase 2: Production code
+│   ├── prompts/              # Winning prompt templates (criteria_defined.txt)
+│   └── generate_remediations.py # Main script for processing real data
+├── outputs/
+│   └── prod/                 # Generated JSON remediations for real data
+├── requirements.txt
+└── README.md
+```
 
 ## Quick Start
 
@@ -21,7 +39,6 @@ Create and activate a virtual environment, then install the required dependencie
 ```powershell
 python -m venv .venv
 .venv\Scripts\pip install -r requirements.txt
-
 ```
 
 ### 2. Configuration
@@ -31,73 +48,38 @@ Create a `.env` file in the root directory and configure your API settings:
 ```env
 AI_ENDPOINT="your_ai_api_url"
 API_KEY="your_api_key"
-CSV_PATH="VendorDeploymentCVE_20250901.csv" # Optional: defaults to this file
-
 ```
 
-### 3. Run the Pipeline
+### 3. Run the Production Pipeline (Phase 2)
 
-You can run the entire pipeline sequentially. Use `;` in PowerShell or `&&` in Unix shells.
-
-**The One-Command Pipeline:**
+To process the real-world data (`data/raw/admyncec0904.csv`) and generate remediation JSONs:
 
 ```powershell
-.venv\Scripts\python do_experiment.py --rows 1 --sleep 1.0 --judge-run ; \
-.venv\Scripts\python summarize_experiments.py ; \
-python scripts\list_failing_runs.py --write-clean outputs/experiments/comparison_summary_clean.csv ; \
-.venv\Scripts\python visualize_experiments.py --csv outputs/experiments/comparison_summary_clean.csv
-
+.venv\Scripts\python src\generate_remediations.py
 ```
+
+This script will:
+
+1. Read the raw CSV data.
+2. Extract the newest CVE ID from rows with multiple CVEs.
+3. Apply the `criteria_defined` prompt.
+4. Call the `gemini-3.5-flash` model.
+5. Save the structured JSON outputs to `outputs/prod/`.
 
 ---
 
-## Detailed Workflow Stages
+## Phase 1: POC & Experiments (Archived)
 
-### Stage 1: Data Collection & Experiments
+If you need to review or re-run the original experiments that led to the model selection, refer to the `poc/` directory.
 
-Reads CSV rows, builds prompt variants, calls the configured model(s), and saves the results.
-
-**Command:**
+**The One-Command POC Pipeline:**
 
 ```powershell
-.venv\Scripts\python do_experiment.py --rows 1 --sleep 1.0 --judge-run
-
+.venv\Scripts\python poc\scripts\do_experiment.py --rows 1 --sleep 1.0 --judge-run ; \
+.venv\Scripts\python poc\scripts\summarize_experiments.py ; \
+.venv\Scripts\python poc\scripts\list_failing_runs.py --write-clean poc\outputs\experiments\comparison_summary_clean.csv ; \
+.venv\Scripts\python poc\scripts\visualize_experiments.py --csv poc\outputs\experiments\comparison_summary_clean.csv
 ```
-
-_Note: Enabling `--judge-run` (or setting `JUDGE_RUN=true` in your `.env`) is highly recommended for richer evaluation._
-
-### Stage 2: Summarization
-
-Reads all per-run JSON files in `outputs/experiments/`, computes automatic scores, and writes the summary to CSV and HTML formats.
-
-**Command:**
-
-```powershell
-.venv\Scripts\python summarize_experiments.py
-
-```
-
-**Scoring Metrics Calculated:**
-
-- **Schema adherence:** Presence of expected JSON keys.
-- **Source evidence:** Count of `sources` or URLs found.
-- **Length:** A proxy for output completeness.
-- **Runtime metrics:** `latency_ms`, token usage, `json_parse_success`, etc.
-
-### Stage 3: Visualization
-
-Generates plots summarizing cost vs. quality and model performance. By default, it reads the main summary CSV, but you can point it to a cleaned CSV.
-
-**Command:**
-
-```powershell
-.venv\Scripts\python visualize_experiments.py --csv outputs/experiments/comparison_summary_clean.csv
-
-```
-
----
-
-## LLM Judge Evaluation
 
 You can evaluate model outputs using a stronger LLM acting as a "judge." The judge scores the output from 1 to 5 across four dimensions:
 
