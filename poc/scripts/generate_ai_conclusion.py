@@ -42,28 +42,30 @@ def generate_report():
 
     # 3. Construct the Prompt
     system_prompt = """You are a Principal Data Scientist evaluating Large Language Models for an automated cybersecurity ETL pipeline.
-Your task is to analyze the provided experimental data and write an executive report that recommends the best model and prompt variant for production use.
+Your task is to analyze the provided experimental data and write an executive decision report that selects the best model and prompt variant for production.
 
-The primary business task must be explicit in the report:
-- Input context: CVE and software metadata from enterprise datasets, and in some cases screenshot/OCR-derived text.
-- Required output per CVE: (1) remediation guidance and (2) installation risk assessment using L1-L9 with rationale.
+The business objective must be explicit near the top of the report:
+- For each CVE/software record, produce (1) actionable fix recommendations and (2) an installation/upgrade risk rating from L1 to L9 with rationale.
+- The report should connect model performance back to this operational objective.
 
 Your report must include these exact headings (use ## for headings):
-## Problem Statement
 ## Executive Summary
-## Dataset Scope & Input Modality
+## Problem Statement & Decision Goal
+## Dataset Scope & Input Modalities
 ## Methodology
 ## Quality & Cost Analysis
 ## Reliability Analysis
+## Decision Framework
 ## Final Recommendation
-## Limitations & Next Validation Steps
+## Limitations & Next Validation
 
-Writing requirements:
-- Keep language professional, analytical, and decisive.
-- Explain the recommendation using reliability-first reasoning before quality/cost trade-offs.
-- Use short paragraphs and bullet points to improve top-to-bottom readability.
-- Do not claim statistical significance unless statistical testing is shown in the provided data.
-- Do not hallucinate data.
+Content requirements:
+- In Dataset Scope & Input Modalities, state what is known from the provided data and clearly mark unknown items as assumptions or gaps.
+- Explicitly mention screenshot/OCR handling considerations as either measured factors or current limitations.
+- In Decision Framework, provide a transparent weighting rule (for example reliability-first) and explain why the selected option wins.
+- Use cautious language for certainty; do not claim statistical significance unless evidence is directly provided.
+
+Tone: Professional, analytical, and decisive. Use markdown formatting. Do not hallucinate data.
 IMPORTANT: Do NOT output the raw data tables in your response. I will automatically append charts and tables to the end of your report."""
 
     user_message = f"""Here is the summarized experimental data:
@@ -74,7 +76,12 @@ IMPORTANT: Do NOT output the raw data tables in your response. I will automatica
 ### 2. Reliability & Failure Rates
 {reliability_md}
 
-Based on this data, please write the final evaluation report with clear business-task framing and an easy top-to-bottom narrative flow."""
+Based on this data, write the final evaluation report.
+
+Additional guidance:
+- Prioritize production reliability and operational practicality for ETL automation.
+- Keep recommendation logic traceable to the provided metrics.
+- If a required business detail (such as screenshot/OCR volume) is not present in the data, call it out as a limitation and provide a concrete validation plan."""
 
     # 4. Call the AI API
     print(f"Generating conclusion using {model_name}... (This may take 10-30 seconds)")
@@ -258,7 +265,6 @@ Based on this data, please write the final evaluation report with clear business
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
             <title>AI Executive Conclusion</title>
             <style>
-                html {{ scroll-behavior: smooth; }}
                 body {{ font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; line-height: 1.6; color: #333; max-width: 1100px; margin: 0 auto; padding: 2rem; background-color: #f9fafb; }}
                 h1 {{ color: #111827; border-bottom: 2px solid #e5e7eb; padding-bottom: 0.5rem; }}
                 .methodology p {{ margin: 0.5rem 0; color: #334155; }}
@@ -296,17 +302,11 @@ Based on this data, please write the final evaluation report with clear business
                 img {{ max-width: 100%; height: auto; border-radius: 6px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin-top: 1rem; margin-bottom: 2rem; border: 1px solid #e5e7eb; }}
                 
                 ul, ol {{ margin-left: 1.5rem; }}
-                .view-controls {{ display: flex; justify-content: flex-end; margin-bottom: 0.75rem; }}
-                .view-controls button {{ border: 1px solid #cbd5e1; background: #ffffff; color: #334155; border-radius: 6px; padding: 0.4rem 0.7rem; font-size: 0.85rem; cursor: pointer; }}
-                .view-controls button:hover {{ background: #f8fafc; }}
             </style>
         </head>
         <body>
             <h1>LLM Evaluation Report for CVE Extraction Pipeline</h1>
             <p style="color: #6b7280; margin-top: -10px; margin-bottom: 30px;">Generated on {date_str}</p>
-            <div class="view-controls">
-                <button id="toggle-sections" type="button">Collapse all sections</button>
-            </div>
             
             <div id="content">
                 {raw_html}
@@ -340,31 +340,11 @@ Based on this data, please write the final evaluation report with clear business
                         }}
                     }});
                     
-                    const allHeadings = Array.from(document.querySelectorAll('h2'));
-                    const toggleButton = document.getElementById('toggle-sections');
-                    let allExpanded = true;
-
-                    const setAllSections = (open) => {{
-                        allHeadings.forEach((heading) => {{
-                            heading.classList.toggle('active', open);
-                            const content = heading.nextElementSibling;
-                            if (content) {{
-                                content.classList.toggle('active', open);
-                            }}
-                        }});
-                        allExpanded = open;
-                        if (toggleButton) {{
-                            toggleButton.textContent = open ? 'Collapse all sections' : 'Expand all sections';
-                        }}
-                    }};
-
-                    // Open all sections by default for linear top-to-bottom reading.
-                    setAllSections(true);
-
-                    if (toggleButton) {{
-                        toggleButton.addEventListener('click', () => {{
-                            setAllSections(!allExpanded);
-                        }});
+                    // Open the first section by default
+                    const firstH2 = document.querySelector('h2');
+                    if(firstH2) {{
+                        firstH2.classList.add('active');
+                        firstH2.nextElementSibling.classList.add('active');
                     }}
                 }});
             </script>
