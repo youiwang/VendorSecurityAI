@@ -1,0 +1,13 @@
+model,variant,json_parse_success_mean,schema_adherence_pct_mean,latency_ms_mean,total_tokens_mean,score_mean,judge_total_score_mean,count
+CDG_gemini/gemini-3.1-pro-preview,cot_analytical,100.0,100.0,23301,2614,90.0,19.88,8
+CDG_gemini/gemini-3.1-pro-preview,criteria_defined,100.0,100.0,22292,2452,94.0,19.8,10
+CDG_gemini/gemini-3.1-pro-preview,mitigation_focused,100.0,100.0,25488,2645,96.67,19.78,9
+CDG_gemini/gemini-3.5-flash,mitigation_focused,100.0,100.0,14568,3308,93.0,19.7,10
+CDG_gemini/gemini-3.5-flash,criteria_defined,100.0,100.0,11924,2835,91.0,19.6,10
+CDG_gemini/gemini-3.1-pro-preview,devsecops_actionable,100.0,100.0,26638,2856,95.0,19.5,8
+CDG_gemini/gemini-3.5-flash,cot_analytical,100.0,100.0,11296,2633,88.0,19.4,10
+CDG_gemini/gemini-3.5-flash,devsecops_actionable,100.0,100.0,12713,3072,95.0,18.9,10
+CDG_gemini/gemini-3.1-flash-lite,criteria_defined,100.0,100.0,1888,612,92.0,17.5,10
+CDG_gemini/gemini-3.1-flash-lite,cot_analytical,100.0,100.0,2299,704,90.0,17.2,10
+CDG_gemini/gemini-3.1-flash-lite,mitigation_focused,100.0,100.0,3165,835,96.0,16.6,10
+CDG_gemini/gemini-3.1-flash-lite,devsecops_actionable,100.0,100.0,3260,907,94.44,15.89,9

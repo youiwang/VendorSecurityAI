@@ -1,0 +1,105 @@
+{
+  "prompt": "有一個 CVE ID：CVE-2016-1731，軟體資訊：\nVendor: Apple Inc.\nProduct: Apple Software Update\nVersion: 2.1.1.116\nCPE: cpe:2.3:a:apple:software_update:2.1.1.116:*:*:*:*:*:*:*\n\n你是一個嚴謹的弱點管理(Vulnerability Management)機器人。請依序進行以下思考：\n1. 確認此 CVE 的攻擊向量以及受影響的軟體版本。\n2. 判斷官方提供的修補方案（如升級到哪個版本、或修改什麼設定）。\n3. 評估套用此修補方案的「營運中斷風險 (Operational Risk)」，以 L1(最低風險) 到 L9(最高風險) 評分。\n4. 將以上思考轉化為可執行的行動建議。\n請嚴格回傳包含以下 key 的 JSON，不要輸出任何 JSON 區塊以外的文字：\n{\"thought_process\": \"你的推理過程簡述\", \"fix_recommendation\": \"具體的修補動作與處理此風險的建議\", \"risk_level\": \"L1\"~\"L9\", \"risk_rationale\": \"解釋為何給予此風險等級\", \"sources\": [\"參考資料網址\"]}",
+  "response": {
+    "id": "-beXatPaE6qavr0Pyv_TqQU",
+    "created": 1788327929,
+    "model": "CDG_gemini/gemini-3.1-flash-lite",
+    "object": "chat.completion",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "message": {
+          "content": "{\n  \"thought_process\": \"1. 攻擊向量與受影響版本：CVE-2016-1731 存在於 Apple Software Update 2.1.1.116，攻擊者可利用此弱點進行 DLL 挾持 (DLL hijacking) 以執行任意程式碼。2. 修補方案：Apple 已發布更新以解決此問題，需將 Apple Software Update 升級至 2.2 或更新版本。3. 風險評估：由於涉及 Windows 下的元件更新，通常需重啟相關處理程序或服務，且涉及軟體升級，存在相容性及服務中斷風險，故評定為 L3。\",\n  \"fix_recommendation\": \"請檢查系統環境並將 Apple Software Update 升級至版本 2.2 或更高版本。若該軟體不再使用，建議直接完整移除該程式以徹底消除此攻擊向量。\",\n  \"risk_level\": \"L3\",\n  \"risk_rationale\": \"該弱點屬於本地端執行權限提升/任意程式碼執行，雖利用難度需特定環境，但受影響元件與系統核心服務整合度高。升級程序單純，影響範圍侷限於單機，故評為 L3（低風險）。\",\n  \"sources\": [\"https://nvd.nist.gov/vuln/detail/CVE-2016-1731\", \"https://support.apple.com/en-us/HT206169\"]\n}",
+          "role": "assistant",
+          "images": [],
+          "thinking_blocks": [],
+          "provider_specific_fields": {
+            "thought_signatures": [
+              "EnEKbwERTTIP5+y1fanOlTYGH8HnYeeHPe414vMTjS4e3IXymNi9BvdUjWRehXFmS+8dzmeGXRIz8V7nmig2C0b99ei5VADp2dwiQBjhzmafTUVp4GTU67eFHkdiaspSEQyA4AbLesnmK3I5oubPt7exsQ=="
+            ]
+          }
+        }
+      }
+    ],
+    "usage": {
+      "completion_tokens": 337,
+      "prompt_tokens": 297,
+      "total_tokens": 634,
+      "completion_tokens_details": {
+        "text_tokens": 337
+      },
+      "prompt_tokens_details": {
+        "text_tokens": 297
+      }
+    },
+    "vertex_ai_grounding_metadata": [],
+    "vertex_ai_url_context_metadata": [],
+    "vertex_ai_safety_results": [],
+    "vertex_ai_citation_metadata": [],
+    "service_tier": "default"
+  },
+  "response_text": "{\n  \"thought_process\": \"1. 攻擊向量與受影響版本：CVE-2016-1731 存在於 Apple Software Update 2.1.1.116，攻擊者可利用此弱點進行 DLL 挾持 (DLL hijacking) 以執行任意程式碼。2. 修補方案：Apple 已發布更新以解決此問題，需將 Apple Software Update 升級至 2.2 或更新版本。3. 風險評估：由於涉及 Windows 下的元件更新，通常需重啟相關處理程序或服務，且涉及軟體升級，存在相容性及服務中斷風險，故評定為 L3。\",\n  \"fix_recommendation\": \"請檢查系統環境並將 Apple Software Update 升級至版本 2.2 或更高版本。若該軟體不再使用，建議直接完整移除該程式以徹底消除此攻擊向量。\",\n  \"risk_level\": \"L3\",\n  \"risk_rationale\": \"該弱點屬於本地端執行權限提升/任意程式碼執行，雖利用難度需特定環境，但受影響元件與系統核心服務整合度高。升級程序單純，影響範圍侷限於單機，故評為 L3（低風險）。\",\n  \"sources\": [\"https://nvd.nist.gov/vuln/detail/CVE-2016-1731\", \"https://support.apple.com/en-us/HT206169\"]\n}",
+  "parsed_json": {
+    "thought_process": "1. 攻擊向量與受影響版本：CVE-2016-1731 存在於 Apple Software Update 2.1.1.116，攻擊者可利用此弱點進行 DLL 挾持 (DLL hijacking) 以執行任意程式碼。2. 修補方案：Apple 已發布更新以解決此問題，需將 Apple Software Update 升級至 2.2 或更新版本。3. 風險評估：由於涉及 Windows 下的元件更新，通常需重啟相關處理程序或服務，且涉及軟體升級，存在相容性及服務中斷風險，故評定為 L3。",
+    "fix_recommendation": "請檢查系統環境並將 Apple Software Update 升級至版本 2.2 或更高版本。若該軟體不再使用，建議直接完整移除該程式以徹底消除此攻擊向量。",
+    "risk_level": "L3",
+    "risk_rationale": "該弱點屬於本地端執行權限提升/任意程式碼執行，雖利用難度需特定環境，但受影響元件與系統核心服務整合度高。升級程序單純，影響範圍侷限於單機，故評為 L3（低風險）。",
+    "sources": [
+      "https://nvd.nist.gov/vuln/detail/CVE-2016-1731",
+      "https://support.apple.com/en-us/HT206169"
+    ]
+  },
+  "metrics": {
+    "latency_ms": 1976,
+    "json_parse_success": true,
+    "parse_error": null,
+    "schema_adherence_pct": 100,
+    "risk_level_valid": true
+  },
+  "judge": {
+    "response": {
+      "id": "-7eXavOWEsagvr0PwabnoAc",
+      "created": 1788327931,
+      "model": "CDG_gemini/gemini-3.1-pro-preview",
+      "object": "chat.completion",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "message": {
+            "content": "{\n    \"scores\": {\n        \"actionability\": 5,\n        \"rationale_logic\": 4,\n        \"safety_accuracy\": 5,\n        \"formatting\": 5\n    },\n    \"total_score\": 19,\n    \"evaluation_comments\": \"Actionability (5/5): 修補建議非常具體，明確指出升級至 2.2 以上版本，並提供直接移除軟體的實用替代方案。Rationale_Logic (4/5): 評分邏輯基本合理，正確指出本地端 DLL 挾持的特性；唯 thought_process 中提到『存在相容性及服務中斷風險』與 risk_rationale 稱『升級程序單純』在語意上略微矛盾，但將此單機軟體漏洞評為 L3 屬於合理範圍。Safety_Accuracy (5/5): 漏洞資訊與修補版本（2.2）完全吻合歷史事實，Apple 官方公告 HT206169 與 NVD 連結皆正確無誤，未產生幻覺。Formatting (5/5): 輸出格式完全符合要求，無任何多餘廢話。\"\n}",
+            "role": "assistant",
+            "images": [],
+            "thinking_blocks": [],
+            "provider_specific_fields": {
+              "thought_signatures": [
+                "Eo4qCosqARFNMg+DOS7CXg9kLbdz72a4IcZbpGJjtPldkLCAFHvPJ4kxpjZeGmxl9MGO1gOzZ/8/AsufT7e9s3KuMIXDnQ7lutqZpT+UPvpclLbi3LY94UZd0qdgU+hK6eon9RSQOC7ayoLcvrhhR5FExlWMw7hhAIh70eDaSoshmUd3a2HfrLzza7QqTcubf97KQp5SDdV+EjlyGlSLhgUIdOtKXi01IxMRWyepvVLuNLR0EQi7ttBsXxxMMZ3kQt9N2v6YDCVZ62unPpiFZA57+I7DX0CQJ6ImbElNOyKuOUPPUrgwZVvbwJPpBpIWQ+Yx75fyZWUJgZ1BQ4LbhWzNXr1hZzFfew0Lu4LLGjh4qPMXO1dv9m3eSrWVrA/6YsbdYXo206KCpJ6AlnY5c44IcCiK5kxsDZrKn5vFUZ5mnBtsLM8MacBQRnASDXazbBD9yheuW7xLQH0lwKTw+aDH47QK41uVl/Lknik6kGE9DCr3gaEa9HfaKxQAlan23Hd5HCYVp1dDyZ8l1iHQte+OqscoeY0/dyCgn4+A+dB07JEKgrNtzhIBhz1MBluCN1D0cg5O3U7Co3tHbzHp84WTLExSgD7BfJYddyuX9PfkjibDUDKp3AynYUuZARpcMJcP06HA/5fbCkqHwGAvEmngv5KGvZdVLbQ6bmjmbfkN0AbB3B8MwkKY+Bhc0m9JG/VpVxUGkJYo26dW46MlkrDTrzQelwLRfgbFNUkYokvScBhwp3lhY664a8YlrpLlGeMiCBkTNIS8jZUJAiGea8smlEdk7UOxNfeeB+FC95+7kyOfyz3sr2WJmJJguVD4en6Gd/eiIOAzlyGH4YdMYqxdGz4on05IFwA3m78MRl7uvHTCHMlHTbg7dd6vxO9iXkEad0tCHTFrSpN96vKTwVreVhHu8HPZDIgwQixAw8nRAo/TfVKkoy8qMITeWOEMsKTaUit/WhxHwOer0MCkFrcYyLItBbxpxHu+IyK+TqY4LR3Xw5WU8K7THcA3VZ6dglj5u7qfV+26854ibi2Y1OyduBItfAteavWjZmKZoyD7WlKI6mxvI2UukDfm0SI2EBHjzwi/oKPV9xvEs5Pz2mnHpO3waG//r1LaJKft0erC9dXyoqH4CdAGO7F42nfhuFMXLSEvZ55XWNf3317u/BtUq6rqwmDHp1oUOd1+63Ld3qHMb4DVlbST/4y7kzHBlNW3QE3uKlqD1BCJdBzPQWtUk0wqS61NSR+ErHqOzGzwp62CZUajO9Dv8mdv8K4ipmka+9VaeMVWQcxqNXb/oKvxrN01EZ9fre1FqlYae86CinHaB9l5ZZuawyLUpgFd2xiqpOFmdmQKwSD2gXDegNQYfos8p359dI4/4GWxAg3AVeKppkfaVKmdVXAcREkH6hIU7PUybxyAbTvTDJINGDxt3AAKO630J0fvl0h6m+sA6SJwsTuN1G1m7I7BngmucRHBIcRtFJ/92YQQ9GB99uZ6WB1tbPzGCDTK4C1idKX/QFlQLmeWqbaHkDnv8mu2UL5T0umtElbeqETFcA+ClNtS3a8l+5LAaCYf/CF0Zv5O+vln41+4oKfRN7vJoUCItNNqzdamw29V2QgfRrCgWCX6wfechxwzRzXiSKGKYqhzBJU+zsJotD5wDmJ88UxhKQQvQgXr9C4g5f4AUw4z9l6zZoHPc7vLNZCpJJQ/kEW5d+Pl5pedtQOLI2VDELQan/Wo4Rs0htW2T6ioHub9gb91Pw9CdDe1mfdMahXp+UYNKIwqihByTG6jMW9PWRKFtVAtwRiCpH41UIcsMvg+cfCR2ul2zgevdDe1GqCUSNDOBeW9Z2t9u9PKgTzp5OQYSHPXOVM8yEML6T17tUT3Bc/TrcPY2NnKendhcx8ynkZuSbI0985jc8v1YGjCXEf54hzYSFicq6S0BvIu5Zzt3gGrlDma/hL2/LEq+gd2+ZKhjwsVo1FazRj/AXjdpFWzst2i1LZgYoW9JZeShNm9Dn3fWKXmlYaaKFuU6HFqm4woYIESgnaXBTiqCZ0P2LyygOHJwJi7wOMqdjaNeUijTh7BPtj5Tbx3/gfv4kQ/DCZSvLzUTmaeujCe7y2Dib6tOeJnOgZ1eAtJ2OQkn6b3rDMzAbo+YaY+h7n0Xc7MAN5uRWdURUVEUrnWlcDtqIItWW99iY8oUs9skL39Vd+/suyG9NTBX/j+N/8sQgATVw113rV6QKCeRMoCOV96TUGl5vDSimHZrSxxqLd+OqTq689uvha+FKlk7HMUuxs4MsgHzPSSgC0SC5VJ0TRvy9gujbB/q9skrRoYgji1bbGFFhRvKHfu/PaIcV5yzy1I/eRF+bcLnMlxSdG3G0tkYTgg8zxA/6JV1hhQJrQWZhcOqPFvQvHYGIuWXpmzpWczI+mdW9SNvnn+M7zLP+/RRUplXUmX8ybw6NFHzRJ7EtpxOOrscCn65xSW6BP84cnOus0zfU7DmWl5o4puo/kWpqgVRaIH8sebikD87rTiHKGm8pr7XjoTuDSdc3pUDvr6omwbNlRDTxbzk4rv/x9voGWpIlx5bGBZ1ah5hoDTHsRjOH/xr9HdCUafZasM9liBCOXJvtA9EE4w39T0XHlTlnhQ2om2ZIJw/6/vZlOd1gEL7i4Dvdo0AhYb+gGwAgAQgPCeK7VY5dj4yly5vMqUokJTdpFitcZSIOcg1HAXXx6tsbJYlA/QVn4ZeiZ6JUxpZJSAIYYNiWFLH/ylLrne1V03OfQyRtT3WQJC6GMbacJN7E6vRHLX07F9xSzNLdgtIyOhG67QTpg1NfNy82Cq5WnK9I+WWUlx0NTBCeVK0YwK9lB2GybwfagUB3buj1kbNru4NIyENJTfem/S4f3T9Zvms43ChsNbU6NP8bulmgLDvQmmedZ3KqZL0Wo4/UxqO6pUMvBvmo+20CwXFHIyc+JLlykmgoSvzB9W+TjL7JT2TYw6n9EC1qZhsRxEJV5WbkhuaL0By86dafUExm5FtoIAslxPcMWJn2cX2im3GQAjItdfXhaIHvAhz2b5O+1U2hHqBQb69QRlxQXRQiNGemRJyM4wk577tA6RBGQrFVkRrTAUrA24AiJWYwjL7fkQxszzUAwRjw8e2HAofZUDGaxaSOy+3fCzUcuK/YafhaTYZJbSTXG5mqc+M/ycV5qvAMnILlk9bspq+SC2fEOaOkJe7akacA++sI/VFC9VJea7NS+EaBHK0vdZzwV2U6sPK7EI5js5NUK6CNjA65saNmWAjiDVpXQ7lHP6YNauLcMAENDZEZi6gtt8Sm5vrmF9kWqVMs+FZuk0epKzYDyHnB/KBnXkhh3JPvdzZfUSLks66XXo0aA88nB5+z2kiEK7quyOhVmnElWrn9zUniHeLeTVjJvIIUA3EcKp1D00+8jaI0Iy+G+f9UUHtmV/f7HJ1+7roxttmcV7Ytb/dwS+Bl4Kk3ANuz52KMX84Mz1W1Za/kRA5JD4tIxDnH482JdSusHjlmbkAc1RJ+uXUp0zUdykCHvLns6Gh2UDsYvI+i4YumMkvlhNYdxBiyi6UnN2kQQcxbCClGtuXjDK2+dPjCyXVgQnJfU08zcLyYDVQ2tFawml9JANhhMVvW7ww06Pj2Bh4MBEIxIN7VNTr/wmSaaJV3pu7Q+ybdzDFP9IXyPory8/SyTnYdX5xGeQGnoZ3PdGM3HNQq2WNvxaUBGwIBckDC23KGaUuUPG2ROz2g3+2E+D3mtcf7RThcP+8hcezhbx1dpMlYhtRSTt7EQCRPnCAcT3zBK87S2hj4VF/ktuHkvKmKV81g2f2s+vYSA4I2YjMSdTqgTEScPGKa06dpPncKUmlXNeHgwAtmZueCVhCFdbfhlPFDoPQ+UcSN01Z+5TMuLjJcAUPHyBhrRnWIA7i6fQn+68NgXaAXm4D0VjBo/d/usm8rp1JOtvg8QFNCyMpCKLg0GOOrRLvQojIVUjbLV/MEziI1ko3TGcl/TmRaV9XJmRHrNDZHbDTE0lkWT4cpajlhVHqzNDIodCalTGfDUNUsmYrHZm5koV+D+DegtoU3nCWx0g+fMFuYT3123y6KaOt2/OlwBcYmR332p9pM8a8z6/65+8eVANBf2upFz8Hk75PAR4zEjNvW7Qcw1PAfpnruFYQZ2gsGZdZqIlk94vh27vwuQPmajSOqcIb6ZEpWCLNzn4BwqM2RQENnVspaPt8/7idOrICeBQAK7i5EkQHmym2Ec7+bDpw0utl/d+h/O6DdWWPdOGfpjlqhjESzdNL3PKOM+Fe5lHb0Kll/l8MJ1xly1Uynw8sr58YilcviMyow2FGnCVlts2XuvSqJatT/+75fUu4Y3o08WZtSSYUh5Ib4ym5A+Qt3q161Me8NoqHSDBVlvrPVMlUpLXgVic5ynEuKTXUKSI/wjI0uh4LCFy5ee9BCHTj4azg6GBUhnCh1xIFJEiiCqr0TJlQ60u9NbrbGoe3P1iXEtT762R5JbS5KQCX+ocnAT9dCK5+Rhz6B+B+1mqw2H8Relu+N5PSXaJdl6nzesoP/OeIXWph5g1hSsGoKLQe1jDy4uIWxmVd3ZgHYew+lvHCGywaaxQJkNzKpXwIFFNkTgvBZnSEohEPg6WKBDFDlcAmj2LNseyC6EeWIyIHU3/mN9Si6RxXANQKEhe+H6EuCjOsGk6xFNVwFKE6uxDWhgoR3hQkxckAgarwiVL+Wq7wlYcWP5SmqZSD3iZAaJdy0pWNHdICm+lTTTImDOSmBs1X1tARFGPGraaSpoSZ5xVg0670l/EdfW/TQ7d/cthgDpWNRUXtCBRiRs7Ee8Aa7ERPlwPQafo636QcDp2CFj2Hhi9dgnDMXlnVY5gGQcDs+qG+C+PAaCKni+G+c1675lNjIgFc02YbnnuTNsDl8VGRAnvSe2TUiHHnJIieQOnroXbttA54Gv1cCMzhSWSm4GAz/cwf5kY1FPoLp/yYIGvyDI/XQmaD8P5f55w/SfKBxvVOgyeVdk8NS6FG78L9sdFLZZVDEDcLJyQqgRfH3uT7hMPH45mSqlcvB9NNkYQXNydiPz7ClCD9f9CQlPWIB4UB/ScyVJw6fa11MZXUhV+XzWJC3om+DNWe1sdhvtHBfUi+jIyF7ZHs5TrFUBosHjKgyXLXnt9qnL2covdP2lofe0xRDcgXKmLYbbzn2HWhnsYjc9SyNGE5JRTWYEmrt2GR9zybjjXG9vdrg3f0sdw+MixyrcxkRARzKC/em+FFUtsyBouqxc1Z9WtEiSkLgv2gZX8UBuSluEddQgtrxaNTwvsIoSRCS3ZEQlzNZx+u6AUGJgcQ3ZIlHqGjTBrEZv5OoKQZA2wCsOuJ1dVeRePtLqLU0iCjC5SyMoQ+xCGIMN0nGX2AY+Yecwoz6f/CIqQkXF0Dfo63/7J/cCuuFfiTIQw+ZGZ1ctQnRMZXZjNjSUMMqJ43RfRGGsD2R6bDIOCQ0YG1yj7dGKF8RMf3M1qar+2bfsZ6Pz+e3MrPpSaZ8Wx8gzOpwrQ1oKzsyICJz+jZ6oPv3x1f6pTkG7oo+29pdIY6I9k9/HZ6wJEM9h67FM9UYjZLvXPTORTmJb9K2J1Ztgdy086EKL40jw9GSLlpltDthB1Z4eyO2AykFHznexbpfbMB/Grq8f8wSNOjlJ/rxxVdcDAiKABnzBiUkJWZZnLAB/dfsXJAJdnKTohziQs03IEkA6CnPSpK379OdiLEsC1MI/E52IZgQ0JL/3yfN8IruJSzYcH76iUurO9hqksGKqatwnBG7aNRmjZIaVYOzAcyiNxi4ZumofX2Vx2qsrTE5D0yoBFh49QhbdhmiYWRaMLlldQRKeR3dt2s/g+804UWjDAHfAPSJThLt+FCLpA7108u6X1YdaJUQRPdTaBAFNXwb6oJX85DwuVrBfEhD6u3+/sTRzAFxaSpG3s3UU5XAXQUhMt6H8Cultlq8CrSok6iWjE0qbp/tYjla/KRsNF4oGcJXdgvOMvwoLqzqGhTKzYZymCEaObK3Lkx6I2Pn8TBh56fVSTcm8XRCowggYYLnlbjZQ24ZPQcvQF0XTmGRJf/yfBKCJoY2CQO2VMaHPdauSV4tff+GgTQmTIDoVS6BijLhro9Cykhf33CN86spEJLibMxqvPlelUrOImILcZJMSjsqXmjfe+pLw0VY8pQLBdvT2OKa0xNNkxUDMUrHedR2Pe9+wzwF9D0k0IUZsxjZr3GRXm7NJJOgEPj7NFUcevBZyANMPsddKosOHKlq5X6F2OtcCRh1AvWoH6rMWus2uo+GN/1NpWzwJIwMz8db2b8jUSFyapmsmR6esvk3om1Jfowgoo+njsV8IHUHOd51o5CduyuWrS2k0m2/j0t+OtnRWN7avHf1aD7Vu0sJqWm/nD4bAVGmrQSsUkzSyMleLxskKPcG8cBPZ23sUqbZpo2PIkuHaSzsSK116L6W0rs8xtmJsUuN+JPXpVx1hFbyNOR5URd/fZy5TmFhCTFLYN8wPytkCQ20SuZIfefrmFAXQvd2NLPnQ7rsxneoU/eQgz+TfOMSPVF6xTEoTdbp974TFLaattEjLOfIQ4sgZfyWLzhyB9JVMnURKniQ7MxNTngnzEqki00LRV1pt4epzOZDcrFCoR33F3opJNHip1ibZDt/K1k3qEk7bxJw0oNKrFzrur/EXo8K642jb7HiQSAXBFA8q8z8IYGEl79s8wR5kDUF4xz15n3a2RzmmLikQ8E6NmQyZCyiMbQ8rEvcw4DgPTFc19p8G3yjgXEsHwwyVMojC/ofarsJvp+Y5NMnFDRHgkwUR9OrJrl062/ZRkutzi+UGCs8Uc5VpZQwMj3GyinO0r/g1ZZpVv0CNdcHphaCe6gCQ3lwZYasSalEALDetiw4FvvQHlMJQhDy8RDnh3sJcPMQHfDg7XfTIDGLxP8qeUBb+FWXofBIDCSqOSB6PhvDgFtvZ6cha79H1ZbyM78Lk1BTwgZmEB/CxFDgKl8e2WcWzCcfi4Cqxk3/kepXVeV76d1D8PBd+q08XeRi03oQ5L0fnDD+69rJwvkEVRIX7wsTjuJk1U/vADGcsU8byV7JsXCCWsrFr9LQX/8rnKHyoiglz2ilOJH7uoGVBGZaNSFCz6ej7xPnt7zsYQsrO6XsyzGxFCkYnkuk1q1YTBgIpOSgie+599A5z2UgtNAUlK31CM4WzDzcU="
+              ]
+            }
+          }
+        }
+      ],
+      "usage": {
+        "completion_tokens": 1677,
+        "prompt_tokens": 700,
+        "total_tokens": 2377,
+        "completion_tokens_details": {
+          "reasoning_tokens": 1417,
+          "text_tokens": 260
+        },
+        "prompt_tokens_details": {
+          "text_tokens": 700
+        }
+      },
+      "vertex_ai_grounding_metadata": [],
+      "vertex_ai_url_context_metadata": [],
+      "vertex_ai_safety_results": [],
+      "vertex_ai_citation_metadata": [],
+      "service_tier": "default"
+    },
+    "latency_ms": 15504,
+    "model": "CDG_gemini/gemini-3.1-pro-preview"
+  },
+  "judge_model": "CDG_gemini/gemini-3.1-pro-preview"
+}

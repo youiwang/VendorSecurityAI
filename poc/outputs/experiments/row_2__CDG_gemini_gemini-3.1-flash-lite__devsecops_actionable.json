@@ -1,0 +1,104 @@
+{
+  "prompt": "有一個 CVE ID：CVE-2026-63093，軟體資訊：\nVendor: Anysphere\nProduct: Cursor (User)\nVersion: 3.0.13\nCPE: cpe:2.3:a:anysphere:cursor:3.0.13:*:*:*:*:*:*:*\n\n請以 DevSecOps 工程師的角度分析此漏洞。我們需要自動化或具體的終端機指令來修補此問題。\n請提供：\n1. 具體的更新指令 (例如 apt-get, pip install, docker pull 等) 或設定檔修改範例。\n2. 安裝風險評估 (L1: 低風險/向下相容 ~ L9: 高風險/需架構重構)。\n3. 萬一升級失敗的退版建議 (Rollback plan)。\n輸出 JSON：{\"fix_recommendation\": \"包含指令與退版建議的詳細說明\", \"risk_level\": \"L1\"~\"L9\", \"risk_rationale\": \"升級相容性與停機時間評估\", \"sources\": []}",
+  "response": {
+    "id": "l7aXaqrTJ-Sgvr0PqIaiuQQ",
+    "created": 1788327575,
+    "model": "CDG_gemini/gemini-3.1-flash-lite",
+    "object": "chat.completion",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "message": {
+          "content": "針對您提供的 CVE-2026-63093 (假設情境)，作為 DevSecOps 工程師，由於 Cursor 屬於整合開發環境 (IDE)，其更新機制與伺服器端軟體不同，主要依賴應用程式內建的自動更新機制或手動重新安裝。\n\n以下為該漏洞的處理建議：\n\n```json\n{\n  \"fix_recommendation\": \"1. 更新指令：Cursor 採用自動更新機制，請在終端機執行以下指令觸發更新檢查：'cursor --update' 或直接從官方下載最新版本安裝包覆蓋。若為 Linux 環境，請執行 'wget -qO- https://cursor.sh/dl/linux/x64 | tar -xJ' 進行覆蓋安裝。2. 退版建議：建議在升級前備份設定檔 '~/.config/Cursor' (Linux/macOS) 或 '%APPDATA%\\\\Cursor' (Windows)。若升級後發生問題，請移除當前版本並手動安裝舊版執行檔（若有歸檔備份）。\",\n  \"risk_level\": \"L2\",\n  \"risk_rationale\": \"L2 低風險。Cursor 為使用者端 IDE，更新主要涉及應用程式執行檔替換，不會影響伺服器端業務邏輯或資料庫架構。風險主要在於使用者偏好設定或擴充套件（Extensions）可能因版本變更產生輕微不相容，通常不影響生產環境穩定性。\",\n  \"sources\": [\n    \"https://cursor.sh/changelog\",\n    \"https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2026-63093\"\n  ]\n}\n```\n\n### 專業補充說明 (DevSecOps 觀點)：\n\n1.  **偵測與預防 (Detection & Prevention)**：\n    *   由於 Cursor 是開發工具，建議在 CI/CD 流水線中加入軟體組成分析 (SCA) 工具（如 Snyk 或 OWASP Dependency-Check），確保開發環境的 IDE 版本符合資安規範。\n    *   針對企業環境，若 Cursor 部署於 VDI (虛擬桌面基礎架構)，應透過集中式管理系統 (如 SCCM 或 Ansible) 推送最新安裝包，而非依賴開發者手動更新。\n\n2.  **退版計畫 (Rollback Plan) 詳細說明**：\n    *   **Configuration Backup**: 在執行升級前，使用 `tar -czvf cursor_config_backup_$(date +%F).tar.gz ~/.config/Cursor` 備份使用者配置。\n    *   **Version Pinning**: 若團隊對 IDE 版本敏感，建議將特定穩定版本存儲於內部 Artifact Registry (如 Nexus 或 JFrog Artifactory)，避免因官方自動更新導致版本不可控。\n\n3.  **風險評估細節**：\n    *   由於 Cursor 深度依賴 VS Code 的擴充套件生態，更新 IDE 本身極少導致編譯失敗。L2 的風險評估是考量到「開發者生產力中斷」的可能性，而非系統架構層面的崩潰。",
+          "role": "assistant",
+          "images": [],
+          "thinking_blocks": [],
+          "provider_specific_fields": {
+            "thought_signatures": [
+              "EnEKbwERTTIPw4BoXdDXip5j8BCjaFRXXixsoTSbdRsbCrB+MG0Gka5Tk8X78S5WOrkSRpJ4iT/oKUW9ah1Ym7PtMLuL6L9YJqKS90UDEWUrX8AqDB0jSsovSjOU1/3U2uGTAEocmt1HsXmbGF4KEvUrqw=="
+            ]
+          }
+        }
+      }
+    ],
+    "usage": {
+      "completion_tokens": 705,
+      "prompt_tokens": 248,
+      "total_tokens": 953,
+      "completion_tokens_details": {
+        "text_tokens": 705
+      },
+      "prompt_tokens_details": {
+        "text_tokens": 248
+      }
+    },
+    "vertex_ai_grounding_metadata": [],
+    "vertex_ai_url_context_metadata": [],
+    "vertex_ai_safety_results": [],
+    "vertex_ai_citation_metadata": [],
+    "service_tier": "default"
+  },
+  "response_text": "針對您提供的 CVE-2026-63093 (假設情境)，作為 DevSecOps 工程師，由於 Cursor 屬於整合開發環境 (IDE)，其更新機制與伺服器端軟體不同，主要依賴應用程式內建的自動更新機制或手動重新安裝。\n\n以下為該漏洞的處理建議：\n\n```json\n{\n  \"fix_recommendation\": \"1. 更新指令：Cursor 採用自動更新機制，請在終端機執行以下指令觸發更新檢查：'cursor --update' 或直接從官方下載最新版本安裝包覆蓋。若為 Linux 環境，請執行 'wget -qO- https://cursor.sh/dl/linux/x64 | tar -xJ' 進行覆蓋安裝。2. 退版建議：建議在升級前備份設定檔 '~/.config/Cursor' (Linux/macOS) 或 '%APPDATA%\\\\Cursor' (Windows)。若升級後發生問題，請移除當前版本並手動安裝舊版執行檔（若有歸檔備份）。\",\n  \"risk_level\": \"L2\",\n  \"risk_rationale\": \"L2 低風險。Cursor 為使用者端 IDE，更新主要涉及應用程式執行檔替換，不會影響伺服器端業務邏輯或資料庫架構。風險主要在於使用者偏好設定或擴充套件（Extensions）可能因版本變更產生輕微不相容，通常不影響生產環境穩定性。\",\n  \"sources\": [\n    \"https://cursor.sh/changelog\",\n    \"https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2026-63093\"\n  ]\n}\n```\n\n### 專業補充說明 (DevSecOps 觀點)：\n\n1.  **偵測與預防 (Detection & Prevention)**：\n    *   由於 Cursor 是開發工具，建議在 CI/CD 流水線中加入軟體組成分析 (SCA) 工具（如 Snyk 或 OWASP Dependency-Check），確保開發環境的 IDE 版本符合資安規範。\n    *   針對企業環境，若 Cursor 部署於 VDI (虛擬桌面基礎架構)，應透過集中式管理系統 (如 SCCM 或 Ansible) 推送最新安裝包，而非依賴開發者手動更新。\n\n2.  **退版計畫 (Rollback Plan) 詳細說明**：\n    *   **Configuration Backup**: 在執行升級前，使用 `tar -czvf cursor_config_backup_$(date +%F).tar.gz ~/.config/Cursor` 備份使用者配置。\n    *   **Version Pinning**: 若團隊對 IDE 版本敏感，建議將特定穩定版本存儲於內部 Artifact Registry (如 Nexus 或 JFrog Artifactory)，避免因官方自動更新導致版本不可控。\n\n3.  **風險評估細節**：\n    *   由於 Cursor 深度依賴 VS Code 的擴充套件生態，更新 IDE 本身極少導致編譯失敗。L2 的風險評估是考量到「開發者生產力中斷」的可能性，而非系統架構層面的崩潰。",
+  "parsed_json": {
+    "fix_recommendation": "1. 更新指令：Cursor 採用自動更新機制，請在終端機執行以下指令觸發更新檢查：'cursor --update' 或直接從官方下載最新版本安裝包覆蓋。若為 Linux 環境，請執行 'wget -qO- https://cursor.sh/dl/linux/x64 | tar -xJ' 進行覆蓋安裝。2. 退版建議：建議在升級前備份設定檔 '~/.config/Cursor' (Linux/macOS) 或 '%APPDATA%\\Cursor' (Windows)。若升級後發生問題，請移除當前版本並手動安裝舊版執行檔（若有歸檔備份）。",
+    "risk_level": "L2",
+    "risk_rationale": "L2 低風險。Cursor 為使用者端 IDE，更新主要涉及應用程式執行檔替換，不會影響伺服器端業務邏輯或資料庫架構。風險主要在於使用者偏好設定或擴充套件（Extensions）可能因版本變更產生輕微不相容，通常不影響生產環境穩定性。",
+    "sources": [
+      "https://cursor.sh/changelog",
+      "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2026-63093"
+    ]
+  },
+  "metrics": {
+    "latency_ms": 3532,
+    "json_parse_success": true,
+    "parse_error": null,
+    "schema_adherence_pct": 100,
+    "risk_level_valid": true
+  },
+  "judge": {
+    "response": {
+      "id": "m7aXasb3C6es1e8PzKqX-AY",
+      "created": 1788327579,
+      "model": "CDG_gemini/gemini-3.1-pro-preview",
+      "object": "chat.completion",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "message": {
+            "content": "{\n    \"scores\": {\n        \"actionability\": 4,\n        \"rationale_logic\": 3,\n        \"safety_accuracy\": 3,\n        \"formatting\": 2\n    },\n    \"total_score\": 12,\n    \"evaluation_comments\": \"Actionability 表現良好，提供具體備份指令與路徑，具備實踐價值；但部分更新指令存在捏造。Rationale_Logic 方面，將 IDE 更新風險評估為 L2 方向正確，但建議以 CI/CD SCA 工具掃描開發者 IDE 版本的邏輯有誤（SCA 處理專案程式碼依賴，IDE 版本應由 MDM/端點管理系統納管）。Safety_Accuracy 上，存在 'cursor --update' 及部分下載連結的幻覺。Formatting 表現最差，JSON 區塊外包含大量對話前言與補充說明的廢話，未能保持乾淨俐落的純 JSON 輸出。\"\n}",
+            "role": "assistant",
+            "images": [],
+            "thinking_blocks": [],
+            "provider_specific_fields": {
+              "thought_signatures": [
+                "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"
+              ]
+            }
+          }
+        }
+      ],
+      "usage": {
+        "completion_tokens": 2373,
+        "prompt_tokens": 1067,
+        "total_tokens": 3440,
+        "completion_tokens_details": {
+          "reasoning_tokens": 2157,
+          "text_tokens": 216
+        },
+        "prompt_tokens_details": {
+          "text_tokens": 1067
+        }
+      },
+      "vertex_ai_grounding_metadata": [],
+      "vertex_ai_url_context_metadata": [],
+      "vertex_ai_safety_results": [],
+      "vertex_ai_citation_metadata": [],
+      "service_tier": "default"
+    },
+    "latency_ms": 22078,
+    "model": "CDG_gemini/gemini-3.1-pro-preview"
+  },
+  "judge_model": "CDG_gemini/gemini-3.1-pro-preview"
+}

@@ -1,0 +1,114 @@
+
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>AI Executive Conclusion</title>
+            <style>
+                body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; line-height: 1.6; color: #333; max-width: 900px; margin: 0 auto; padding: 2rem; background-color: #f9fafb; }
+                h1 { color: #111827; border-bottom: 2px solid #e5e7eb; padding-bottom: 0.5rem; }
+                /* Collapsible Sections Styling */
+                h2 { background-color: #ffffff; color: #1f2937; padding: 1rem; margin-top: 1.5rem; border: 1px solid #e5e7eb; border-radius: 8px; cursor: pointer; transition: background-color 0.2s; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 1px 2px rgba(0,0,0,0.05); }
+                h2:hover { background-color: #f3f4f6; }
+                h2::after { content: '▼'; font-size: 0.8em; color: #6b7280; transition: transform 0.3s; }
+                h2.active::after { transform: rotate(-180deg); }
+                /* Section content wrapper */
+                .section-content { display: none; padding: 1.5rem; background: #ffffff; border: 1px solid #e5e7eb; border-top: none; border-radius: 0 0 8px 8px; margin-bottom: 1.5rem; box-shadow: 0 1px 2px rgba(0,0,0,0.05); }
+                .section-content.active { display: block; }
+                /* Table Styling */
+                table { width: 100%; border-collapse: collapse; margin-top: 1rem; margin-bottom: 1rem; font-size: 0.9rem; }
+                th, td { padding: 12px 15px; text-align: left; border-bottom: 1px solid #e5e7eb; }
+                th { background-color: #f8fafc; font-weight: 600; color: #475569; text-transform: uppercase; letter-spacing: 0.05em; }
+                tr:hover { background-color: #f1f5f9; }
+                ul, ol { margin-left: 1.5rem; }
+                strong { color: #111827; }
+            </style>
+        </head>
+        <body>
+            <h1>LLM Evaluation for CVE Extraction Pipeline</h1>
+            
+            <!-- Injected Markdown Content -->
+            <div id="content">
+                <h2>Executive Summary</h2>
+<p>This report evaluates the performance, cost, and reliability of three Large Language Models (LLMs) across four prompt variants to determine the optimal configuration for an automated cybersecurity ETL (Extract, Transform, Load) pipeline. </p>
+<p>Based on the experimental data, <strong><code>CDG_gemini/gemini-3.5-flash</code></strong> emerges as the superior model for production deployment. While the <code>gemini-3.1-pro-preview</code> model achieved marginally higher quality scores, it suffered from unacceptable failure rates and high latency. Conversely, <code>gemini-3.1-flash-lite</code> offered the lowest latency and token consumption but failed to meet the quality thresholds required for a robust cybersecurity pipeline. </p>
+<p>The <strong><code>criteria_defined</code></strong> prompt variant paired with <code>gemini-3.5-flash</code> provides the best overall balance, delivering near-perfect quality scores, zero pipeline failures, and highly efficient processing times.</p>
+<h2>Methodology</h2>
+<p>The evaluation tested three models (<code>gemini-3.1-pro-preview</code>, <code>gemini-3.5-flash</code>, and <code>gemini-3.1-flash-lite</code>) against four prompt engineering variants (<code>cot_analytical</code>, <code>criteria_defined</code>, <code>mitigation_focused</code>, and <code>devsecops_actionable</code>). </p>
+<p>Each combination was executed up to 10 times. The evaluation framework captured the following key metrics:
+*   <strong>Pipeline Viability:</strong> JSON parse success rate and schema adherence percentage.
+*   <strong>Quality:</strong> Base score and an independent Judge Total Score.
+*   <strong>Cost &amp; Performance:</strong> Mean latency (milliseconds) and mean total tokens.
+*   <strong>Reliability:</strong> Total successful runs versus failed runs (Failure Rate %).</p>
+<h2>Quality &amp; Cost Analysis</h2>
+<p><strong>Pipeline Viability</strong>
+All models and variants achieved a 100% mean success rate for both JSON parsing and schema adherence during successful runs, indicating that all tested configurations are capable of outputting structured data suitable for an ETL pipeline.</p>
+<p><strong>Quality (Judge Total Score)</strong>
+*   <strong>Top Tier:</strong> <code>gemini-3.1-pro-preview</code> achieved the highest judge scores (19.50 - 19.88). However, <code>gemini-3.5-flash</code> performed exceptionally well, closely trailing the Pro model with scores ranging from 18.90 to 19.70.
+*   <strong>Bottom Tier:</strong> <code>gemini-3.1-flash-lite</code> demonstrated a significant drop in output quality, with judge scores ranging from 15.89 to 17.50, making it unsuitable for complex cybersecurity data extraction.</p>
+<p><strong>Cost &amp; Performance (Tokens &amp; Latency)</strong>
+*   <strong><code>gemini-3.1-flash-lite</code>:</strong> The fastest and cheapest model (1,888ms - 3,260ms latency; 612 - 907 tokens).
+*   <strong><code>gemini-3.5-flash</code>:</strong> Offers a strong middle ground. Latency ranged from 11,296ms to 14,568ms, utilizing 2,633 to 3,308 tokens.
+*   <strong><code>gemini-3.1-pro-preview</code>:</strong> The most resource-intensive, with severe latency bottlenecks (22,292ms - 26,638ms) and token usage between 2,452 and 2,856.</p>
+<h2>Reliability Analysis</h2>
+<p>Reliability is the most critical metric for an automated ETL pipeline. A high failure rate requires manual intervention and breaks automation.</p>
+<ul>
+<li><strong><code>gemini-3.5-flash</code>:</strong> Demonstrated <strong>perfect reliability</strong>. It achieved a 0% failure rate across all 40 runs (10 runs per variant).</li>
+<li><strong><code>gemini-3.1-pro-preview</code>:</strong> Exhibited severe stability issues. It failed 20% of the time on both <code>cot_analytical</code> and <code>devsecops_actionable</code> variants, and 10% of the time on <code>mitigation_focused</code>. It only achieved 100% reliability on the <code>criteria_defined</code> variant.</li>
+<li><strong><code>gemini-3.1-flash-lite</code>:</strong> Generally reliable, but experienced a 10% failure rate on the <code>devsecops_actionable</code> variant.</li>
+</ul>
+<h2>Final Recommendation</h2>
+<p>I recommend deploying <strong><code>CDG_gemini/gemini-3.5-flash</code></strong> utilizing the <strong><code>criteria_defined</code></strong> prompt variant for the production cybersecurity ETL pipeline. </p>
+<p><strong>Justification:</strong>
+1.  <strong>Flawless Reliability:</strong> This combination achieved a 0% failure rate, ensuring uninterrupted automated ETL operations.
+2.  <strong>High Quality:</strong> It yielded a Judge Total Score of 19.60, which is statistically competitive with the slower, more unstable Pro model (19.80 for the same variant).
+3.  <strong>Operational Efficiency:</strong> At 11,924ms mean latency and 2,835 mean total tokens, it is roughly twice as fast as the Pro model while consuming a highly manageable token footprint. </p>
+<p><em>(Note: If maximum possible quality is strictly prioritized over latency and token cost, the <code>mitigation_focused</code> variant on <code>gemini-3.5-flash</code> is a viable alternative, offering a slightly higher judge score of 19.70 at the expense of increased latency [14,568ms] and token usage [3,308]).</em></p>
+            </div>
+
+            <script>
+                // JavaScript to make all H2 tags collapsible
+                document.addEventListener("DOMContentLoaded", function() {
+                    const contentDiv = document.getElementById('content');
+                    const elements = Array.from(contentDiv.children);
+                    
+                    contentDiv.innerHTML = ''; // Clear original
+                    let currentWrapper = null;
+
+                    elements.forEach(el => {
+                        if (el.tagName === 'H2') {
+                            // Add H2 to DOM
+                            contentDiv.appendChild(el);
+                            
+                            // Create a wrapper for the content beneath it
+                            currentWrapper = document.createElement('div');
+                            currentWrapper.className = 'section-content';
+                            contentDiv.appendChild(currentWrapper);
+
+                            // Add click listener to H2
+                            el.addEventListener('click', function() {
+                                this.classList.toggle('active');
+                                const content = this.nextElementSibling;
+                                content.classList.toggle('active');
+                            });
+                        } else if (currentWrapper) {
+                            // Append elements to the current wrapper
+                            currentWrapper.appendChild(el);
+                        } else {
+                            // Elements before the first H2
+                            contentDiv.appendChild(el);
+                        }
+                    });
+                    
+                    // Open the first section by default
+                    const firstH2 = document.querySelector('h2');
+                    if(firstH2) {
+                        firstH2.classList.add('active');
+                        firstH2.nextElementSibling.classList.add('active');
+                    }
+                });
+            </script>
+        </body>
+        </html>
+        

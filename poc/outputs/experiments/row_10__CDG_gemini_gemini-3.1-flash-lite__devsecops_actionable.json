@@ -1,0 +1,105 @@
+{
+  "prompt": "有一個 CVE ID：CVE-2026-79090，軟體資訊：\nVendor: Google LLC\nProduct: Google Chrome\nVersion: 151.0.7922.137\nCPE: cpe:2.3:a:google:chrome:151.0.7922.137:*:*:*:*:*:*:*\n\n請以 DevSecOps 工程師的角度分析此漏洞。我們需要自動化或具體的終端機指令來修補此問題。\n請提供：\n1. 具體的更新指令 (例如 apt-get, pip install, docker pull 等) 或設定檔修改範例。\n2. 安裝風險評估 (L1: 低風險/向下相容 ~ L9: 高風險/需架構重構)。\n3. 萬一升級失敗的退版建議 (Rollback plan)。\n輸出 JSON：{\"fix_recommendation\": \"包含指令與退版建議的詳細說明\", \"risk_level\": \"L1\"~\"L9\", \"risk_rationale\": \"升級相容性與停機時間評估\", \"sources\": []}",
+  "response": {
+    "id": "usKXas7QMuXDvr0PpprjoQc",
+    "created": 1788330682,
+    "model": "CDG_gemini/gemini-3.1-flash-lite",
+    "object": "chat.completion",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "message": {
+          "content": "作為 DevSecOps 工程師，針對 Google Chrome 此類瀏覽器軟體的修補，必須考量其作為用戶端環境（Client-side）或自動化測試環境（如 Selenium/Playwright）的核心地位。\n\n以下是針對該 CVE 的分析與修補建議：\n\n```json\n{\n  \"fix_recommendation\": \"針對 Google Chrome 的修補，建議採用以下自動化方式：1. Linux 伺服器/容器環境：使用 'apt-get update && apt-get install --only-upgrade google-chrome-stable' 指令。若是 Docker 環境，應直接修改 Dockerfile 中的基礎映像檔或指定版本標籤為 'latest' 或更新的版本號碼，並執行 'docker build --no-cache' 重建映像檔。2. Windows/macOS 自動化：利用企業管理工具（如 SCCM, Intune, Munki）部署更新。3. 退版計畫：若升級後應用程式行為異常，請先鎖定特定版本號碼（使用 'apt-get install google-chrome-stable=151.0.7922.137'），並保留升級前的 Snapshot 或容器 Image 進行 rollback。\",\n  \"risk_level\": \"L3\",\n  \"risk_rationale\": \"Chrome 的自動更新機制相當成熟，且向後相容性極高。L3 風險主要來自於若是作為無頭瀏覽器（Headless Browser）運行自動化測試，新版瀏覽器驅動（ChromeDriver）若未同步更新，可能導致測試腳本執行失敗。對核心業務邏輯的架構影響極小，主要為環境配置的同步性問題。\",\n  \"sources\": [\n    \"https://chromereleases.googleblog.com/\",\n    \"https://nvd.nist.gov/vuln/detail/CVE-2026-79090\",\n    \"https://www.google.com/chrome/update/\"\n  ]\n}\n```\n\n### DevSecOps 專業補充建議：\n\n1.  **自動化驗證流程**：在執行 `apt-get` 更新後，務必加入一個簡單的冒煙測試（Smoke Test），例如：\n    `google-chrome-stable --headless --disable-gpu --dump-dom https://www.google.com`\n    確保瀏覽器引擎能正確渲染與回傳 HTML，確認核心功能未因版本升級而崩潰。\n2.  **ChromeDriver 同步**：如果您是在 CI/CD Pipeline (如 Jenkins, GitHub Actions) 中使用此瀏覽器進行網頁自動化測試，請務必確保 `chromedriver` 的版本與 Chrome 核心版本嚴格對齊。\n3.  **監控與告警**：建議將 `apt` 的更新日誌導出至 ELK 或 Splunk，並監控 `google-chrome-stable` 的版本變更，確保生產環境與開發環境的版本一致性，避免「環境漂移 (Environment Drift)」。",
+          "role": "assistant",
+          "images": [],
+          "thinking_blocks": [],
+          "provider_specific_fields": {
+            "thought_signatures": [
+              "EnEKbwERTTIPhjwbMIQ8sMp99HS5MTzVtUH6fuNwUo1HvOBZMBwrVZ+UtImVLogAgsFmGFjXqj3QftMV/Tz1CHFfNKUXL/5tSsuShBIKnKbjUMRtxXVYHFQhuUaMkditwlKl0up9vjatnjeJyatRDINhyw=="
+            ]
+          }
+        }
+      }
+    ],
+    "usage": {
+      "completion_tokens": 651,
+      "prompt_tokens": 259,
+      "total_tokens": 910,
+      "completion_tokens_details": {
+        "text_tokens": 651
+      },
+      "prompt_tokens_details": {
+        "text_tokens": 259
+      }
+    },
+    "vertex_ai_grounding_metadata": [],
+    "vertex_ai_url_context_metadata": [],
+    "vertex_ai_safety_results": [],
+    "vertex_ai_citation_metadata": [],
+    "service_tier": "default"
+  },
+  "response_text": "作為 DevSecOps 工程師，針對 Google Chrome 此類瀏覽器軟體的修補，必須考量其作為用戶端環境（Client-side）或自動化測試環境（如 Selenium/Playwright）的核心地位。\n\n以下是針對該 CVE 的分析與修補建議：\n\n```json\n{\n  \"fix_recommendation\": \"針對 Google Chrome 的修補，建議採用以下自動化方式：1. Linux 伺服器/容器環境：使用 'apt-get update && apt-get install --only-upgrade google-chrome-stable' 指令。若是 Docker 環境，應直接修改 Dockerfile 中的基礎映像檔或指定版本標籤為 'latest' 或更新的版本號碼，並執行 'docker build --no-cache' 重建映像檔。2. Windows/macOS 自動化：利用企業管理工具（如 SCCM, Intune, Munki）部署更新。3. 退版計畫：若升級後應用程式行為異常，請先鎖定特定版本號碼（使用 'apt-get install google-chrome-stable=151.0.7922.137'），並保留升級前的 Snapshot 或容器 Image 進行 rollback。\",\n  \"risk_level\": \"L3\",\n  \"risk_rationale\": \"Chrome 的自動更新機制相當成熟，且向後相容性極高。L3 風險主要來自於若是作為無頭瀏覽器（Headless Browser）運行自動化測試，新版瀏覽器驅動（ChromeDriver）若未同步更新，可能導致測試腳本執行失敗。對核心業務邏輯的架構影響極小，主要為環境配置的同步性問題。\",\n  \"sources\": [\n    \"https://chromereleases.googleblog.com/\",\n    \"https://nvd.nist.gov/vuln/detail/CVE-2026-79090\",\n    \"https://www.google.com/chrome/update/\"\n  ]\n}\n```\n\n### DevSecOps 專業補充建議：\n\n1.  **自動化驗證流程**：在執行 `apt-get` 更新後，務必加入一個簡單的冒煙測試（Smoke Test），例如：\n    `google-chrome-stable --headless --disable-gpu --dump-dom https://www.google.com`\n    確保瀏覽器引擎能正確渲染與回傳 HTML，確認核心功能未因版本升級而崩潰。\n2.  **ChromeDriver 同步**：如果您是在 CI/CD Pipeline (如 Jenkins, GitHub Actions) 中使用此瀏覽器進行網頁自動化測試，請務必確保 `chromedriver` 的版本與 Chrome 核心版本嚴格對齊。\n3.  **監控與告警**：建議將 `apt` 的更新日誌導出至 ELK 或 Splunk，並監控 `google-chrome-stable` 的版本變更，確保生產環境與開發環境的版本一致性，避免「環境漂移 (Environment Drift)」。",
+  "parsed_json": {
+    "fix_recommendation": "針對 Google Chrome 的修補，建議採用以下自動化方式：1. Linux 伺服器/容器環境：使用 'apt-get update && apt-get install --only-upgrade google-chrome-stable' 指令。若是 Docker 環境，應直接修改 Dockerfile 中的基礎映像檔或指定版本標籤為 'latest' 或更新的版本號碼，並執行 'docker build --no-cache' 重建映像檔。2. Windows/macOS 自動化：利用企業管理工具（如 SCCM, Intune, Munki）部署更新。3. 退版計畫：若升級後應用程式行為異常，請先鎖定特定版本號碼（使用 'apt-get install google-chrome-stable=151.0.7922.137'），並保留升級前的 Snapshot 或容器 Image 進行 rollback。",
+    "risk_level": "L3",
+    "risk_rationale": "Chrome 的自動更新機制相當成熟，且向後相容性極高。L3 風險主要來自於若是作為無頭瀏覽器（Headless Browser）運行自動化測試，新版瀏覽器驅動（ChromeDriver）若未同步更新，可能導致測試腳本執行失敗。對核心業務邏輯的架構影響極小，主要為環境配置的同步性問題。",
+    "sources": [
+      "https://chromereleases.googleblog.com/",
+      "https://nvd.nist.gov/vuln/detail/CVE-2026-79090",
+      "https://www.google.com/chrome/update/"
+    ]
+  },
+  "metrics": {
+    "latency_ms": 3267,
+    "json_parse_success": true,
+    "parse_error": null,
+    "schema_adherence_pct": 100,
+    "risk_level_valid": true
+  },
+  "judge": {
+    "response": {
+      "id": "vsKXaoqhBYSM1e8Pj4OrkAQ",
+      "created": 1788330686,
+      "model": "CDG_gemini/gemini-3.1-pro-preview",
+      "object": "chat.completion",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "message": {
+            "content": "{\n    \"scores\": {\n        \"actionability\": 4,\n        \"rationale_logic\": 5,\n        \"safety_accuracy\": 3,\n        \"formatting\": 2\n    },\n    \"total_score\": 14,\n    \"evaluation_comments\": \"【優點】風險評估（L3）與邏輯極度貼合實務，準確指出 ChromeDriver 版本對齊與無頭瀏覽器測試的痛點，並提供具體的 Smoke Test 指令，具備極高的實踐價值。【缺點】1. 格式遵循極差：輸出包含大量 JSON 區塊之外的前言與後語，這會導致後續 API 或自動化腳本解析失敗。2. 資安準確性瑕疵：受限於輸入為 2026 年未來的 CVE，模型直接捏造了尚未存在的 NVD 網址（URL 幻覺）；此外，修補建議未指出明確的『安全目標版本號』，且退版指令範例直接寫死為受影響的漏洞版本，雖符合退版邏輯，但未加註降級風險的警告。\"\n}",
+            "role": "assistant",
+            "images": [],
+            "thinking_blocks": [],
+            "provider_specific_fields": {
+              "thought_signatures": [
+                "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"
+              ]
+            }
+          }
+        }
+      ],
+      "usage": {
+        "completion_tokens": 1919,
+        "prompt_tokens": 1018,
+        "total_tokens": 2937,
+        "completion_tokens_details": {
+          "reasoning_tokens": 1666,
+          "text_tokens": 253
+        },
+        "prompt_tokens_details": {
+          "text_tokens": 1018
+        }
+      },
+      "vertex_ai_grounding_metadata": [],
+      "vertex_ai_url_context_metadata": [],
+      "vertex_ai_safety_results": [],
+      "vertex_ai_citation_metadata": [],
+      "service_tier": "default"
+    },
+    "latency_ms": 21162,
+    "model": "CDG_gemini/gemini-3.1-pro-preview"
+  },
+  "judge_model": "CDG_gemini/gemini-3.1-pro-preview"
+}

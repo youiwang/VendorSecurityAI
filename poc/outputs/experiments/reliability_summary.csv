@@ -1,0 +1,13 @@
+model,variant,total_runs,failed_runs,successful_runs,failure_rate_pct
+CDG_gemini/gemini-3.1-flash-lite,cot_analytical,10,0,10,0.0
+CDG_gemini/gemini-3.1-flash-lite,criteria_defined,10,0,10,0.0
+CDG_gemini/gemini-3.1-flash-lite,devsecops_actionable,10,1,9,10.0
+CDG_gemini/gemini-3.1-flash-lite,mitigation_focused,10,0,10,0.0
+CDG_gemini/gemini-3.1-pro-preview,cot_analytical,10,2,8,20.0
+CDG_gemini/gemini-3.1-pro-preview,criteria_defined,10,0,10,0.0
+CDG_gemini/gemini-3.1-pro-preview,devsecops_actionable,10,2,8,20.0
+CDG_gemini/gemini-3.1-pro-preview,mitigation_focused,10,1,9,10.0
+CDG_gemini/gemini-3.5-flash,cot_analytical,10,0,10,0.0
+CDG_gemini/gemini-3.5-flash,criteria_defined,10,0,10,0.0
+CDG_gemini/gemini-3.5-flash,devsecops_actionable,10,0,10,0.0
+CDG_gemini/gemini-3.5-flash,mitigation_focused,10,0,10,0.0

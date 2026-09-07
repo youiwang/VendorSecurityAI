@@ -1,0 +1,62 @@
+{
+  "prompt": "有一個 CVE ID：CVE-2026-79090，軟體資訊：\nVendor: Google LLC\nProduct: Google Chrome\nVersion: 151.0.7922.109\nCPE: cpe:2.3:a:google:chrome:151.0.7922.109:*:*:*:*:*:*:*\n\n請以 DevSecOps 工程師的角度分析此漏洞。我們需要自動化或具體的終端機指令來修補此問題。\n請提供：\n1. 具體的更新指令 (例如 apt-get, pip install, docker pull 等) 或設定檔修改範例。\n2. 安裝風險評估 (L1: 低風險/向下相容 ~ L9: 高風險/需架構重構)。\n3. 萬一升級失敗的退版建議 (Rollback plan)。\n輸出 JSON：{\"fix_recommendation\": \"包含指令與退版建議的詳細說明\", \"risk_level\": \"L1\"~\"L9\", \"risk_rationale\": \"升級相容性與停機時間評估\", \"sources\": []}",
+  "response": {
+    "error": "HTTPConnectionPool(host='172.17.32.50', port=8084): Read timed out. (read timeout=30)"
+  },
+  "response_text": "{\"error\": \"HTTPConnectionPool(host='172.17.32.50', port=8084): Read timed out. (read timeout=30)\"}",
+  "parsed_json": {
+    "error": "HTTPConnectionPool(host='172.17.32.50', port=8084): Read timed out. (read timeout=30)"
+  },
+  "metrics": {
+    "latency_ms": null,
+    "json_parse_success": true,
+    "parse_error": null,
+    "schema_adherence_pct": 0,
+    "risk_level_valid": null
+  },
+  "judge": {
+    "response": {
+      "id": "bsKXauDjI-2XosUP05264AY",
+      "created": 1788330606,
+      "model": "CDG_gemini/gemini-3.1-pro-preview",
+      "object": "chat.completion",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "message": {
+            "content": "{\n    \"scores\": {\n        \"actionability\": 1,\n        \"rationale_logic\": 1,\n        \"safety_accuracy\": 1,\n        \"formatting\": 1\n    },\n    \"total_score\": 4,\n    \"evaluation_comments\": \"待評估的模型輸出僅為一個系統網路連線逾時錯誤訊息（HTTPConnectionPool Read timed out），完全未能生成任何與 CVE 相關的修補建議、風險評分或資安內容。由於完全缺乏實質建議（Actionability=1）、無風險邏輯（Rationale_Logic=1）、未提供正確資安資訊（Safety_Accuracy=1），且完全未遵循預期的資料結構（Formatting=1），因此全數給予最低分。\"\n}",
+            "role": "assistant",
+            "images": [],
+            "thinking_blocks": [],
+            "provider_specific_fields": {
+              "thought_signatures": [
+                "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"
+              ]
+            }
+          }
+        }
+      ],
+      "usage": {
+        "completion_tokens": 1154,
+        "prompt_tokens": 409,
+        "total_tokens": 1563,
+        "completion_tokens_details": {
+          "reasoning_tokens": 985,
+          "text_tokens": 169
+        },
+        "prompt_tokens_details": {
+          "text_tokens": 409
+        }
+      },
+      "vertex_ai_grounding_metadata": [],
+      "vertex_ai_url_context_metadata": [],
+      "vertex_ai_safety_results": [],
+      "vertex_ai_citation_metadata": [],
+      "service_tier": "default"
+    },
+    "latency_ms": 12294,
+    "model": "CDG_gemini/gemini-3.1-pro-preview"
+  },
+  "judge_model": "CDG_gemini/gemini-3.1-pro-preview"
+}

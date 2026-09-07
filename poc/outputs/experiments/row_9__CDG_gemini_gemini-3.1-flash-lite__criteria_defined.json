@@ -1,0 +1,105 @@
+{
+  "prompt": "有一個 CVE ID：CVE-2026-79090，軟體資訊：\nVendor: Google LLC\nProduct: Google Chrome\nVersion: 151.0.7922.109\nCPE: cpe:2.3:a:google:chrome:151.0.7922.109:*:*:*:*:*:*:*\n\n你是一位資深的 IT 維運與資安專家。請針對上述軟體漏洞，提供修補建議與「安裝/升級風險評估」。\n【風險等級定義 (L1~L9)】\n- L1~L3：低風險。通常為次要版本更新 (Minor patch)，幾乎無破壞性變更 (Breaking changes)，無需重啟即可套用。\n- L4~L6：中風險。可能需要重啟服務，或包含中等程度的配置變更。\n- L7~L9：高風險。屬於主版本升級 (Major upgrade)，極可能產生相容性問題或需要長時間停機。\n\n請務必以嚴格的 JSON 格式回傳，格式如下：\n{\"fix_recommendation\": \"詳細的修補指令或步驟\", \"risk_level\": \"L1\"~\"L9\", \"risk_rationale\": \"評分理由，包含是否會造成服務中斷\", \"sources\": [\"來源網址\"]}",
+  "response": {
+    "id": "EsGXaszgJtWWosUPiLK_0AQ",
+    "created": 1788330258,
+    "model": "CDG_gemini/gemini-3.1-flash-lite",
+    "object": "chat.completion",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "message": {
+          "content": "```json\n{\n  \"fix_recommendation\": \"1. 開啟 Google Chrome 瀏覽器。\\n2. 點擊右上角『三點』選單，選擇『說明』 > 『關於 Google Chrome』。\\n3. 瀏覽器將自動檢查並下載更新至最新版本 (Stable Channel)。\\n4. 更新完成後，點擊『重新啟動』按鈕以完成套用。\\n5. 若為企業環境，請透過 Google Admin Console 或群組原則 (GPO) 推送最新的 Chrome MSI/PKG 安裝檔進行派送。\",\n  \"risk_level\": \"L2\",\n  \"risk_rationale\": \"Chrome 的次要版本更新屬於常規安全性修補，Google 在自動更新機制上具備高度穩定性，僅需重啟瀏覽器程序即可完成，對作業系統及其他應用程式無相容性影響，故評定為低風險等級。\",\n  \"sources\": [\n    \"https://chromereleases.googleblog.com/\",\n    \"https://nvd.nist.gov/vuln/detail/CVE-2026-79090\",\n    \"https://cve.mitre.org/\"\n  ]\n}\n```",
+          "role": "assistant",
+          "images": [],
+          "thinking_blocks": [],
+          "provider_specific_fields": {
+            "thought_signatures": [
+              "EnEKbwERTTIPVRnU1wuzbRhlZC7A9sEvlOAU7B8UMTrSAgY/rRNYPIsSc6YiZyx+5RQudTscKGUULxO7n7TuIKxMXFfKGGLO5buxsZYuBqfMEr5vTg6ympivGpx50E8HnQqOePwAWKPkAOdmIPmSK0XQbA=="
+            ]
+          }
+        }
+      }
+    ],
+    "usage": {
+      "completion_tokens": 271,
+      "prompt_tokens": 308,
+      "total_tokens": 579,
+      "completion_tokens_details": {
+        "text_tokens": 271
+      },
+      "prompt_tokens_details": {
+        "text_tokens": 308
+      }
+    },
+    "vertex_ai_grounding_metadata": [],
+    "vertex_ai_url_context_metadata": [],
+    "vertex_ai_safety_results": [],
+    "vertex_ai_citation_metadata": [],
+    "service_tier": "default"
+  },
+  "response_text": "```json\n{\n  \"fix_recommendation\": \"1. 開啟 Google Chrome 瀏覽器。\\n2. 點擊右上角『三點』選單，選擇『說明』 > 『關於 Google Chrome』。\\n3. 瀏覽器將自動檢查並下載更新至最新版本 (Stable Channel)。\\n4. 更新完成後，點擊『重新啟動』按鈕以完成套用。\\n5. 若為企業環境，請透過 Google Admin Console 或群組原則 (GPO) 推送最新的 Chrome MSI/PKG 安裝檔進行派送。\",\n  \"risk_level\": \"L2\",\n  \"risk_rationale\": \"Chrome 的次要版本更新屬於常規安全性修補，Google 在自動更新機制上具備高度穩定性，僅需重啟瀏覽器程序即可完成，對作業系統及其他應用程式無相容性影響，故評定為低風險等級。\",\n  \"sources\": [\n    \"https://chromereleases.googleblog.com/\",\n    \"https://nvd.nist.gov/vuln/detail/CVE-2026-79090\",\n    \"https://cve.mitre.org/\"\n  ]\n}\n```",
+  "parsed_json": {
+    "fix_recommendation": "1. 開啟 Google Chrome 瀏覽器。\n2. 點擊右上角『三點』選單，選擇『說明』 > 『關於 Google Chrome』。\n3. 瀏覽器將自動檢查並下載更新至最新版本 (Stable Channel)。\n4. 更新完成後，點擊『重新啟動』按鈕以完成套用。\n5. 若為企業環境，請透過 Google Admin Console 或群組原則 (GPO) 推送最新的 Chrome MSI/PKG 安裝檔進行派送。",
+    "risk_level": "L2",
+    "risk_rationale": "Chrome 的次要版本更新屬於常規安全性修補，Google 在自動更新機制上具備高度穩定性，僅需重啟瀏覽器程序即可完成，對作業系統及其他應用程式無相容性影響，故評定為低風險等級。",
+    "sources": [
+      "https://chromereleases.googleblog.com/",
+      "https://nvd.nist.gov/vuln/detail/CVE-2026-79090",
+      "https://cve.mitre.org/"
+    ]
+  },
+  "metrics": {
+    "latency_ms": 1520,
+    "json_parse_success": true,
+    "parse_error": null,
+    "schema_adherence_pct": 100,
+    "risk_level_valid": true
+  },
+  "judge": {
+    "response": {
+      "id": "FMGXauidCtuKvr0PxrLkkAc",
+      "created": 1788330260,
+      "model": "CDG_gemini/gemini-3.1-pro-preview",
+      "object": "chat.completion",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "message": {
+            "content": "{\n    \"scores\": {\n        \"actionability\": 4,\n        \"rationale_logic\": 5,\n        \"safety_accuracy\": 5,\n        \"formatting\": 5\n    },\n    \"total_score\": 19,\n    \"evaluation_comments\": \"整體表現優異。在『可執行性』方面，提供了針對個人與企業環境（GPO/Admin Console）的具體操作步驟，具備高度實踐價值，惟未明確標示更新後應核對的具體安全版本號（扣1分）。『邏輯合理性』極佳，準確從變更管理（Change Management）與系統相容性角度評估修補帶來的營運風險為低（L2）。『資安準確性』滿分，面對輸入的未來假想漏洞（2026年），能正確套用標準的 NVD/MITRE URL 結構，未捏造不存在的技術細節。『格式遵循』完美，符合標準 JSON 格式且無任何無關贅字。\"\n}",
+            "role": "assistant",
+            "images": [],
+            "thinking_blocks": [],
+            "provider_specific_fields": {
+              "thought_signatures": [
+                "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"
+              ]
+            }
+          }
+        }
+      ],
+      "usage": {
+        "completion_tokens": 1924,
+        "prompt_tokens": 638,
+        "total_tokens": 2562,
+        "completion_tokens_details": {
+          "reasoning_tokens": 1690,
+          "text_tokens": 234
+        },
+        "prompt_tokens_details": {
+          "text_tokens": 638
+        }
+      },
+      "vertex_ai_grounding_metadata": [],
+      "vertex_ai_url_context_metadata": [],
+      "vertex_ai_safety_results": [],
+      "vertex_ai_citation_metadata": [],
+      "service_tier": "default"
+    },
+    "latency_ms": 20344,
+    "model": "CDG_gemini/gemini-3.1-pro-preview"
+  },
+  "judge_model": "CDG_gemini/gemini-3.1-pro-preview"
+}

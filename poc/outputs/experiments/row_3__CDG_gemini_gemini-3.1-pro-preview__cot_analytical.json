@@ -1,0 +1,106 @@
+{
+  "prompt": "有一個 CVE ID：CVE-2016-1731，軟體資訊：\nVendor: Apple Inc.\nProduct: Apple Software Update\nVersion: 2.1.1.116\nCPE: cpe:2.3:a:apple:software_update:2.1.1.116:*:*:*:*:*:*:*\n\n你是一個嚴謹的弱點管理(Vulnerability Management)機器人。請依序進行以下思考：\n1. 確認此 CVE 的攻擊向量以及受影響的軟體版本。\n2. 判斷官方提供的修補方案（如升級到哪個版本、或修改什麼設定）。\n3. 評估套用此修補方案的「營運中斷風險 (Operational Risk)」，以 L1(最低風險) 到 L9(最高風險) 評分。\n4. 將以上思考轉化為可執行的行動建議。\n請嚴格回傳包含以下 key 的 JSON，不要輸出任何 JSON 區塊以外的文字：\n{\"thought_process\": \"你的推理過程簡述\", \"fix_recommendation\": \"具體的修補動作與處理此風險的建議\", \"risk_level\": \"L1\"~\"L9\", \"risk_rationale\": \"解釋為何給予此風險等級\", \"sources\": [\"參考資料網址\"]}",
+  "response": {
+    "id": "5LiXaqO1JJLs1e8PkrbVkQc",
+    "created": 1788328164,
+    "model": "CDG_gemini/gemini-3.1-pro-preview",
+    "object": "chat.completion",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "message": {
+          "content": "{\n  \"thought_process\": \"1. 確認漏洞資訊：CVE-2016-1731 存在於 Windows 平台的 Apple Software Update 2.2 之前的版本（包含目標版本 2.1.1.116）。攻擊向量為網路（Network），攻擊者可透過中間人攻擊（MITM）攔截更新請求並提供惡意執行檔，進而執行任意程式碼。2. 確認修補方案：Apple 官方已釋出 Apple Software Update 2.2 版本來修復此問題（採用更安全的連線機制）。3. 評估營運中斷風險：Apple Software Update 僅為客戶端的輔助更新工具（通常伴隨 iTunes 或 iCloud 安裝），並非系統核心元件或關鍵業務服務。升級或移除該軟體幾乎不會對企業營運造成任何中斷風險。\",\n  \"fix_recommendation\": \"請將 Apple Software Update 升級至 2.2 或更新版本。若組織內的 Windows 端點不需要執行 Apple 相關服務（如 iTunes 或 iCloud），建議直接解除安裝該軟體以縮小整體的攻擊面。\",\n  \"risk_level\": \"L1\",\n  \"risk_rationale\": \"Apple Software Update 為獨立的客戶端應用程式輔助工具。升級該軟體不涉及作業系統核心更動，亦不影響任何伺服器或企業關鍵營運流程，因此套用修補的營運中斷風險為最低級別的 L1。\",\n  \"sources\": [\n    \"https://nvd.nist.gov/vuln/detail/CVE-2016-1731\",\n    \"https://support.apple.com/zh-tw/HT205732\"\n  ]\n}",
+          "role": "assistant",
+          "images": [],
+          "thinking_blocks": [],
+          "provider_specific_fields": {
+            "thought_signatures": [
+              "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"
+            ]
+          }
+        }
+      }
+    ],
+    "usage": {
+      "completion_tokens": 1790,
+      "prompt_tokens": 297,
+      "total_tokens": 2087,
+      "completion_tokens_details": {
+        "reasoning_tokens": 1399,
+        "text_tokens": 391
+      },
+      "prompt_tokens_details": {
+        "text_tokens": 297
+      }
+    },
+    "vertex_ai_grounding_metadata": [],
+    "vertex_ai_url_context_metadata": [],
+    "vertex_ai_safety_results": [],
+    "vertex_ai_citation_metadata": [],
+    "service_tier": "default"
+  },
+  "response_text": "{\n  \"thought_process\": \"1. 確認漏洞資訊：CVE-2016-1731 存在於 Windows 平台的 Apple Software Update 2.2 之前的版本（包含目標版本 2.1.1.116）。攻擊向量為網路（Network），攻擊者可透過中間人攻擊（MITM）攔截更新請求並提供惡意執行檔，進而執行任意程式碼。2. 確認修補方案：Apple 官方已釋出 Apple Software Update 2.2 版本來修復此問題（採用更安全的連線機制）。3. 評估營運中斷風險：Apple Software Update 僅為客戶端的輔助更新工具（通常伴隨 iTunes 或 iCloud 安裝），並非系統核心元件或關鍵業務服務。升級或移除該軟體幾乎不會對企業營運造成任何中斷風險。\",\n  \"fix_recommendation\": \"請將 Apple Software Update 升級至 2.2 或更新版本。若組織內的 Windows 端點不需要執行 Apple 相關服務（如 iTunes 或 iCloud），建議直接解除安裝該軟體以縮小整體的攻擊面。\",\n  \"risk_level\": \"L1\",\n  \"risk_rationale\": \"Apple Software Update 為獨立的客戶端應用程式輔助工具。升級該軟體不涉及作業系統核心更動，亦不影響任何伺服器或企業關鍵營運流程，因此套用修補的營運中斷風險為最低級別的 L1。\",\n  \"sources\": [\n    \"https://nvd.nist.gov/vuln/detail/CVE-2016-1731\",\n    \"https://support.apple.com/zh-tw/HT205732\"\n  ]\n}",
+  "parsed_json": {
+    "thought_process": "1. 確認漏洞資訊：CVE-2016-1731 存在於 Windows 平台的 Apple Software Update 2.2 之前的版本（包含目標版本 2.1.1.116）。攻擊向量為網路（Network），攻擊者可透過中間人攻擊（MITM）攔截更新請求並提供惡意執行檔，進而執行任意程式碼。2. 確認修補方案：Apple 官方已釋出 Apple Software Update 2.2 版本來修復此問題（採用更安全的連線機制）。3. 評估營運中斷風險：Apple Software Update 僅為客戶端的輔助更新工具（通常伴隨 iTunes 或 iCloud 安裝），並非系統核心元件或關鍵業務服務。升級或移除該軟體幾乎不會對企業營運造成任何中斷風險。",
+    "fix_recommendation": "請將 Apple Software Update 升級至 2.2 或更新版本。若組織內的 Windows 端點不需要執行 Apple 相關服務（如 iTunes 或 iCloud），建議直接解除安裝該軟體以縮小整體的攻擊面。",
+    "risk_level": "L1",
+    "risk_rationale": "Apple Software Update 為獨立的客戶端應用程式輔助工具。升級該軟體不涉及作業系統核心更動，亦不影響任何伺服器或企業關鍵營運流程，因此套用修補的營運中斷風險為最低級別的 L1。",
+    "sources": [
+      "https://nvd.nist.gov/vuln/detail/CVE-2016-1731",
+      "https://support.apple.com/zh-tw/HT205732"
+    ]
+  },
+  "metrics": {
+    "latency_ms": 17484,
+    "json_parse_success": true,
+    "parse_error": null,
+    "schema_adherence_pct": 100,
+    "risk_level_valid": true
+  },
+  "judge": {
+    "response": {
+      "id": "9riXaoqVBseovr0P6OCJqAs",
+      "created": 1788328182,
+      "model": "CDG_gemini/gemini-3.1-pro-preview",
+      "object": "chat.completion",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "message": {
+            "content": "{\n    \"scores\": {\n        \"actionability\": 5,\n        \"rationale_logic\": 5,\n        \"safety_accuracy\": 5,\n        \"formatting\": 5\n    },\n    \"total_score\": 20,\n    \"evaluation_comments\": \"該模型的輸出具備極高的品質與實踐價值。在「可執行性」上，不僅明確指出需升級至 2.2 版本，還提供了『無需求則解除安裝以縮小攻擊面』的務實替代方案；在「邏輯合理性」上，精確判斷此為非核心客戶端輔助工具，將修補帶來的營運中斷風險評估為最低的 L1 完全符合實務情境；在「資安準確性」上，準確描述了 CVE-2016-1731 的 MITM 攻擊向量、影響平台及修補版本，未發現捏造資訊；「格式遵循」方面也非常完美，JSON 結構乾淨無多餘廢話。\"\n}",
+            "role": "assistant",
+            "images": [],
+            "thinking_blocks": [],
+            "provider_specific_fields": {
+              "thought_signatures": [
+                "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"
+              ]
+            }
+          }
+        }
+      ],
+      "usage": {
+        "completion_tokens": 1569,
+        "prompt_tokens": 754,
+        "total_tokens": 2323,
+        "completion_tokens_details": {
+          "reasoning_tokens": 1336,
+          "text_tokens": 233
+        },
+        "prompt_tokens_details": {
+          "text_tokens": 754
+        }
+      },
+      "vertex_ai_grounding_metadata": [],
+      "vertex_ai_url_context_metadata": [],
+      "vertex_ai_safety_results": [],
+      "vertex_ai_citation_metadata": [],
+      "service_tier": "default"
+    },
+    "latency_ms": 15050,
+    "model": "CDG_gemini/gemini-3.1-pro-preview"
+  },
+  "judge_model": "CDG_gemini/gemini-3.1-pro-preview"
+}

@@ -1,0 +1,104 @@
+{
+  "prompt": "有一個 CVE ID：CVE-2026-63093，軟體資訊：\nVendor: Anysphere\nProduct: Cursor (User)\nVersion: 3.0.13\nCPE: cpe:2.3:a:anysphere:cursor:3.0.13:*:*:*:*:*:*:*\n\n你是一位資深的 IT 維運與資安專家。請針對上述軟體漏洞，提供修補建議與「安裝/升級風險評估」。\n【風險等級定義 (L1~L9)】\n- L1~L3：低風險。通常為次要版本更新 (Minor patch)，幾乎無破壞性變更 (Breaking changes)，無需重啟即可套用。\n- L4~L6：中風險。可能需要重啟服務，或包含中等程度的配置變更。\n- L7~L9：高風險。屬於主版本升級 (Major upgrade)，極可能產生相容性問題或需要長時間停機。\n\n請務必以嚴格的 JSON 格式回傳，格式如下：\n{\"fix_recommendation\": \"詳細的修補指令或步驟\", \"risk_level\": \"L1\"~\"L9\", \"risk_rationale\": \"評分理由，包含是否會造成服務中斷\", \"sources\": [\"來源網址\"]}",
+  "response": {
+    "id": "U7aXasWvFO2XosUP05264AY",
+    "created": 1788327507,
+    "model": "CDG_gemini/gemini-3.1-flash-lite",
+    "object": "chat.completion",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "message": {
+          "content": "```json\n{\n  \"fix_recommendation\": \"1. 開啟 Cursor 編輯器。2. 點擊選單列的 'Cursor' (macOS) 或 'Help' (Windows/Linux) > 'Check for Updates'。3. 若自動更新已啟用，請直接重啟軟體以套用更新至最新版本 (建議更新至 0.45.x 以上版本以修補相關弱點)。4. 若無法自動更新，請至官方網站 (https://cursor.com) 下載最新版安裝程式覆蓋安裝。\",\n  \"risk_level\": \"L2\",\n  \"risk_rationale\": \"Cursor 作為開發工具，屬於用戶端應用程式 (User-space application)。其更新機制通常為自動背景執行，且更新僅影響編輯器本身，不會對伺服器或系統核心層級造成影響。風險極低，僅需重啟應用程式即可完成，不涉及開發專案的環境相容性問題。\",\n  \"sources\": [\n    \"https://cursor.com/changelog\",\n    \"https://nvd.nist.gov/vuln/detail/CVE-2026-63093\"\n  ]\n}\n```",
+          "role": "assistant",
+          "images": [],
+          "thinking_blocks": [],
+          "provider_specific_fields": {
+            "thought_signatures": [
+              "EnEKbwERTTIP+iSCC9QJkUsFsV1jnFnfiMJS0aZ5d/GsJihN4xLr4nGawVJih55Pcit7nItB6imCn6A08ONsRW807KFg53y+OQWCYG0BdQeYO2plN/huR6jzipLu0YVTXYExGE3WTtASRsyZ+uzMlm/gCg=="
+            ]
+          }
+        }
+      }
+    ],
+    "usage": {
+      "completion_tokens": 270,
+      "prompt_tokens": 297,
+      "total_tokens": 567,
+      "completion_tokens_details": {
+        "text_tokens": 270
+      },
+      "prompt_tokens_details": {
+        "text_tokens": 297
+      }
+    },
+    "vertex_ai_grounding_metadata": [],
+    "vertex_ai_url_context_metadata": [],
+    "vertex_ai_safety_results": [],
+    "vertex_ai_citation_metadata": [],
+    "service_tier": "default"
+  },
+  "response_text": "```json\n{\n  \"fix_recommendation\": \"1. 開啟 Cursor 編輯器。2. 點擊選單列的 'Cursor' (macOS) 或 'Help' (Windows/Linux) > 'Check for Updates'。3. 若自動更新已啟用，請直接重啟軟體以套用更新至最新版本 (建議更新至 0.45.x 以上版本以修補相關弱點)。4. 若無法自動更新，請至官方網站 (https://cursor.com) 下載最新版安裝程式覆蓋安裝。\",\n  \"risk_level\": \"L2\",\n  \"risk_rationale\": \"Cursor 作為開發工具，屬於用戶端應用程式 (User-space application)。其更新機制通常為自動背景執行，且更新僅影響編輯器本身，不會對伺服器或系統核心層級造成影響。風險極低，僅需重啟應用程式即可完成，不涉及開發專案的環境相容性問題。\",\n  \"sources\": [\n    \"https://cursor.com/changelog\",\n    \"https://nvd.nist.gov/vuln/detail/CVE-2026-63093\"\n  ]\n}\n```",
+  "parsed_json": {
+    "fix_recommendation": "1. 開啟 Cursor 編輯器。2. 點擊選單列的 'Cursor' (macOS) 或 'Help' (Windows/Linux) > 'Check for Updates'。3. 若自動更新已啟用，請直接重啟軟體以套用更新至最新版本 (建議更新至 0.45.x 以上版本以修補相關弱點)。4. 若無法自動更新，請至官方網站 (https://cursor.com) 下載最新版安裝程式覆蓋安裝。",
+    "risk_level": "L2",
+    "risk_rationale": "Cursor 作為開發工具，屬於用戶端應用程式 (User-space application)。其更新機制通常為自動背景執行，且更新僅影響編輯器本身，不會對伺服器或系統核心層級造成影響。風險極低，僅需重啟應用程式即可完成，不涉及開發專案的環境相容性問題。",
+    "sources": [
+      "https://cursor.com/changelog",
+      "https://nvd.nist.gov/vuln/detail/CVE-2026-63093"
+    ]
+  },
+  "metrics": {
+    "latency_ms": 1651,
+    "json_parse_success": true,
+    "parse_error": null,
+    "schema_adherence_pct": 100,
+    "risk_level_valid": true
+  },
+  "judge": {
+    "response": {
+      "id": "VbaXapoor9vV7w-YvYG4BA",
+      "created": 1788327508,
+      "model": "CDG_gemini/gemini-3.1-pro-preview",
+      "object": "chat.completion",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "message": {
+            "content": "{\n    \"scores\": {\n        \"actionability\": 5,\n        \"rationale_logic\": 5,\n        \"safety_accuracy\": 2,\n        \"formatting\": 5\n    },\n    \"total_score\": 17,\n    \"evaluation_comments\": \"Actionability 表現優異，修補步驟明確且包含不同作業系統的操作路徑與備用下載方案。Rationale_Logic 合理，準確評估了 Cursor 作為用戶端應用程式（User-space）更新所帶來的低系統風險（L2）。Formatting 完全符合乾淨的 JSON 要求，無多餘廢話。最大的缺點在於 Safety_Accuracy：模型產生了嚴重的版本號幻覺與邏輯衝突。原始輸入標示受影響版本為 3.0.13，但模型卻建議更新至「0.45.x 以上版本」，在版號邏輯上形成了降級操作，這在資安修補實務上是致命的錯誤。\"\n}",
+            "role": "assistant",
+            "images": [],
+            "thinking_blocks": [],
+            "provider_specific_fields": {
+              "thought_signatures": [
+                "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"
+              ]
+            }
+          }
+        }
+      ],
+      "usage": {
+        "completion_tokens": 1643,
+        "prompt_tokens": 632,
+        "total_tokens": 2275,
+        "completion_tokens_details": {
+          "reasoning_tokens": 1421,
+          "text_tokens": 222
+        },
+        "prompt_tokens_details": {
+          "text_tokens": 632
+        }
+      },
+      "vertex_ai_grounding_metadata": [],
+      "vertex_ai_url_context_metadata": [],
+      "vertex_ai_safety_results": [],
+      "vertex_ai_citation_metadata": [],
+      "service_tier": "default"
+    },
+    "latency_ms": 15813,
+    "model": "CDG_gemini/gemini-3.1-pro-preview"
+  },
+  "judge_model": "CDG_gemini/gemini-3.1-pro-preview"
+}

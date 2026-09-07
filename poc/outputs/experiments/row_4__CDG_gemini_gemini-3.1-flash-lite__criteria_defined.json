@@ -1,0 +1,104 @@
+{
+  "prompt": "有一個 CVE ID：CVE-2026-16463，軟體資訊：\nVendor: Autodesk, Inc.\nProduct: Autodesk DWG TrueView 2026 - English\nVersion: 25.1.122.0\nCPE: cpe:2.3:a:autodesk:dwg_trueview:2026:*:*:*:*:*:*:*\n\n你是一位資深的 IT 維運與資安專家。請針對上述軟體漏洞，提供修補建議與「安裝/升級風險評估」。\n【風險等級定義 (L1~L9)】\n- L1~L3：低風險。通常為次要版本更新 (Minor patch)，幾乎無破壞性變更 (Breaking changes)，無需重啟即可套用。\n- L4~L6：中風險。可能需要重啟服務，或包含中等程度的配置變更。\n- L7~L9：高風險。屬於主版本升級 (Major upgrade)，極可能產生相容性問題或需要長時間停機。\n\n請務必以嚴格的 JSON 格式回傳，格式如下：\n{\"fix_recommendation\": \"詳細的修補指令或步驟\", \"risk_level\": \"L1\"~\"L9\", \"risk_rationale\": \"評分理由，包含是否會造成服務中斷\", \"sources\": [\"來源網址\"]}",
+  "response": {
+    "id": "L7mXaoKYBs-D1e8Pr5WioAc",
+    "created": 1788328239,
+    "model": "CDG_gemini/gemini-3.1-flash-lite",
+    "object": "chat.completion",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "message": {
+          "content": "```json\n{\n  \"fix_recommendation\": \"1. 請立即前往 Autodesk 官方網站或透過 Autodesk Access 工具檢查並下載最新版本的 Security Hotfix 或更新版本。2. 若該版本尚未釋出特定修補程式，建議暫時限制 DWG TrueView 處理來源不明的 DWG 檔案。3. 企業環境建議透過 SCCM 或 Endpoint Configuration Manager 進行派送更新，並在安裝前進行備份。4. 安裝完成後建議驗證軟體版本號是否已升級至 25.1.x 以上的受保護版本。\",\n  \"risk_level\": \"L4\",\n  \"risk_rationale\": \"此漏洞涉及 CAD 檔案解析，屬中風險。雖然通常為軟體更新，但安裝過程中需要關閉所有 Autodesk 相關應用程式，且可能會影響現有的註冊表設置或插件相容性，需要使用者進行重啟以確保安全性補丁完全生效，符合 L4 風險定義。\",\n  \"sources\": [\n    \"https://www.autodesk.com/trust/security-advisories\",\n    \"https://nvd.nist.gov/vuln/detail/CVE-2026-16463\"\n  ]\n}\n```",
+          "role": "assistant",
+          "images": [],
+          "thinking_blocks": [],
+          "provider_specific_fields": {
+            "thought_signatures": [
+              "EnEKbwERTTIPfRMRM7fZArwNnmLQwyptsa31gMdc9QhPNnFaxBeNMLFNW2ISOjOFWlh8Fn/AGXK3ZStp6e2j8GRsj2TCtXogyMAYkvoA7chHvYacMUUmLxZ/cjBl0k7K/w+MAEzbwpV3pIOA/3WOeTpKFQ=="
+            ]
+          }
+        }
+      }
+    ],
+    "usage": {
+      "completion_tokens": 278,
+      "prompt_tokens": 311,
+      "total_tokens": 589,
+      "completion_tokens_details": {
+        "text_tokens": 278
+      },
+      "prompt_tokens_details": {
+        "text_tokens": 311
+      }
+    },
+    "vertex_ai_grounding_metadata": [],
+    "vertex_ai_url_context_metadata": [],
+    "vertex_ai_safety_results": [],
+    "vertex_ai_citation_metadata": [],
+    "service_tier": "default"
+  },
+  "response_text": "```json\n{\n  \"fix_recommendation\": \"1. 請立即前往 Autodesk 官方網站或透過 Autodesk Access 工具檢查並下載最新版本的 Security Hotfix 或更新版本。2. 若該版本尚未釋出特定修補程式，建議暫時限制 DWG TrueView 處理來源不明的 DWG 檔案。3. 企業環境建議透過 SCCM 或 Endpoint Configuration Manager 進行派送更新，並在安裝前進行備份。4. 安裝完成後建議驗證軟體版本號是否已升級至 25.1.x 以上的受保護版本。\",\n  \"risk_level\": \"L4\",\n  \"risk_rationale\": \"此漏洞涉及 CAD 檔案解析，屬中風險。雖然通常為軟體更新，但安裝過程中需要關閉所有 Autodesk 相關應用程式，且可能會影響現有的註冊表設置或插件相容性，需要使用者進行重啟以確保安全性補丁完全生效，符合 L4 風險定義。\",\n  \"sources\": [\n    \"https://www.autodesk.com/trust/security-advisories\",\n    \"https://nvd.nist.gov/vuln/detail/CVE-2026-16463\"\n  ]\n}\n```",
+  "parsed_json": {
+    "fix_recommendation": "1. 請立即前往 Autodesk 官方網站或透過 Autodesk Access 工具檢查並下載最新版本的 Security Hotfix 或更新版本。2. 若該版本尚未釋出特定修補程式，建議暫時限制 DWG TrueView 處理來源不明的 DWG 檔案。3. 企業環境建議透過 SCCM 或 Endpoint Configuration Manager 進行派送更新，並在安裝前進行備份。4. 安裝完成後建議驗證軟體版本號是否已升級至 25.1.x 以上的受保護版本。",
+    "risk_level": "L4",
+    "risk_rationale": "此漏洞涉及 CAD 檔案解析，屬中風險。雖然通常為軟體更新，但安裝過程中需要關閉所有 Autodesk 相關應用程式，且可能會影響現有的註冊表設置或插件相容性，需要使用者進行重啟以確保安全性補丁完全生效，符合 L4 風險定義。",
+    "sources": [
+      "https://www.autodesk.com/trust/security-advisories",
+      "https://nvd.nist.gov/vuln/detail/CVE-2026-16463"
+    ]
+  },
+  "metrics": {
+    "latency_ms": 1762,
+    "json_parse_success": true,
+    "parse_error": null,
+    "schema_adherence_pct": 100,
+    "risk_level_valid": true
+  },
+  "judge": {
+    "response": {
+      "id": "MLmXatOfNK-b1e8P2KjJ4Qg",
+      "created": 1788328240,
+      "model": "CDG_gemini/gemini-3.1-pro-preview",
+      "object": "chat.completion",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "message": {
+            "content": "{\n    \"scores\": {\n        \"actionability\": 4,\n        \"rationale_logic\": 3,\n        \"safety_accuracy\": 4,\n        \"formatting\": 5\n    },\n    \"total_score\": 16,\n    \"evaluation_comments\": \"Actionability(4/5): 提供了 SCCM 與 Autodesk Access 等企業實務上具體可行的派送與緩解建議，優點顯著；缺點是建議升級至「25.1.x 以上」不夠精確，因為受影響版本已經是 25.1.122.0。Rationale_Logic(3/5): 風險評分從修補營運衝擊的角度出發，邏輯自洽；但最大的缺點是 DWG TrueView 僅為圖檔檢視器，並不支援第三方插件機制，理由中提及「可能會影響插件相容性」顯然不符合該產品的實際特性。Safety_Accuracy(4/5): 由於處理的是假想/未來的 CVE-2026，模型並未過度捏造不存在的詳細漏洞報告，且來源 URL 皆使用正確且標準的官方格式，資安準確性尚佳。Formatting(5/5): 完美遵循 JSON 格式要求，毫無多餘廢話。\"\n}",
+            "role": "assistant",
+            "images": [],
+            "thinking_blocks": [],
+            "provider_specific_fields": {
+              "thought_signatures": [
+                "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"
+              ]
+            }
+          }
+        }
+      ],
+      "usage": {
+        "completion_tokens": 1919,
+        "prompt_tokens": 653,
+        "total_tokens": 2572,
+        "completion_tokens_details": {
+          "reasoning_tokens": 1626,
+          "text_tokens": 293
+        },
+        "prompt_tokens_details": {
+          "text_tokens": 653
+        }
+      },
+      "vertex_ai_grounding_metadata": [],
+      "vertex_ai_url_context_metadata": [],
+      "vertex_ai_safety_results": [],
+      "vertex_ai_citation_metadata": [],
+      "service_tier": "default"
+    },
+    "latency_ms": 19477,
+    "model": "CDG_gemini/gemini-3.1-pro-preview"
+  },
+  "judge_model": "CDG_gemini/gemini-3.1-pro-preview"
+}

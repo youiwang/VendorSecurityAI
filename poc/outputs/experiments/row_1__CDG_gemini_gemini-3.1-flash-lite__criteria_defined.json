@@ -1,0 +1,105 @@
+{
+  "prompt": "有一個 CVE ID：CVE-2026-48441，軟體資訊：\nVendor: Adobe Inc.\nProduct: Adobe Lightroom\nVersion: 9.5.1\nCPE: cpe:2.3:a:adobe:lightroom:9.5.1:*:*:*:*:*:*:*\n\n你是一位資深的 IT 維運與資安專家。請針對上述軟體漏洞，提供修補建議與「安裝/升級風險評估」。\n【風險等級定義 (L1~L9)】\n- L1~L3：低風險。通常為次要版本更新 (Minor patch)，幾乎無破壞性變更 (Breaking changes)，無需重啟即可套用。\n- L4~L6：中風險。可能需要重啟服務，或包含中等程度的配置變更。\n- L7~L9：高風險。屬於主版本升級 (Major upgrade)，極可能產生相容性問題或需要長時間停機。\n\n請務必以嚴格的 JSON 格式回傳，格式如下：\n{\"fix_recommendation\": \"詳細的修補指令或步驟\", \"risk_level\": \"L1\"~\"L9\", \"risk_rationale\": \"評分理由，包含是否會造成服務中斷\", \"sources\": [\"來源網址\"]}",
+  "response": {
+    "id": "2bSXaqS1O-6_vr0PyKvh6AY",
+    "created": 1788327129,
+    "model": "CDG_gemini/gemini-3.1-flash-lite",
+    "object": "chat.completion",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "message": {
+          "content": "```json\n{\n  \"fix_recommendation\": \"1. 開啟 Adobe Creative Cloud Desktop 應用程式。 2. 點選 '更新' (Updates) 頁籤。 3. 找到 Adobe Lightroom 並執行 '更新' (Update) 按鈕，將版本升級至 Adobe 官方發布的最新穩定修補版本（建議升級至 9.5.2 或更新版本）。 4. 若為企業環境，請透過 Adobe Admin Console 部署 Adobe Packaging Tool 產出的最新安裝套件進行派送，並建議在派送前於測試環境先行驗證工作流程。\",\n  \"risk_level\": \"L4\",\n  \"risk_rationale\": \"此漏洞屬於 Adobe Lightroom 的應用程式修補。由於 Lightroom 是終端用戶端軟體，升級過程雖然不需要伺服器層級的停機，但必須關閉應用程式本身，且版本更新可能導致設定檔路徑微調或外掛程式（Plug-ins）相容性問題。歸類為 L4 是考量到企業部署時，需確保用戶作業環境的穩定性及外掛組件的相容性驗證。\",\n  \"sources\": [\n    \"https://helpx.adobe.com/security.html\",\n    \"https://helpx.adobe.com/lightroom-classic/help/whats-new.html\",\n    \"https://nvd.nist.gov/vuln/detail/CVE-2026-48441\"\n  ]\n}\n```",
+          "role": "assistant",
+          "images": [],
+          "thinking_blocks": [],
+          "provider_specific_fields": {
+            "thought_signatures": [
+              "EnEKbwERTTIP7GMbzSoeSqfc8+aub5EvrMFMKTZkRiKpJlMrbuyxKB4fN2x/bashnWA6Gjylh+x8zGCPWf+QidcpKpr2+wH4ZUTHGIznlDTGUQJOeYZPMRG88C/O+tTEyzQOGDIOARcBJBuzVtd/HzTc7g=="
+            ]
+          }
+        }
+      }
+    ],
+    "usage": {
+      "completion_tokens": 339,
+      "prompt_tokens": 292,
+      "total_tokens": 631,
+      "completion_tokens_details": {
+        "text_tokens": 339
+      },
+      "prompt_tokens_details": {
+        "text_tokens": 292
+      }
+    },
+    "vertex_ai_grounding_metadata": [],
+    "vertex_ai_url_context_metadata": [],
+    "vertex_ai_safety_results": [],
+    "vertex_ai_citation_metadata": [],
+    "service_tier": "default"
+  },
+  "response_text": "```json\n{\n  \"fix_recommendation\": \"1. 開啟 Adobe Creative Cloud Desktop 應用程式。 2. 點選 '更新' (Updates) 頁籤。 3. 找到 Adobe Lightroom 並執行 '更新' (Update) 按鈕，將版本升級至 Adobe 官方發布的最新穩定修補版本（建議升級至 9.5.2 或更新版本）。 4. 若為企業環境，請透過 Adobe Admin Console 部署 Adobe Packaging Tool 產出的最新安裝套件進行派送，並建議在派送前於測試環境先行驗證工作流程。\",\n  \"risk_level\": \"L4\",\n  \"risk_rationale\": \"此漏洞屬於 Adobe Lightroom 的應用程式修補。由於 Lightroom 是終端用戶端軟體，升級過程雖然不需要伺服器層級的停機，但必須關閉應用程式本身，且版本更新可能導致設定檔路徑微調或外掛程式（Plug-ins）相容性問題。歸類為 L4 是考量到企業部署時，需確保用戶作業環境的穩定性及外掛組件的相容性驗證。\",\n  \"sources\": [\n    \"https://helpx.adobe.com/security.html\",\n    \"https://helpx.adobe.com/lightroom-classic/help/whats-new.html\",\n    \"https://nvd.nist.gov/vuln/detail/CVE-2026-48441\"\n  ]\n}\n```",
+  "parsed_json": {
+    "fix_recommendation": "1. 開啟 Adobe Creative Cloud Desktop 應用程式。 2. 點選 '更新' (Updates) 頁籤。 3. 找到 Adobe Lightroom 並執行 '更新' (Update) 按鈕，將版本升級至 Adobe 官方發布的最新穩定修補版本（建議升級至 9.5.2 或更新版本）。 4. 若為企業環境，請透過 Adobe Admin Console 部署 Adobe Packaging Tool 產出的最新安裝套件進行派送，並建議在派送前於測試環境先行驗證工作流程。",
+    "risk_level": "L4",
+    "risk_rationale": "此漏洞屬於 Adobe Lightroom 的應用程式修補。由於 Lightroom 是終端用戶端軟體，升級過程雖然不需要伺服器層級的停機，但必須關閉應用程式本身，且版本更新可能導致設定檔路徑微調或外掛程式（Plug-ins）相容性問題。歸類為 L4 是考量到企業部署時，需確保用戶作業環境的穩定性及外掛組件的相容性驗證。",
+    "sources": [
+      "https://helpx.adobe.com/security.html",
+      "https://helpx.adobe.com/lightroom-classic/help/whats-new.html",
+      "https://nvd.nist.gov/vuln/detail/CVE-2026-48441"
+    ]
+  },
+  "metrics": {
+    "latency_ms": 2354,
+    "json_parse_success": true,
+    "parse_error": null,
+    "schema_adherence_pct": 100,
+    "risk_level_valid": true
+  },
+  "judge": {
+    "response": {
+      "id": "3LSXaqaRCKPm1e8PhdizkQo",
+      "created": 1788327132,
+      "model": "CDG_gemini/gemini-3.1-pro-preview",
+      "object": "chat.completion",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "message": {
+            "content": "{\n    \"scores\": {\n        \"actionability\": 5,\n        \"rationale_logic\": 5,\n        \"safety_accuracy\": 4,\n        \"formatting\": 5\n    },\n    \"total_score\": 19,\n    \"evaluation_comments\": \"該模型的輸出極具實踐價值。(Actionability) 修補建議非常具體，且細緻地區分了個人用戶的 UI 操作與企業環境的 Admin Console 派送流程；(Rationale_Logic) 風險評分的理由完全契合客戶端軟體 (Thick Client) 的特性，精準點出外掛相容性與作業中斷等實務痛點。唯一的微小扣分在於 (Safety_Accuracy) 面對未來年份的假設性漏洞 (CVE-2026)，模型直接推斷出 '9.5.2' 這個具體版本號，雖符合版本號遞增常理且有標示'建議'，但在嚴格稽核下仍屬輕微的資訊幻覺。整體 (Formatting) 乾淨無廢話，JSON 結構完美。\"\n}",
+            "role": "assistant",
+            "images": [],
+            "thinking_blocks": [],
+            "provider_specific_fields": {
+              "thought_signatures": [
+                "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"
+              ]
+            }
+          }
+        }
+      ],
+      "usage": {
+        "completion_tokens": 2011,
+        "prompt_tokens": 698,
+        "total_tokens": 2709,
+        "completion_tokens_details": {
+          "reasoning_tokens": 1765,
+          "text_tokens": 246
+        },
+        "prompt_tokens_details": {
+          "text_tokens": 698
+        }
+      },
+      "vertex_ai_grounding_metadata": [],
+      "vertex_ai_url_context_metadata": [],
+      "vertex_ai_safety_results": [],
+      "vertex_ai_citation_metadata": [],
+      "service_tier": "default"
+    },
+    "latency_ms": 20406,
+    "model": "CDG_gemini/gemini-3.1-pro-preview"
+  },
+  "judge_model": "CDG_gemini/gemini-3.1-pro-preview"
+}

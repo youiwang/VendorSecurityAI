@@ -1,0 +1,105 @@
+{
+  "prompt": "有一個 CVE ID：CVE-2026-48441，軟體資訊：\nVendor: Adobe Inc.\nProduct: Adobe Lightroom\nVersion: 9.5.1\nCPE: cpe:2.3:a:adobe:lightroom:9.5.1:*:*:*:*:*:*:*\n\n請以 DevSecOps 工程師的角度分析此漏洞。我們需要自動化或具體的終端機指令來修補此問題。\n請提供：\n1. 具體的更新指令 (例如 apt-get, pip install, docker pull 等) 或設定檔修改範例。\n2. 安裝風險評估 (L1: 低風險/向下相容 ~ L9: 高風險/需架構重構)。\n3. 萬一升級失敗的退版建議 (Rollback plan)。\n輸出 JSON：{\"fix_recommendation\": \"包含指令與退版建議的詳細說明\", \"risk_level\": \"L1\"~\"L9\", \"risk_rationale\": \"升級相容性與停機時間評估\", \"sources\": []}",
+  "response": {
+    "id": "J7WXarjxAe7D1e8P7ODIiAo",
+    "created": 1788327206,
+    "model": "CDG_gemini/gemini-3.1-flash-lite",
+    "object": "chat.completion",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "message": {
+          "content": "由於 CVE-2026-48441 涉及 Adobe Lightroom (屬於專有商業軟體)，其修補邏輯與開源軟體 (如 Linux 套件或 Python 套件) 有顯著不同。Adobe Lightroom 並非透過 `apt` 或 `pip` 安裝，而是透過 **Adobe Creative Cloud (ACC)** 生態系統進行管理。\n\n以下是以 DevSecOps 視角針對此漏洞的分析與處置建議：\n\n```json\n{\n  \"fix_recommendation\": \"Adobe 軟體更新依賴 Adobe Creative Cloud Desktop 應用程式。自動化修補建議：1. 使用 Adobe Remote Update Manager (RUM) 工具執行更新：執行指令 '/usr/local/bin/RemoteUpdateManager --action=install --productCodes=LTRM'。2. 若為企業環境，建議透過 Adobe Admin Console 派發封裝檔 (Package)。3. 若更新失敗，請備份 Catalog 檔案 (位於 ~/Pictures/Lightroom/)，使用 Adobe Creative Cloud 應用程式重新安裝舊版本，並執行 'Help' -> 'Check for Updates' 還原至穩定版。\",\n  \"risk_level\": \"L3\",\n  \"risk_rationale\": \"Adobe Lightroom 的更新通常具備良好的向下相容性 (Catalog 格式轉換除外)。L3 是基於 Adobe 軟體更新機制相對穩定，但需考量版本變更可能導致 Lightroom Catalog 檔案格式升級，升級後舊版本無法開啟導致的資料可用性風險。\",\n  \"sources\": [\n    \"https://helpx.adobe.com/creative-cloud/kb/use-remote-update-manager.html\",\n    \"https://www.adobe.com/devnet-docs/acp/bin/adobepackager.html\",\n    \"https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2026-48441\"\n  ]\n}\n```\n\n### DevSecOps 工程師補充說明：\n\n1.  **關於自動化限制：**\n    Adobe 的產品不提供標準的 CLI 軟體庫更新方式，因此「自動化」通常需要依賴 **Adobe Remote Update Manager (RUM)**。在自動化管線中，應將 RUM 加入到您的資產管理工具 (如 Jamf, Intune, 或 Ansible) 中進行派送。\n\n2.  **升級風險評估 (L3) 細節：**\n    *   **相容性：** Lightroom 更新通常會提示升級 Catalog 檔案。一旦 Catalog 升級，舊版 Lightroom 將無法存取該資料庫。因此，風險主要在於「資料庫格式鎖定」。\n    *   **停機時間：** 安裝過程需要關閉 Lightroom 應用程式，屬於中斷性服務。\n\n3.  **Rollback Plan (退版策略)：**\n    *   **Catalog 備份：** 在執行任何更新前，務必使用指令或腳本備份 `*.lrcat` 檔案。\n    *   **版本控制：** 在企業環境下，請保留上一版本的 `.pkg` 或 `.dmg` 安裝包。若自動化更新導致異常，應透過腳本執行：\n        `sudo installer -pkg /path/to/old_version.pkg -target /` 進行降級。\n\n4.  **安全建議：**\n    由於此軟體為圖形介面應用程式，建議在 CI/CD 端點（例如開發人員的工作站）部署 **EDR (Endpoint Detection and Response)** 來監控 Lightroom 更新後的行為，確保沒有異常的執行檔寫入或網路連線行為。",
+          "role": "assistant",
+          "images": [],
+          "thinking_blocks": [],
+          "provider_specific_fields": {
+            "thought_signatures": [
+              "EnEKbwERTTIPWwtme4j84gq3Om6NFY8CDXSBvedxCtvYRvJl+0q/Hn7Ah5LFf3KUypjSYfJubB6XVetCodYKSgm1jvAPFy2IOWdRB+8RQAnlpOtSa8PbzLkfbbbZwZirUPqRFs9KHLhkmmUlS+Gmpq2AzQ=="
+            ]
+          }
+        }
+      }
+    ],
+    "usage": {
+      "completion_tokens": 810,
+      "prompt_tokens": 243,
+      "total_tokens": 1053,
+      "completion_tokens_details": {
+        "text_tokens": 810
+      },
+      "prompt_tokens_details": {
+        "text_tokens": 243
+      }
+    },
+    "vertex_ai_grounding_metadata": [],
+    "vertex_ai_url_context_metadata": [],
+    "vertex_ai_safety_results": [],
+    "vertex_ai_citation_metadata": [],
+    "service_tier": "default"
+  },
+  "response_text": "由於 CVE-2026-48441 涉及 Adobe Lightroom (屬於專有商業軟體)，其修補邏輯與開源軟體 (如 Linux 套件或 Python 套件) 有顯著不同。Adobe Lightroom 並非透過 `apt` 或 `pip` 安裝，而是透過 **Adobe Creative Cloud (ACC)** 生態系統進行管理。\n\n以下是以 DevSecOps 視角針對此漏洞的分析與處置建議：\n\n```json\n{\n  \"fix_recommendation\": \"Adobe 軟體更新依賴 Adobe Creative Cloud Desktop 應用程式。自動化修補建議：1. 使用 Adobe Remote Update Manager (RUM) 工具執行更新：執行指令 '/usr/local/bin/RemoteUpdateManager --action=install --productCodes=LTRM'。2. 若為企業環境，建議透過 Adobe Admin Console 派發封裝檔 (Package)。3. 若更新失敗，請備份 Catalog 檔案 (位於 ~/Pictures/Lightroom/)，使用 Adobe Creative Cloud 應用程式重新安裝舊版本，並執行 'Help' -> 'Check for Updates' 還原至穩定版。\",\n  \"risk_level\": \"L3\",\n  \"risk_rationale\": \"Adobe Lightroom 的更新通常具備良好的向下相容性 (Catalog 格式轉換除外)。L3 是基於 Adobe 軟體更新機制相對穩定，但需考量版本變更可能導致 Lightroom Catalog 檔案格式升級，升級後舊版本無法開啟導致的資料可用性風險。\",\n  \"sources\": [\n    \"https://helpx.adobe.com/creative-cloud/kb/use-remote-update-manager.html\",\n    \"https://www.adobe.com/devnet-docs/acp/bin/adobepackager.html\",\n    \"https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2026-48441\"\n  ]\n}\n```\n\n### DevSecOps 工程師補充說明：\n\n1.  **關於自動化限制：**\n    Adobe 的產品不提供標準的 CLI 軟體庫更新方式，因此「自動化」通常需要依賴 **Adobe Remote Update Manager (RUM)**。在自動化管線中，應將 RUM 加入到您的資產管理工具 (如 Jamf, Intune, 或 Ansible) 中進行派送。\n\n2.  **升級風險評估 (L3) 細節：**\n    *   **相容性：** Lightroom 更新通常會提示升級 Catalog 檔案。一旦 Catalog 升級，舊版 Lightroom 將無法存取該資料庫。因此，風險主要在於「資料庫格式鎖定」。\n    *   **停機時間：** 安裝過程需要關閉 Lightroom 應用程式，屬於中斷性服務。\n\n3.  **Rollback Plan (退版策略)：**\n    *   **Catalog 備份：** 在執行任何更新前，務必使用指令或腳本備份 `*.lrcat` 檔案。\n    *   **版本控制：** 在企業環境下，請保留上一版本的 `.pkg` 或 `.dmg` 安裝包。若自動化更新導致異常，應透過腳本執行：\n        `sudo installer -pkg /path/to/old_version.pkg -target /` 進行降級。\n\n4.  **安全建議：**\n    由於此軟體為圖形介面應用程式，建議在 CI/CD 端點（例如開發人員的工作站）部署 **EDR (Endpoint Detection and Response)** 來監控 Lightroom 更新後的行為，確保沒有異常的執行檔寫入或網路連線行為。",
+  "parsed_json": {
+    "fix_recommendation": "Adobe 軟體更新依賴 Adobe Creative Cloud Desktop 應用程式。自動化修補建議：1. 使用 Adobe Remote Update Manager (RUM) 工具執行更新：執行指令 '/usr/local/bin/RemoteUpdateManager --action=install --productCodes=LTRM'。2. 若為企業環境，建議透過 Adobe Admin Console 派發封裝檔 (Package)。3. 若更新失敗，請備份 Catalog 檔案 (位於 ~/Pictures/Lightroom/)，使用 Adobe Creative Cloud 應用程式重新安裝舊版本，並執行 'Help' -> 'Check for Updates' 還原至穩定版。",
+    "risk_level": "L3",
+    "risk_rationale": "Adobe Lightroom 的更新通常具備良好的向下相容性 (Catalog 格式轉換除外)。L3 是基於 Adobe 軟體更新機制相對穩定，但需考量版本變更可能導致 Lightroom Catalog 檔案格式升級，升級後舊版本無法開啟導致的資料可用性風險。",
+    "sources": [
+      "https://helpx.adobe.com/creative-cloud/kb/use-remote-update-manager.html",
+      "https://www.adobe.com/devnet-docs/acp/bin/adobepackager.html",
+      "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2026-48441"
+    ]
+  },
+  "metrics": {
+    "latency_ms": 4122,
+    "json_parse_success": true,
+    "parse_error": null,
+    "schema_adherence_pct": 100,
+    "risk_level_valid": true
+  },
+  "judge": {
+    "response": {
+      "id": "K7WXavDaArWI9tMPts6OoAQ",
+      "created": 1788327210,
+      "model": "CDG_gemini/gemini-3.1-pro-preview",
+      "object": "chat.completion",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "message": {
+            "content": "{\n    \"scores\": {\n        \"actionability\": 5,\n        \"rationale_logic\": 5,\n        \"safety_accuracy\": 5,\n        \"formatting\": 2\n    },\n    \"total_score\": 17,\n    \"evaluation_comments\": \"Actionability 與 Rationale_Logic 表現極佳，能精準指出 Adobe 體系專用的 RUM 更新指令，以及 Lightroom 獨有的 Catalog 檔案格式升級風險，具備極高的 DevSecOps 實戰參考價值。Safety_Accuracy 方面未對 2026 年的虛構 CVE 產生不合理的技術幻覺，來源網址也符合 Adobe 生態系。最大的缺點在於 Formatting，該模型在 JSON 區塊前後生成了大量過渡性對話與 Markdown 補充說明，對於嚴格要求 JSON 輸出的自動化解析管線而言屬於多餘廢話，容易導致解析失敗，因此格式分數大幅扣減。\"\n}",
+            "role": "assistant",
+            "images": [],
+            "thinking_blocks": [],
+            "provider_specific_fields": {
+              "thought_signatures": [
+                "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"
+              ]
+            }
+          }
+        }
+      ],
+      "usage": {
+        "completion_tokens": 1828,
+        "prompt_tokens": 1169,
+        "total_tokens": 2997,
+        "completion_tokens_details": {
+          "reasoning_tokens": 1611,
+          "text_tokens": 217
+        },
+        "prompt_tokens_details": {
+          "text_tokens": 1169
+        }
+      },
+      "vertex_ai_grounding_metadata": [],
+      "vertex_ai_url_context_metadata": [],
+      "vertex_ai_safety_results": [],
+      "vertex_ai_citation_metadata": [],
+      "service_tier": "default"
+    },
+    "latency_ms": 17871,
+    "model": "CDG_gemini/gemini-3.1-pro-preview"
+  },
+  "judge_model": "CDG_gemini/gemini-3.1-pro-preview"
+}

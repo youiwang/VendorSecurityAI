@@ -1,0 +1,104 @@
+{
+  "prompt": "有一個 CVE ID：CVE-2022-27167，軟體資訊：\nVendor: Eset\nProduct: Server Security\nVersion: 11.0.227.0\nCPE: cpe:2.3:a:eset:server_security:11.0.227.0:*:*:*:*:*:*:*\n\n你是一位資深的 IT 維運與資安專家。請針對上述軟體漏洞，提供修補建議與「安裝/升級風險評估」。\n【風險等級定義 (L1~L9)】\n- L1~L3：低風險。通常為次要版本更新 (Minor patch)，幾乎無破壞性變更 (Breaking changes)，無需重啟即可套用。\n- L4~L6：中風險。可能需要重啟服務，或包含中等程度的配置變更。\n- L7~L9：高風險。屬於主版本升級 (Major upgrade)，極可能產生相容性問題或需要長時間停機。\n\n請務必以嚴格的 JSON 格式回傳，格式如下：\n{\"fix_recommendation\": \"詳細的修補指令或步驟\", \"risk_level\": \"L1\"~\"L9\", \"risk_rationale\": \"評分理由，包含是否會造成服務中斷\", \"sources\": [\"來源網址\"]}",
+  "response": {
+    "id": "T7-XatCMOqezvr0PgaeMgQU",
+    "created": 1788329807,
+    "model": "CDG_gemini/gemini-3.1-flash-lite",
+    "object": "chat.completion",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "message": {
+          "content": "```json\n{\n  \"fix_recommendation\": \"1. 請立即前往 ESET 官方支援網站下載最新版本（建議升級至 11.1 或更高版本）。2. 透過 ESET PROTECT (原 ESET Security Management Center) 管理控制台派發安裝封裝進行遠端升級，或手動執行安裝程式覆蓋安裝。3. 在執行升級前，建議確認當前防護策略是否與新版本相容，並備份必要的防護設定檔。\",\n  \"risk_level\": \"L4\",\n  \"risk_rationale\": \"該漏洞涉及 ESET Server Security 的核心服務。升級過程通常涉及防護驅動程式 (Kernel-mode drivers) 的替換與核心服務的重新啟動，雖然不屬於主版本架構重構，但極大機率會導致系統短暫中斷防護狀態，且在極少數情況下可能與舊版防護策略配置衝突，需進行後續檢查。\",\n  \"sources\": [\n    \"https://nvd.nist.gov/vuln/detail/CVE-2022-27167\",\n    \"https://support.eset.com/en/index.html\"\n  ]\n}\n```",
+          "role": "assistant",
+          "images": [],
+          "thinking_blocks": [],
+          "provider_specific_fields": {
+            "thought_signatures": [
+              "EnEKbwERTTIPacWQwj/hW80NnJSP7BwrfVoQDPXg2uLx/kNkUrINsE+Nz0LNDnlMhtddNNsKSQC8z8soa2vDa26AEc7bkC5YVLBHceFqEi21j1VkmHdBHL8Hze5y4M60/clC7+u1Q7LN/n6dgTBeavLVwg=="
+            ]
+          }
+        }
+      }
+    ],
+    "usage": {
+      "completion_tokens": 280,
+      "prompt_tokens": 303,
+      "total_tokens": 583,
+      "completion_tokens_details": {
+        "text_tokens": 280
+      },
+      "prompt_tokens_details": {
+        "text_tokens": 303
+      }
+    },
+    "vertex_ai_grounding_metadata": [],
+    "vertex_ai_url_context_metadata": [],
+    "vertex_ai_safety_results": [],
+    "vertex_ai_citation_metadata": [],
+    "service_tier": "default"
+  },
+  "response_text": "```json\n{\n  \"fix_recommendation\": \"1. 請立即前往 ESET 官方支援網站下載最新版本（建議升級至 11.1 或更高版本）。2. 透過 ESET PROTECT (原 ESET Security Management Center) 管理控制台派發安裝封裝進行遠端升級，或手動執行安裝程式覆蓋安裝。3. 在執行升級前，建議確認當前防護策略是否與新版本相容，並備份必要的防護設定檔。\",\n  \"risk_level\": \"L4\",\n  \"risk_rationale\": \"該漏洞涉及 ESET Server Security 的核心服務。升級過程通常涉及防護驅動程式 (Kernel-mode drivers) 的替換與核心服務的重新啟動，雖然不屬於主版本架構重構，但極大機率會導致系統短暫中斷防護狀態，且在極少數情況下可能與舊版防護策略配置衝突，需進行後續檢查。\",\n  \"sources\": [\n    \"https://nvd.nist.gov/vuln/detail/CVE-2022-27167\",\n    \"https://support.eset.com/en/index.html\"\n  ]\n}\n```",
+  "parsed_json": {
+    "fix_recommendation": "1. 請立即前往 ESET 官方支援網站下載最新版本（建議升級至 11.1 或更高版本）。2. 透過 ESET PROTECT (原 ESET Security Management Center) 管理控制台派發安裝封裝進行遠端升級，或手動執行安裝程式覆蓋安裝。3. 在執行升級前，建議確認當前防護策略是否與新版本相容，並備份必要的防護設定檔。",
+    "risk_level": "L4",
+    "risk_rationale": "該漏洞涉及 ESET Server Security 的核心服務。升級過程通常涉及防護驅動程式 (Kernel-mode drivers) 的替換與核心服務的重新啟動，雖然不屬於主版本架構重構，但極大機率會導致系統短暫中斷防護狀態，且在極少數情況下可能與舊版防護策略配置衝突，需進行後續檢查。",
+    "sources": [
+      "https://nvd.nist.gov/vuln/detail/CVE-2022-27167",
+      "https://support.eset.com/en/index.html"
+    ]
+  },
+  "metrics": {
+    "latency_ms": 1701,
+    "json_parse_success": true,
+    "parse_error": null,
+    "schema_adherence_pct": 100,
+    "risk_level_valid": true
+  },
+  "judge": {
+    "response": {
+      "id": "Ub-XaujUJv-2vr0Px-b3qAc",
+      "created": 1788329809,
+      "model": "CDG_gemini/gemini-3.1-pro-preview",
+      "object": "chat.completion",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "message": {
+            "content": "{\n    \"scores\": {\n        \"actionability\": 5,\n        \"rationale_logic\": 5,\n        \"safety_accuracy\": 4,\n        \"formatting\": 5\n    },\n    \"total_score\": 19,\n    \"evaluation_comments\": \"模型在可執行性與邏輯合理性上表現優異，提供了實用的 ESET PROTECT 派發建議與精確的 Kernel-mode 驅動程式更新風險評估。然而在資安準確性上略有瑕疵：CVE-2022-27167 為 2022 年的漏洞，實際上早在 ESET 9.x 版本即已修復，輸入的 11.0.227.0 理應不受影響。模型未能指出此版本誤判，而是盲從輸入直接建議升級至 11.1，缺乏對 CVE 影響範圍的事實核實。格式完全遵循要求，乾淨俐落。\"\n}",
+            "role": "assistant",
+            "images": [],
+            "thinking_blocks": [],
+            "provider_specific_fields": {
+              "thought_signatures": [
+                "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"
+              ]
+            }
+          }
+        }
+      ],
+      "usage": {
+        "completion_tokens": 2328,
+        "prompt_tokens": 643,
+        "total_tokens": 2971,
+        "completion_tokens_details": {
+          "reasoning_tokens": 2107,
+          "text_tokens": 221
+        },
+        "prompt_tokens_details": {
+          "text_tokens": 643
+        }
+      },
+      "vertex_ai_grounding_metadata": [],
+      "vertex_ai_url_context_metadata": [],
+      "vertex_ai_safety_results": [],
+      "vertex_ai_citation_metadata": [],
+      "service_tier": "default"
+    },
+    "latency_ms": 21032,
+    "model": "CDG_gemini/gemini-3.1-pro-preview"
+  },
+  "judge_model": "CDG_gemini/gemini-3.1-pro-preview"
+}

@@ -35,7 +35,7 @@ htmlcov/
 Thumbs.db
 
 # Experiment outputs (large generated files)
-outputs/
+/outputs/
 
 # Local secrets
 .env

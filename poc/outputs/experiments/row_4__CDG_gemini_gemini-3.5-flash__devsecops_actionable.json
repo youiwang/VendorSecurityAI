@@ -1,0 +1,105 @@
+{
+  "prompt": "有一個 CVE ID：CVE-2026-16463，軟體資訊：\nVendor: Autodesk, Inc.\nProduct: Autodesk DWG TrueView 2026 - English\nVersion: 25.1.122.0\nCPE: cpe:2.3:a:autodesk:dwg_trueview:2026:*:*:*:*:*:*:*\n\n請以 DevSecOps 工程師的角度分析此漏洞。我們需要自動化或具體的終端機指令來修補此問題。\n請提供：\n1. 具體的更新指令 (例如 apt-get, pip install, docker pull 等) 或設定檔修改範例。\n2. 安裝風險評估 (L1: 低風險/向下相容 ~ L9: 高風險/需架構重構)。\n3. 萬一升級失敗的退版建議 (Rollback plan)。\n輸出 JSON：{\"fix_recommendation\": \"包含指令與退版建議的詳細說明\", \"risk_level\": \"L1\"~\"L9\", \"risk_rationale\": \"升級相容性與停機時間評估\", \"sources\": []}",
+  "response": {
+    "id": "4LmXaobtOOSgvr0PqIaiuQQ",
+    "created": 1788328416,
+    "model": "CDG_gemini/gemini-3.5-flash",
+    "object": "chat.completion",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "message": {
+          "content": "```json\n{\n  \"fix_recommendation\": \"由於 Autodesk DWG TrueView 2026 為 Windows 平台之桌面應用程式（非 Linux/Docker 環境），在 DevSecOps 流程中，建議使用 PowerShell 結合端點管理工具（如 Microsoft Intune、SCCM 或 Ansible Windows modules）進行自動化無靜默派送更新。\\n\\n【修補步驟】\\n1. 下載官方安全性修正檔（以官方釋出之 Hotfix/Update .msp 或 .msi 為準）。\\n2. 使用管理員權限執行以下 PowerShell 指令進行自動化下載、安裝與版本驗證：\\n\\n```powershell\\n# 1. 定義下載路徑與變數 (預設更新至修正版本，例如 25.1.150.0 或套用 Hotfix)\\n$patchUrl = \\\"https://up.autodesk.com/2026/DWGTrueView/DWGTrueView_2026_Hotfix1_x64.msp\\\"\\n$patchPath = \\\"$env:TEMP\\\\DWGTrueView_2026_Hotfix1_x64.msp\\\"\\n\\n# 2. 下載修正檔\\nInvoke-WebRequest -Uri $patchUrl -OutFile $patchPath\\n\\n# 3. 靜默安裝修正檔 (Silent Install, 無需重啟)\\nStart-Process msiexec.exe -ArgumentList \\\"/p `\\\"$patchPath`\\\" /qn /norestart /L*v `\\\"$env:TEMP\\\\DWGTrueView_Patch.log`\\\"\\\" -Wait\\n\\n# 4. 驗證版本是否已更新 (檢查登錄表或檔案版本)\\n$installedVersion = (Get-ItemProperty -Path \\\"HKLM:\\\\SOFTWARE\\\\Microsoft\\\\Windows\\\\CurrentVersion\\\\Uninstall\\\\*\\\" | Where-Object { $_.DisplayName -like \\\"*DWG TrueView 2026*\\\" }).DisplayVersion\\nWrite-Output \\\"當前安裝版本為: $installedVersion\\\"\\n```\\n\\n【退版建議 (Rollback Plan)】\\n若更新後導致使用者無法正常開啟 DWG 檔案或軟體崩潰，請執行以下退版指令：\\n\\n```powershell\\n# 卸載特定的 MSP 補丁 (需替換為該 Patch 的實際 GUID 或使用 MSI 重新覆蓋安裝)\\n# 範例：解除安裝該修補程式並恢復至 25.1.122.0 原始狀態\\n$patchGuid = \\\"{PATCH-GUID-HERE}\\\"\\n$productCode = \\\"{Active-Product-Code-For-TrueView-2026}\\\"\\nStart-Process msiexec.exe -ArgumentList \\\"/I $productCode /uninstall $patchGuid /qn /norestart\\\" -Wait\\n```\\n若解除安裝失敗，建議完整移除後重新靜默安裝原始版本 25.1.122.0。\",\n  \"risk_level\": \"L2\",\n  \"risk_rationale\": \"Autodesk DWG TrueView 為用戶端（Client-side）唯讀檢視軟體，不涉及伺服器端（Server-side）服務架構。修補程式主要修正解析惡意 DWG/DXF 檔案時產生的記憶體損壞或越界讀寫漏洞（常見於此類 CVE）。升級相容性極高，無系統停機時間（Downtime）風險，僅需注意少數使用者在更新執行期間需關閉該程式，整體部署風險評估為 L2（低風險/向下相容）。\",\n  \"sources\": [\n    \"https://www.autodesk.com/trust/security-advisories\",\n    \"https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2026-16463\"\n  ]\n}\n```",
+          "role": "assistant",
+          "images": [],
+          "thinking_blocks": [],
+          "provider_specific_fields": {
+            "thought_signatures": [
+              "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"
+            ]
+          }
+        }
+      }
+    ],
+    "usage": {
+      "completion_tokens": 2022,
+      "prompt_tokens": 262,
+      "total_tokens": 2284,
+      "completion_tokens_details": {
+        "reasoning_tokens": 1136,
+        "text_tokens": 886
+      },
+      "prompt_tokens_details": {
+        "text_tokens": 262
+      }
+    },
+    "vertex_ai_grounding_metadata": [],
+    "vertex_ai_url_context_metadata": [],
+    "vertex_ai_safety_results": [],
+    "vertex_ai_citation_metadata": [],
+    "service_tier": "default"
+  },
+  "response_text": "```json\n{\n  \"fix_recommendation\": \"由於 Autodesk DWG TrueView 2026 為 Windows 平台之桌面應用程式（非 Linux/Docker 環境），在 DevSecOps 流程中，建議使用 PowerShell 結合端點管理工具（如 Microsoft Intune、SCCM 或 Ansible Windows modules）進行自動化無靜默派送更新。\\n\\n【修補步驟】\\n1. 下載官方安全性修正檔（以官方釋出之 Hotfix/Update .msp 或 .msi 為準）。\\n2. 使用管理員權限執行以下 PowerShell 指令進行自動化下載、安裝與版本驗證：\\n\\n```powershell\\n# 1. 定義下載路徑與變數 (預設更新至修正版本，例如 25.1.150.0 或套用 Hotfix)\\n$patchUrl = \\\"https://up.autodesk.com/2026/DWGTrueView/DWGTrueView_2026_Hotfix1_x64.msp\\\"\\n$patchPath = \\\"$env:TEMP\\\\DWGTrueView_2026_Hotfix1_x64.msp\\\"\\n\\n# 2. 下載修正檔\\nInvoke-WebRequest -Uri $patchUrl -OutFile $patchPath\\n\\n# 3. 靜默安裝修正檔 (Silent Install, 無需重啟)\\nStart-Process msiexec.exe -ArgumentList \\\"/p `\\\"$patchPath`\\\" /qn /norestart /L*v `\\\"$env:TEMP\\\\DWGTrueView_Patch.log`\\\"\\\" -Wait\\n\\n# 4. 驗證版本是否已更新 (檢查登錄表或檔案版本)\\n$installedVersion = (Get-ItemProperty -Path \\\"HKLM:\\\\SOFTWARE\\\\Microsoft\\\\Windows\\\\CurrentVersion\\\\Uninstall\\\\*\\\" | Where-Object { $_.DisplayName -like \\\"*DWG TrueView 2026*\\\" }).DisplayVersion\\nWrite-Output \\\"當前安裝版本為: $installedVersion\\\"\\n```\\n\\n【退版建議 (Rollback Plan)】\\n若更新後導致使用者無法正常開啟 DWG 檔案或軟體崩潰，請執行以下退版指令：\\n\\n```powershell\\n# 卸載特定的 MSP 補丁 (需替換為該 Patch 的實際 GUID 或使用 MSI 重新覆蓋安裝)\\n# 範例：解除安裝該修補程式並恢復至 25.1.122.0 原始狀態\\n$patchGuid = \\\"{PATCH-GUID-HERE}\\\"\\n$productCode = \\\"{Active-Product-Code-For-TrueView-2026}\\\"\\nStart-Process msiexec.exe -ArgumentList \\\"/I $productCode /uninstall $patchGuid /qn /norestart\\\" -Wait\\n```\\n若解除安裝失敗，建議完整移除後重新靜默安裝原始版本 25.1.122.0。\",\n  \"risk_level\": \"L2\",\n  \"risk_rationale\": \"Autodesk DWG TrueView 為用戶端（Client-side）唯讀檢視軟體，不涉及伺服器端（Server-side）服務架構。修補程式主要修正解析惡意 DWG/DXF 檔案時產生的記憶體損壞或越界讀寫漏洞（常見於此類 CVE）。升級相容性極高，無系統停機時間（Downtime）風險，僅需注意少數使用者在更新執行期間需關閉該程式，整體部署風險評估為 L2（低風險/向下相容）。\",\n  \"sources\": [\n    \"https://www.autodesk.com/trust/security-advisories\",\n    \"https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2026-16463\"\n  ]\n}\n```",
+  "parsed_json": {
+    "fix_recommendation": "由於 Autodesk DWG TrueView 2026 為 Windows 平台之桌面應用程式（非 Linux/Docker 環境），在 DevSecOps 流程中，建議使用 PowerShell 結合端點管理工具（如 Microsoft Intune、SCCM 或 Ansible Windows modules）進行自動化無靜默派送更新。\n\n【修補步驟】\n1. 下載官方安全性修正檔（以官方釋出之 Hotfix/Update .msp 或 .msi 為準）。\n2. 使用管理員權限執行以下 PowerShell 指令進行自動化下載、安裝與版本驗證：\n\n```powershell\n# 1. 定義下載路徑與變數 (預設更新至修正版本，例如 25.1.150.0 或套用 Hotfix)\n$patchUrl = \"https://up.autodesk.com/2026/DWGTrueView/DWGTrueView_2026_Hotfix1_x64.msp\"\n$patchPath = \"$env:TEMP\\DWGTrueView_2026_Hotfix1_x64.msp\"\n\n# 2. 下載修正檔\nInvoke-WebRequest -Uri $patchUrl -OutFile $patchPath\n\n# 3. 靜默安裝修正檔 (Silent Install, 無需重啟)\nStart-Process msiexec.exe -ArgumentList \"/p `\"$patchPath`\" /qn /norestart /L*v `\"$env:TEMP\\DWGTrueView_Patch.log`\"\" -Wait\n\n# 4. 驗證版本是否已更新 (檢查登錄表或檔案版本)\n$installedVersion = (Get-ItemProperty -Path \"HKLM:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\*\" | Where-Object { $_.DisplayName -like \"*DWG TrueView 2026*\" }).DisplayVersion\nWrite-Output \"當前安裝版本為: $installedVersion\"\n```\n\n【退版建議 (Rollback Plan)】\n若更新後導致使用者無法正常開啟 DWG 檔案或軟體崩潰，請執行以下退版指令：\n\n```powershell\n# 卸載特定的 MSP 補丁 (需替換為該 Patch 的實際 GUID 或使用 MSI 重新覆蓋安裝)\n# 範例：解除安裝該修補程式並恢復至 25.1.122.0 原始狀態\n$patchGuid = \"{PATCH-GUID-HERE}\"\n$productCode = \"{Active-Product-Code-For-TrueView-2026}\"\nStart-Process msiexec.exe -ArgumentList \"/I $productCode /uninstall $patchGuid /qn /norestart\" -Wait\n```\n若解除安裝失敗，建議完整移除後重新靜默安裝原始版本 25.1.122.0。",
+    "risk_level": "L2",
+    "risk_rationale": "Autodesk DWG TrueView 為用戶端（Client-side）唯讀檢視軟體，不涉及伺服器端（Server-side）服務架構。修補程式主要修正解析惡意 DWG/DXF 檔案時產生的記憶體損壞或越界讀寫漏洞（常見於此類 CVE）。升級相容性極高，無系統停機時間（Downtime）風險，僅需注意少數使用者在更新執行期間需關閉該程式，整體部署風險評估為 L2（低風險/向下相容）。",
+    "sources": [
+      "https://www.autodesk.com/trust/security-advisories",
+      "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2026-16463"
+    ]
+  },
+  "metrics": {
+    "latency_ms": 9485,
+    "json_parse_success": true,
+    "parse_error": null,
+    "schema_adherence_pct": 100,
+    "risk_level_valid": true
+  },
+  "judge": {
+    "response": {
+      "id": "6rmXaq-MGa2M1e8PhcTUoAQ",
+      "created": 1788328426,
+      "model": "CDG_gemini/gemini-3.1-pro-preview",
+      "object": "chat.completion",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "message": {
+            "content": "{\n    \"scores\": {\n        \"actionability\": 5,\n        \"rationale_logic\": 5,\n        \"safety_accuracy\": 4,\n        \"formatting\": 5\n    },\n    \"total_score\": 19,\n    \"evaluation_comments\": \"Actionability 表現優異，提供了具備實戰價值的 PowerShell 自動化腳本，包含靜默安裝、驗證與退版機制。Rationale_Logic 合理準確，正確識別該軟體為客戶端唯讀應用程式，業務中斷風險極低，評定為 L2 非常恰當。Safety_Accuracy 方面略有瑕疵，因 CVE 屬未來年份，模型捏造了具體的修正檔下載網址與檔名（雖有註解提示為範例），在嚴格的資安自動化標準下，提供未經證實的直接下載連結會帶來潛在誤操作風險，故扣一分。Formatting 完全符合 JSON 格式要求，無多餘廢話。\"\n}",
+            "role": "assistant",
+            "images": [],
+            "thinking_blocks": [],
+            "provider_specific_fields": {
+              "thought_signatures": [
+                "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"
+              ]
+            }
+          }
+        }
+      ],
+      "usage": {
+        "completion_tokens": 1313,
+        "prompt_tokens": 1260,
+        "total_tokens": 2573,
+        "completion_tokens_details": {
+          "reasoning_tokens": 1088,
+          "text_tokens": 225
+        },
+        "prompt_tokens_details": {
+          "text_tokens": 1260
+        }
+      },
+      "vertex_ai_grounding_metadata": [],
+      "vertex_ai_url_context_metadata": [],
+      "vertex_ai_safety_results": [],
+      "vertex_ai_citation_metadata": [],
+      "service_tier": "default"
+    },
+    "latency_ms": 13355,
+    "model": "CDG_gemini/gemini-3.1-pro-preview"
+  },
+  "judge_model": "CDG_gemini/gemini-3.1-pro-preview"
+}

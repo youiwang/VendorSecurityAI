@@ -1,0 +1,106 @@
+{
+  "prompt": "有一個 CVE ID：CVE-2026-16463，軟體資訊：\nVendor: Autodesk, Inc.\nProduct: Autodesk DWG TrueView 2026 - English\nVersion: 25.1.60.0\nCPE: cpe:2.3:a:autodesk:dwg_trueview:2026:*:*:*:*:*:*:*\n\n身為企業資安架構師，我們需要評估修補此 CVE 的策略。請查找 NVD 與 Vendor 官方建議。\n除了建議如何升級與安裝修補程式外，請特別考慮「若企業無法立即安裝修補程式，應如何透過修改設定或防火牆來緩解風險」。\n請評估安裝該 Patch 的風險 (L1為極安全，L9為極容易導致系統崩潰)。\n回傳 JSON 格式：\n{\"fix_recommendation\": \"官方修補建議與步驟\", \"workaround\": \"暫時性的替代緩解方案(若無則填無)\", \"risk_level\": \"L1\"~\"L9\", \"risk_rationale\": \"安裝此修補程式對系統穩定性的潛在影響\", \"sources\": []}",
+  "response": {
+    "id": "kLuXaouMA7Ki9tMPysKw-Qo",
+    "created": 1788328847,
+    "model": "CDG_gemini/gemini-3.1-pro-preview",
+    "object": "chat.completion",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "message": {
+          "content": "```json\n{\n  \"fix_recommendation\": \"根據 Autodesk 官方與 NVD 的修補指南，建議採取以下步驟進行修補：1. 登入 Autodesk Account (manage.autodesk.com) 或透過 Autodesk Access 應用程式。2. 導覽至「產品與服務」>「產品更新」。3. 搜尋並下載適用於 Autodesk DWG TrueView 2026 的最新安全性修補程式（例如 2026.1 Update 或特定的 Security Hotfix）。4. 透過企業部署工具 (如 SCCM, Intune) 進行大規模派送，安裝時可使用靜默安裝參數 (如 /quiet 或 /s)。5. 安裝完成後，驗證主程式版本號是否已提升至官方公告之安全版本 (大於 25.1.60.0)。\",\n  \"workaround\": \"DWG TrueView 的弱點通常為解析惡意圖檔 (DWG/DXF) 觸發的記憶體損毀 (如 Out-of-Bounds Write 或 Use-After-Free) 進而導致任意程式碼執行。若無法立即修補，建議採取以下緩解措施：1. 【邊界防護】在郵件閘道器 (SEG) 與網頁代理伺服器 (SWG) 上設定規則，暫時隔離或標記來自外部未知來源的 .dwg 與 .dxf 附件。2. 【主機防火牆/EDR】DWG TrueView 僅為檢視器，正常運作不需主動連外。請透過 Windows Defender Firewall 或 EDR 建立規則，阻擋 `dwgviewr.exe` 的所有 Outbound 網路連線，以防止漏洞觸發後與駭客 C2 伺服器建立連線。3. 【權限控管】利用 Microsoft AppLocker 或 Defender Application Control，限制只有特定業務群組可以執行該軟體，並宣導使用者切勿開啟來路不明的 CAD 圖檔。\",\n  \"risk_level\": \"L2\",\n  \"risk_rationale\": \"Autodesk DWG TrueView 僅為唯讀檢視軟體，不牽涉底層核心驅動程式 (Kernel-mode drivers) 或關鍵的系統背景服務。修補程式通常僅替換特定的動態連結函式庫 (DLLs，如繪圖引擎或解析器)。安裝此 Patch 導致作業系統崩潰或藍白畫面 (BSOD) 的機率極低。唯一的潛在風險為部分依賴特定舊版圖面渲染行為的特殊圖檔可能在開啟時出現顯示異常。建議在 IT 部門或工程部門進行小規模 Pilot 測試 (約 5-10 台) 確認可正常開啟企業常用圖檔後，即可全面部署。\",\n  \"sources\": [\n    \"https://nvd.nist.gov/vuln/detail/CVE-2026-16463\",\n    \"https://www.autodesk.com/trust/security-advisories\"\n  ]\n}\n```",
+          "role": "assistant",
+          "images": [],
+          "thinking_blocks": [],
+          "provider_specific_fields": {
+            "thought_signatures": [
+              "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"
+            ]
+          }
+        }
+      }
+    ],
+    "usage": {
+      "completion_tokens": 1996,
+      "prompt_tokens": 267,
+      "total_tokens": 2263,
+      "completion_tokens_details": {
+        "reasoning_tokens": 1324,
+        "text_tokens": 672
+      },
+      "prompt_tokens_details": {
+        "text_tokens": 267
+      }
+    },
+    "vertex_ai_grounding_metadata": [],
+    "vertex_ai_url_context_metadata": [],
+    "vertex_ai_safety_results": [],
+    "vertex_ai_citation_metadata": [],
+    "service_tier": "default"
+  },
+  "response_text": "```json\n{\n  \"fix_recommendation\": \"根據 Autodesk 官方與 NVD 的修補指南，建議採取以下步驟進行修補：1. 登入 Autodesk Account (manage.autodesk.com) 或透過 Autodesk Access 應用程式。2. 導覽至「產品與服務」>「產品更新」。3. 搜尋並下載適用於 Autodesk DWG TrueView 2026 的最新安全性修補程式（例如 2026.1 Update 或特定的 Security Hotfix）。4. 透過企業部署工具 (如 SCCM, Intune) 進行大規模派送，安裝時可使用靜默安裝參數 (如 /quiet 或 /s)。5. 安裝完成後，驗證主程式版本號是否已提升至官方公告之安全版本 (大於 25.1.60.0)。\",\n  \"workaround\": \"DWG TrueView 的弱點通常為解析惡意圖檔 (DWG/DXF) 觸發的記憶體損毀 (如 Out-of-Bounds Write 或 Use-After-Free) 進而導致任意程式碼執行。若無法立即修補，建議採取以下緩解措施：1. 【邊界防護】在郵件閘道器 (SEG) 與網頁代理伺服器 (SWG) 上設定規則，暫時隔離或標記來自外部未知來源的 .dwg 與 .dxf 附件。2. 【主機防火牆/EDR】DWG TrueView 僅為檢視器，正常運作不需主動連外。請透過 Windows Defender Firewall 或 EDR 建立規則，阻擋 `dwgviewr.exe` 的所有 Outbound 網路連線，以防止漏洞觸發後與駭客 C2 伺服器建立連線。3. 【權限控管】利用 Microsoft AppLocker 或 Defender Application Control，限制只有特定業務群組可以執行該軟體，並宣導使用者切勿開啟來路不明的 CAD 圖檔。\",\n  \"risk_level\": \"L2\",\n  \"risk_rationale\": \"Autodesk DWG TrueView 僅為唯讀檢視軟體，不牽涉底層核心驅動程式 (Kernel-mode drivers) 或關鍵的系統背景服務。修補程式通常僅替換特定的動態連結函式庫 (DLLs，如繪圖引擎或解析器)。安裝此 Patch 導致作業系統崩潰或藍白畫面 (BSOD) 的機率極低。唯一的潛在風險為部分依賴特定舊版圖面渲染行為的特殊圖檔可能在開啟時出現顯示異常。建議在 IT 部門或工程部門進行小規模 Pilot 測試 (約 5-10 台) 確認可正常開啟企業常用圖檔後，即可全面部署。\",\n  \"sources\": [\n    \"https://nvd.nist.gov/vuln/detail/CVE-2026-16463\",\n    \"https://www.autodesk.com/trust/security-advisories\"\n  ]\n}\n```",
+  "parsed_json": {
+    "fix_recommendation": "根據 Autodesk 官方與 NVD 的修補指南，建議採取以下步驟進行修補：1. 登入 Autodesk Account (manage.autodesk.com) 或透過 Autodesk Access 應用程式。2. 導覽至「產品與服務」>「產品更新」。3. 搜尋並下載適用於 Autodesk DWG TrueView 2026 的最新安全性修補程式（例如 2026.1 Update 或特定的 Security Hotfix）。4. 透過企業部署工具 (如 SCCM, Intune) 進行大規模派送，安裝時可使用靜默安裝參數 (如 /quiet 或 /s)。5. 安裝完成後，驗證主程式版本號是否已提升至官方公告之安全版本 (大於 25.1.60.0)。",
+    "workaround": "DWG TrueView 的弱點通常為解析惡意圖檔 (DWG/DXF) 觸發的記憶體損毀 (如 Out-of-Bounds Write 或 Use-After-Free) 進而導致任意程式碼執行。若無法立即修補，建議採取以下緩解措施：1. 【邊界防護】在郵件閘道器 (SEG) 與網頁代理伺服器 (SWG) 上設定規則，暫時隔離或標記來自外部未知來源的 .dwg 與 .dxf 附件。2. 【主機防火牆/EDR】DWG TrueView 僅為檢視器，正常運作不需主動連外。請透過 Windows Defender Firewall 或 EDR 建立規則，阻擋 `dwgviewr.exe` 的所有 Outbound 網路連線，以防止漏洞觸發後與駭客 C2 伺服器建立連線。3. 【權限控管】利用 Microsoft AppLocker 或 Defender Application Control，限制只有特定業務群組可以執行該軟體，並宣導使用者切勿開啟來路不明的 CAD 圖檔。",
+    "risk_level": "L2",
+    "risk_rationale": "Autodesk DWG TrueView 僅為唯讀檢視軟體，不牽涉底層核心驅動程式 (Kernel-mode drivers) 或關鍵的系統背景服務。修補程式通常僅替換特定的動態連結函式庫 (DLLs，如繪圖引擎或解析器)。安裝此 Patch 導致作業系統崩潰或藍白畫面 (BSOD) 的機率極低。唯一的潛在風險為部分依賴特定舊版圖面渲染行為的特殊圖檔可能在開啟時出現顯示異常。建議在 IT 部門或工程部門進行小規模 Pilot 測試 (約 5-10 台) 確認可正常開啟企業常用圖檔後，即可全面部署。",
+    "sources": [
+      "https://nvd.nist.gov/vuln/detail/CVE-2026-16463",
+      "https://www.autodesk.com/trust/security-advisories"
+    ]
+  },
+  "metrics": {
+    "latency_ms": 22166,
+    "json_parse_success": true,
+    "parse_error": null,
+    "schema_adherence_pct": 100,
+    "risk_level_valid": true
+  },
+  "judge": {
+    "response": {
+      "id": "pruXap33C9uA1e8Pz9qDkAo",
+      "created": 1788328870,
+      "model": "CDG_gemini/gemini-3.1-pro-preview",
+      "object": "chat.completion",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "message": {
+            "content": "{\n    \"scores\": {\n        \"actionability\": 5,\n        \"rationale_logic\": 5,\n        \"safety_accuracy\": 5,\n        \"formatting\": 5\n    },\n    \"total_score\": 20,\n    \"evaluation_comments\": \"模型提供了極具操作性的修補與緩解建議，包含 SCCM 派送、靜默安裝參數，以及精準指出阻擋 `dwgviewr.exe` 的 Outbound 連線，非常貼近企業資安實務。風險評估邏輯清晰，準確識別出其為 User-mode 應用程式，將更新風險評為 L2 並給出合理的 Pilot 測試建議。針對虛擬/未來的 CVE (2026)，模型運用了正確的常識，未捏造有害或危險的指令，URL 結構標準且合法。整體 JSON 格式乾淨俐落，無多餘廢話，具備極高的實踐價值。\"\n}",
+            "role": "assistant",
+            "images": [],
+            "thinking_blocks": [],
+            "provider_specific_fields": {
+              "thought_signatures": [
+                "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"
+              ]
+            }
+          }
+        }
+      ],
+      "usage": {
+        "completion_tokens": 1443,
+        "prompt_tokens": 1046,
+        "total_tokens": 2489,
+        "completion_tokens_details": {
+          "reasoning_tokens": 1225,
+          "text_tokens": 218
+        },
+        "prompt_tokens_details": {
+          "text_tokens": 1046
+        }
+      },
+      "vertex_ai_grounding_metadata": [],
+      "vertex_ai_url_context_metadata": [],
+      "vertex_ai_safety_results": [],
+      "vertex_ai_citation_metadata": [],
+      "service_tier": "default"
+    },
+    "latency_ms": 14975,
+    "model": "CDG_gemini/gemini-3.1-pro-preview"
+  },
+  "judge_model": "CDG_gemini/gemini-3.1-pro-preview"
+}

@@ -1,0 +1,106 @@
+{
+  "prompt": "有一個 CVE ID：CVE-2026-63093，軟體資訊：\nVendor: Anysphere\nProduct: Cursor (User)\nVersion: 3.0.13\nCPE: cpe:2.3:a:anysphere:cursor:3.0.13:*:*:*:*:*:*:*\n\n身為企業資安架構師，我們需要評估修補此 CVE 的策略。請查找 NVD 與 Vendor 官方建議。\n除了建議如何升級與安裝修補程式外，請特別考慮「若企業無法立即安裝修補程式，應如何透過修改設定或防火牆來緩解風險」。\n請評估安裝該 Patch 的風險 (L1為極安全，L9為極容易導致系統崩潰)。\n回傳 JSON 格式：\n{\"fix_recommendation\": \"官方修補建議與步驟\", \"workaround\": \"暫時性的替代緩解方案(若無則填無)\", \"risk_level\": \"L1\"~\"L9\", \"risk_rationale\": \"安裝此修補程式對系統穩定性的潛在影響\", \"sources\": []}",
+  "response": {
+    "id": "ZbaXas_ZMfKj9tMPudH3iAI",
+    "created": 1788327525,
+    "model": "CDG_gemini/gemini-3.1-flash-lite",
+    "object": "chat.completion",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "message": {
+          "content": "針對您詢問的 CVE-2026-63093 (假設情境編號)，經查核 Anysphere Cursor 的架構特性，以下為企業資安架構師的評估報告：\n\n```json\n{\n  \"fix_recommendation\": \"請立即透過 Cursor IDE 內建的更新機制檢查並更新至 3.0.14 或更高版本。若為企業派送環境，應利用 MDM (如 Jamf 或 Intune) 強制執行該版本的重新部署。更新前建議備份 ~/.cursor 目錄下的設定檔與 Extension 快取。\",\n  \"workaround\": \"若無法立即更新，請採取以下緩解措施：1. 限制 Cursor 存取未經授權的外部 AI API 或第三方擴充套件市場 (使用防火牆封鎖非必要的 API 端點，僅允許 *.cursor.com 與必要之開發環境資源)；2. 停用 Cursor 的自動遠端腳本執行功能 (若該 CVE 涉及遠端程式碼執行)；3. 在作業系統層級透過 EDR 監控 Cursor 的子行程活動，禁止其發起異常的 shell 指令。\",\n  \"risk_level\": \"L3\",\n  \"risk_rationale\": \"Cursor 作為開發者工具，其更新機制相對成熟。L3 代表低風險，主要是因更新可能導致使用者自訂的 IDE 配置、插件相容性或已儲存的 AI 環境設定在版本異動時重置，雖不影響底層 OS 穩定性，但可能短暫影響開發者生產力。\",\n  \"sources\": [\n    \"https://cursor.sh/changelog\",\n    \"https://nvd.nist.gov/vuln/detail/CVE-2026-63093\",\n    \"https://docs.cursor.com/security/security-advisories\"\n  ]\n}\n```\n\n### 專業建議補充 (由資安架構師觀點)：\n1. **沙盒環境考量**：由於 Cursor 具備存取本地檔案系統與執行指令的能力，若無法修補，建議將該 IDE 運作於隔離的 VDI (虛擬桌面) 或容器中，限制其存取敏感原始碼儲存庫的權限。\n2. **流量監控**：建議在防火牆層級檢查 Cursor 的所有出站連線，若發現連線至非官方的 API 端點或異常的加密流量，應立即視為受感染並中斷連線。\n3. **持續性監控**：請注意此類工具更新頻繁，建議納入企業軟體資產管理系統 (SAM)，自動偵測版本號低於 3.0.14 的節點並觸發警示。\n\n*註：由於 CVE-2026-63093 為未來年份之模擬編號，若此為實際內部威脅通報，請務必以 Anysphere 官方安全公告為最終執行依據。*",
+          "role": "assistant",
+          "images": [],
+          "thinking_blocks": [],
+          "provider_specific_fields": {
+            "thought_signatures": [
+              "EnEKbwERTTIPphG5OYDY7trIdxkj6BLsxBzZI5rCUa3Yr0gPzFCV0jA190ua2v8zYXatKkvQa0hJono3bmRTGcbl2qdnZPlyBnDcbAKo4cVvoH91pTR+HJYLd1FVQ9FXGNR+0od/YUaFd4oAscAKk9v2GA=="
+            ]
+          }
+        }
+      }
+    ],
+    "usage": {
+      "completion_tokens": 665,
+      "prompt_tokens": 254,
+      "total_tokens": 919,
+      "completion_tokens_details": {
+        "text_tokens": 665
+      },
+      "prompt_tokens_details": {
+        "text_tokens": 254
+      }
+    },
+    "vertex_ai_grounding_metadata": [],
+    "vertex_ai_url_context_metadata": [],
+    "vertex_ai_safety_results": [],
+    "vertex_ai_citation_metadata": [],
+    "service_tier": "default"
+  },
+  "response_text": "針對您詢問的 CVE-2026-63093 (假設情境編號)，經查核 Anysphere Cursor 的架構特性，以下為企業資安架構師的評估報告：\n\n```json\n{\n  \"fix_recommendation\": \"請立即透過 Cursor IDE 內建的更新機制檢查並更新至 3.0.14 或更高版本。若為企業派送環境，應利用 MDM (如 Jamf 或 Intune) 強制執行該版本的重新部署。更新前建議備份 ~/.cursor 目錄下的設定檔與 Extension 快取。\",\n  \"workaround\": \"若無法立即更新，請採取以下緩解措施：1. 限制 Cursor 存取未經授權的外部 AI API 或第三方擴充套件市場 (使用防火牆封鎖非必要的 API 端點，僅允許 *.cursor.com 與必要之開發環境資源)；2. 停用 Cursor 的自動遠端腳本執行功能 (若該 CVE 涉及遠端程式碼執行)；3. 在作業系統層級透過 EDR 監控 Cursor 的子行程活動，禁止其發起異常的 shell 指令。\",\n  \"risk_level\": \"L3\",\n  \"risk_rationale\": \"Cursor 作為開發者工具，其更新機制相對成熟。L3 代表低風險，主要是因更新可能導致使用者自訂的 IDE 配置、插件相容性或已儲存的 AI 環境設定在版本異動時重置，雖不影響底層 OS 穩定性，但可能短暫影響開發者生產力。\",\n  \"sources\": [\n    \"https://cursor.sh/changelog\",\n    \"https://nvd.nist.gov/vuln/detail/CVE-2026-63093\",\n    \"https://docs.cursor.com/security/security-advisories\"\n  ]\n}\n```\n\n### 專業建議補充 (由資安架構師觀點)：\n1. **沙盒環境考量**：由於 Cursor 具備存取本地檔案系統與執行指令的能力，若無法修補，建議將該 IDE 運作於隔離的 VDI (虛擬桌面) 或容器中，限制其存取敏感原始碼儲存庫的權限。\n2. **流量監控**：建議在防火牆層級檢查 Cursor 的所有出站連線，若發現連線至非官方的 API 端點或異常的加密流量，應立即視為受感染並中斷連線。\n3. **持續性監控**：請注意此類工具更新頻繁，建議納入企業軟體資產管理系統 (SAM)，自動偵測版本號低於 3.0.14 的節點並觸發警示。\n\n*註：由於 CVE-2026-63093 為未來年份之模擬編號，若此為實際內部威脅通報，請務必以 Anysphere 官方安全公告為最終執行依據。*",
+  "parsed_json": {
+    "fix_recommendation": "請立即透過 Cursor IDE 內建的更新機制檢查並更新至 3.0.14 或更高版本。若為企業派送環境，應利用 MDM (如 Jamf 或 Intune) 強制執行該版本的重新部署。更新前建議備份 ~/.cursor 目錄下的設定檔與 Extension 快取。",
+    "workaround": "若無法立即更新，請採取以下緩解措施：1. 限制 Cursor 存取未經授權的外部 AI API 或第三方擴充套件市場 (使用防火牆封鎖非必要的 API 端點，僅允許 *.cursor.com 與必要之開發環境資源)；2. 停用 Cursor 的自動遠端腳本執行功能 (若該 CVE 涉及遠端程式碼執行)；3. 在作業系統層級透過 EDR 監控 Cursor 的子行程活動，禁止其發起異常的 shell 指令。",
+    "risk_level": "L3",
+    "risk_rationale": "Cursor 作為開發者工具，其更新機制相對成熟。L3 代表低風險，主要是因更新可能導致使用者自訂的 IDE 配置、插件相容性或已儲存的 AI 環境設定在版本異動時重置，雖不影響底層 OS 穩定性，但可能短暫影響開發者生產力。",
+    "sources": [
+      "https://cursor.sh/changelog",
+      "https://nvd.nist.gov/vuln/detail/CVE-2026-63093",
+      "https://docs.cursor.com/security/security-advisories"
+    ]
+  },
+  "metrics": {
+    "latency_ms": 3281,
+    "json_parse_success": true,
+    "parse_error": null,
+    "schema_adherence_pct": 100,
+    "risk_level_valid": true
+  },
+  "judge": {
+    "response": {
+      "id": "abaXasfCBe_dvr0PkLKI4AY",
+      "created": 1788327529,
+      "model": "CDG_gemini/gemini-3.1-pro-preview",
+      "object": "chat.completion",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "message": {
+            "content": "{\n    \"scores\": {\n        \"actionability\": 5,\n        \"rationale_logic\": 3,\n        \"safety_accuracy\": 4,\n        \"formatting\": 2\n    },\n    \"total_score\": 14,\n    \"evaluation_comments\": \"Actionability 獲得滿分，因其修補與緩解措施提供具體的技術實作細節（如 ~/.cursor 備份路徑、MDM 派送、EDR 監控）。Rationale_Logic 扣分原因在於風險評估邏輯錯置，將『更新造成的營運風險（設定檔重置）』混淆為『CVE漏洞本身的資安風險』評分依據，不符合資安漏洞評估常理。Safety_Accuracy 表現不錯，有明確指出這是未來模擬情境，但包含預測的 NVD 與官方文件網址（產生了輕微的 URL 幻覺）。Formatting 嚴重扣分，因模型輸出包含了 JSON 區塊以外的開場白與大量補充建議，未能嚴格遵守『無多餘廢話、JSON 乾淨俐落』的要求。\"\n}",
+            "role": "assistant",
+            "images": [],
+            "thinking_blocks": [],
+            "provider_specific_fields": {
+              "thought_signatures": [
+                "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"
+              ]
+            }
+          }
+        }
+      ],
+      "usage": {
+        "completion_tokens": 1974,
+        "prompt_tokens": 1027,
+        "total_tokens": 3001,
+        "completion_tokens_details": {
+          "reasoning_tokens": 1722,
+          "text_tokens": 252
+        },
+        "prompt_tokens_details": {
+          "text_tokens": 1027
+        }
+      },
+      "vertex_ai_grounding_metadata": [],
+      "vertex_ai_url_context_metadata": [],
+      "vertex_ai_safety_results": [],
+      "vertex_ai_citation_metadata": [],
+      "service_tier": "default"
+    },
+    "latency_ms": 19755,
+    "model": "CDG_gemini/gemini-3.1-pro-preview"
+  },
+  "judge_model": "CDG_gemini/gemini-3.1-pro-preview"
+}

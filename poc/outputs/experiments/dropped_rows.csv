@@ -1,0 +1,6 @@
+file,model,variant,parse_error,total_tokens,judge_total_score
+outputs\experiments\row_6__CDG_gemini_gemini-3.1-pro-preview__cot_analytical.json,CDG_gemini/gemini-3.1-pro-preview,cot_analytical,,,4
+outputs\experiments\row_6__CDG_gemini_gemini-3.1-pro-preview__devsecops_actionable.json,CDG_gemini/gemini-3.1-pro-preview,devsecops_actionable,,,4
+outputs\experiments\row_8__CDG_gemini_gemini-3.1-pro-preview__cot_analytical.json,CDG_gemini/gemini-3.1-pro-preview,cot_analytical,,,4
+outputs\experiments\row_8__CDG_gemini_gemini-3.1-pro-preview__mitigation_focused.json,CDG_gemini/gemini-3.1-pro-preview,mitigation_focused,,,5
+outputs\experiments\row_9__CDG_gemini_gemini-3.1-pro-preview__devsecops_actionable.json,CDG_gemini/gemini-3.1-pro-preview,devsecops_actionable,,,4

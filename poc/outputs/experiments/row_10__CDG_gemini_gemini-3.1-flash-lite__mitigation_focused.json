@@ -1,0 +1,106 @@
+{
+  "prompt": "有一個 CVE ID：CVE-2026-79090，軟體資訊：\nVendor: Google LLC\nProduct: Google Chrome\nVersion: 151.0.7922.137\nCPE: cpe:2.3:a:google:chrome:151.0.7922.137:*:*:*:*:*:*:*\n\n身為企業資安架構師，我們需要評估修補此 CVE 的策略。請查找 NVD 與 Vendor 官方建議。\n除了建議如何升級與安裝修補程式外，請特別考慮「若企業無法立即安裝修補程式，應如何透過修改設定或防火牆來緩解風險」。\n請評估安裝該 Patch 的風險 (L1為極安全，L9為極容易導致系統崩潰)。\n回傳 JSON 格式：\n{\"fix_recommendation\": \"官方修補建議與步驟\", \"workaround\": \"暫時性的替代緩解方案(若無則填無)\", \"risk_level\": \"L1\"~\"L9\", \"risk_rationale\": \"安裝此修補程式對系統穩定性的潛在影響\", \"sources\": []}",
+  "response": {
+    "id": "kMKXaserK5zCvr0PhovA4QE",
+    "created": 1788330640,
+    "model": "CDG_gemini/gemini-3.1-flash-lite",
+    "object": "chat.completion",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "message": {
+          "content": "針對您提供的 CVE-2026-79090（請注意：截至目前為止，CVE 編號發布至 2025 年，2026 年編號屬於未來預測或模擬情境，以下建議基於 Google Chrome 此類重大漏洞的標準企業應對流程進行編撰）：\n\n```json\n{\n  \"fix_recommendation\": \"請立即透過 Google Chrome 的自動更新機制進行升級。對於企業環境，建議使用 Google Update (或 GPO/SCCM/Intune) 將 Chrome 版本統一推送升級至 151.0.7922.138 或更高之穩定版本。企業管理員應先在測試環境（UAT）部署並進行相容性驗證，確認無誤後再進行全網派送。\",\n  \"workaround\": \"若無法立即更新：1. 啟用 Chrome 的『增強型安全瀏覽 (Enhanced Safe Browsing)』功能。 2. 透過企業策略 (Group Policy) 停用 JavaScript 的 JIT 編譯器 (如果該漏洞與 V8 引擎相關)，但此舉會導致網頁效能大幅下降。 3. 在防火牆或網頁過濾器 (Web Gateway) 封鎖未經授權或高風險的惡意網域，並啟用進階威脅防護 (ATP) 偵測異常連線。\",\n  \"risk_level\": \"L2\",\n  \"risk_rationale\": \"Google Chrome 的小版本更新 (如從 .137 到 .138) 通常僅包含安全性修補，架構變動極小。歷史數據顯示此類更新導致系統崩潰的機率極低，L2 風險主要來自於極少數與舊版網頁應用程式的 JavaScript 相容性衝突，可透過初步測試排除。\",\n  \"sources\": [\n    \"https://chromereleases.googleblog.com/\",\n    \"https://nvd.nist.gov/\",\n    \"https://support.google.com/chrome/a/answer/187202\"\n  ]\n}\n```\n\n### 資安架構師建議說明：\n\n1.  **為什麼選擇 L2**：Chrome 的更新機制已經過極高度的穩定性測試，且自動化派送已成為現代企業標準，除了高度客製化的企業內部 Web 應用程式外，升級幾乎不會造成系統層級的崩潰。\n2.  **關於 Workaround 的實務觀點**：\n    *   **限制 JIT (Just-In-Time)**：這是針對瀏覽器引擎漏洞最有效的防禦，但代價是瀏覽效能，通常僅在伺服器端或高風險公用機台採取此手段。\n    *   **深度防禦**：若無法更新，建議開啟 Endpoint Detection and Response (EDR) 的即時監控功能，監控 `chrome.exe` 是否異常呼叫系統指令（如 PowerShell 或 cmd），這是瀏覽器漏洞被利用時的常見行為。\n3.  **合規性提醒**：請務必將此類 CVE 納入每季度的合規性報告中，並保留測試環境的驗證紀錄，以符合如 ISO 27001 或 NIST CSF 的風險管理要求。",
+          "role": "assistant",
+          "images": [],
+          "thinking_blocks": [],
+          "provider_specific_fields": {
+            "thought_signatures": [
+              "EnEKbwERTTIPoOZQusmTFateHp4RNun9qeH4s0CuufKasa4yCwUW4ImIe+O6hy/P4inGef0luj8D2RnejTAy0RL8geYIk8+Wl113bH2sHSP01Vs200bkNUgRJnZvYGuRittGUeaO0tr8Ec/OHz5MCAd3gw=="
+            ]
+          }
+        }
+      }
+    ],
+    "usage": {
+      "completion_tokens": 725,
+      "prompt_tokens": 265,
+      "total_tokens": 990,
+      "completion_tokens_details": {
+        "text_tokens": 725
+      },
+      "prompt_tokens_details": {
+        "text_tokens": 265
+      }
+    },
+    "vertex_ai_grounding_metadata": [],
+    "vertex_ai_url_context_metadata": [],
+    "vertex_ai_safety_results": [],
+    "vertex_ai_citation_metadata": [],
+    "service_tier": "default"
+  },
+  "response_text": "針對您提供的 CVE-2026-79090（請注意：截至目前為止，CVE 編號發布至 2025 年，2026 年編號屬於未來預測或模擬情境，以下建議基於 Google Chrome 此類重大漏洞的標準企業應對流程進行編撰）：\n\n```json\n{\n  \"fix_recommendation\": \"請立即透過 Google Chrome 的自動更新機制進行升級。對於企業環境，建議使用 Google Update (或 GPO/SCCM/Intune) 將 Chrome 版本統一推送升級至 151.0.7922.138 或更高之穩定版本。企業管理員應先在測試環境（UAT）部署並進行相容性驗證，確認無誤後再進行全網派送。\",\n  \"workaround\": \"若無法立即更新：1. 啟用 Chrome 的『增強型安全瀏覽 (Enhanced Safe Browsing)』功能。 2. 透過企業策略 (Group Policy) 停用 JavaScript 的 JIT 編譯器 (如果該漏洞與 V8 引擎相關)，但此舉會導致網頁效能大幅下降。 3. 在防火牆或網頁過濾器 (Web Gateway) 封鎖未經授權或高風險的惡意網域，並啟用進階威脅防護 (ATP) 偵測異常連線。\",\n  \"risk_level\": \"L2\",\n  \"risk_rationale\": \"Google Chrome 的小版本更新 (如從 .137 到 .138) 通常僅包含安全性修補，架構變動極小。歷史數據顯示此類更新導致系統崩潰的機率極低，L2 風險主要來自於極少數與舊版網頁應用程式的 JavaScript 相容性衝突，可透過初步測試排除。\",\n  \"sources\": [\n    \"https://chromereleases.googleblog.com/\",\n    \"https://nvd.nist.gov/\",\n    \"https://support.google.com/chrome/a/answer/187202\"\n  ]\n}\n```\n\n### 資安架構師建議說明：\n\n1.  **為什麼選擇 L2**：Chrome 的更新機制已經過極高度的穩定性測試，且自動化派送已成為現代企業標準，除了高度客製化的企業內部 Web 應用程式外，升級幾乎不會造成系統層級的崩潰。\n2.  **關於 Workaround 的實務觀點**：\n    *   **限制 JIT (Just-In-Time)**：這是針對瀏覽器引擎漏洞最有效的防禦，但代價是瀏覽效能，通常僅在伺服器端或高風險公用機台採取此手段。\n    *   **深度防禦**：若無法更新，建議開啟 Endpoint Detection and Response (EDR) 的即時監控功能，監控 `chrome.exe` 是否異常呼叫系統指令（如 PowerShell 或 cmd），這是瀏覽器漏洞被利用時的常見行為。\n3.  **合規性提醒**：請務必將此類 CVE 納入每季度的合規性報告中，並保留測試環境的驗證紀錄，以符合如 ISO 27001 或 NIST CSF 的風險管理要求。",
+  "parsed_json": {
+    "fix_recommendation": "請立即透過 Google Chrome 的自動更新機制進行升級。對於企業環境，建議使用 Google Update (或 GPO/SCCM/Intune) 將 Chrome 版本統一推送升級至 151.0.7922.138 或更高之穩定版本。企業管理員應先在測試環境（UAT）部署並進行相容性驗證，確認無誤後再進行全網派送。",
+    "workaround": "若無法立即更新：1. 啟用 Chrome 的『增強型安全瀏覽 (Enhanced Safe Browsing)』功能。 2. 透過企業策略 (Group Policy) 停用 JavaScript 的 JIT 編譯器 (如果該漏洞與 V8 引擎相關)，但此舉會導致網頁效能大幅下降。 3. 在防火牆或網頁過濾器 (Web Gateway) 封鎖未經授權或高風險的惡意網域，並啟用進階威脅防護 (ATP) 偵測異常連線。",
+    "risk_level": "L2",
+    "risk_rationale": "Google Chrome 的小版本更新 (如從 .137 到 .138) 通常僅包含安全性修補，架構變動極小。歷史數據顯示此類更新導致系統崩潰的機率極低，L2 風險主要來自於極少數與舊版網頁應用程式的 JavaScript 相容性衝突，可透過初步測試排除。",
+    "sources": [
+      "https://chromereleases.googleblog.com/",
+      "https://nvd.nist.gov/",
+      "https://support.google.com/chrome/a/answer/187202"
+    ]
+  },
+  "metrics": {
+    "latency_ms": 4064,
+    "json_parse_success": true,
+    "parse_error": null,
+    "schema_adherence_pct": 100,
+    "risk_level_valid": true
+  },
+  "judge": {
+    "response": {
+      "id": "lMKXauDVLYib1e8PoYW6mQs",
+      "created": 1788330644,
+      "model": "CDG_gemini/gemini-3.1-pro-preview",
+      "object": "chat.completion",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "message": {
+            "content": "{\n    \"scores\": {\n        \"actionability\": 5,\n        \"rationale_logic\": 5,\n        \"safety_accuracy\": 5,\n        \"formatting\": 2\n    },\n    \"total_score\": 17,\n    \"evaluation_comments\": \"在可執行性與邏輯合理性上表現優異，能針對企業環境提供具體且實用的更新與緩解措施（如 GPO 派送與停用 JIT），並準確識別未來 CVE 的模擬情境且給出合理的更新風險 (L2) 評估。最大的缺點在於格式遵循度差，輸出了大量前言與補充說明，未能維持純 JSON 格式，這將會導致自動化系統的解析失敗。\"\n}",
+            "role": "assistant",
+            "images": [],
+            "thinking_blocks": [],
+            "provider_specific_fields": {
+              "thought_signatures": [
+                "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"
+              ]
+            }
+          }
+        }
+      ],
+      "usage": {
+        "completion_tokens": 1423,
+        "prompt_tokens": 1092,
+        "total_tokens": 2515,
+        "completion_tokens_details": {
+          "reasoning_tokens": 1252,
+          "text_tokens": 171
+        },
+        "prompt_tokens_details": {
+          "text_tokens": 1092
+        }
+      },
+      "vertex_ai_grounding_metadata": [],
+      "vertex_ai_url_context_metadata": [],
+      "vertex_ai_safety_results": [],
+      "vertex_ai_citation_metadata": [],
+      "service_tier": "default"
+    },
+    "latency_ms": 15249,
+    "model": "CDG_gemini/gemini-3.1-pro-preview"
+  },
+  "judge_model": "CDG_gemini/gemini-3.1-pro-preview"
+}
