@@ -1,156 +1,79 @@
-# Project: Vendor Security AI - CVE Remediation Pipeline
+# Vendor Security AI
 
 ## Overview
 
-This project automates the extraction of remediation steps and risk assessments for software vulnerabilities (CVEs) using Large Language Models.
+This repository contains a CVE remediation pipeline that turns vendor software inventory data into structured remediation output using an LLM-backed API.
 
-The project is divided into two phases:
+The project has two parts:
 
-1. **Phase 1 (POC):** Experimental phase to determine the best model and prompt variant. (Archived in `poc/`)
-2. **Phase 2 (Production):** The real-world pipeline using the winning configuration (`gemini-3.5-flash` with the `criteria_defined` prompt) to process production data.
+1. Phase 1 POC assets are archived under [poc/](poc/).
+2. Phase 2 production code lives under [src/](src/) and writes results to [outputs/prod/](outputs/prod/).
 
----
-
-## Repository Structure
+## Current Structure
 
 ```text
 VendorSecurityAI/
 ├── data/
-│   ├── poc/                  # POC data (VendorDeploymentCVE_20250901.csv)
-│   └── raw/                  # Real-world data (admyncec0904.csv)
-├── poc/                      # Archived Phase 1 experiments and scripts
-│   ├── scripts/              # do_experiment.py, summarize_experiments.py, etc.
-│   └── outputs/              # POC JSON outputs and reports
-├── src/                      # Phase 2: Production code
-│   ├── prompts/              # Winning prompt templates (criteria_defined.txt)
-│   └── generate_remediations.py # Main script for processing real data
+│   ├── poc/
+│   │   └── VendorDeploymentCVE_20250901.csv
+│   └── raw/
+│       └── admyncec0904.csv
 ├── outputs/
-│   └── prod/                 # Generated JSON remediations for real data
+│   └── prod/
+│       ├── admyncec0904_remediated.csv
+│       └── row_<n>_CVE-<id>.json
+├── poc/
+│   ├── README.md
+│   ├── outputs/
+│   │   └── experiments/
+│   └── scripts/
+│       ├── do_experiment.py
+│       ├── generate_ai_conclusion.py
+│       ├── list_failing_runs.py
+│       ├── scan_experiment_failures.py
+│       ├── summarize_experiments.py
+│       └── visualize_experiments.py
+├── src/
+│   ├── generate_remediations.py
+│   └── prompts/
+│       ├── cot_analytical.txt
+│       ├── criteria_defined.txt
+│       ├── devsecops_actionable.txt
+│       └── mitigation_focused.txt
 ├── requirements.txt
 └── README.md
 ```
 
-## Quick Start
+## How To Run Production
 
-### 1. Environment Setup
-
-Create and activate a virtual environment, then install the required dependencies:
+1. Create a virtual environment and install dependencies.
 
 ```powershell
 python -m venv .venv
 .venv\Scripts\pip install -r requirements.txt
 ```
 
-### 2. Configuration
-
-Create a `.env` file in the root directory and configure your API settings:
+2. Create a `.env` file in the repository root.
 
 ```env
 AI_ENDPOINT="your_ai_api_url"
 API_KEY="your_api_key"
 ```
 
-### 3. Run the Production Pipeline (Phase 2)
-
-To process the real-world data (`data/raw/admyncec0904.csv`) and generate remediation JSONs:
+3. Run the production script.
 
 ```powershell
 .venv\Scripts\python src\generate_remediations.py
 ```
 
-This script will:
+The production script reads [data/raw/admyncec0904.csv](data/raw/admyncec0904.csv), applies [src/prompts/criteria_defined.txt](src/prompts/criteria_defined.txt), calls the configured API endpoint with the `CDG_gemini/gemini-3.5-flash` model, and writes results to [outputs/prod/](outputs/prod/).
 
-1. Read the raw CSV data.
-2. Extract the newest CVE ID from rows with multiple CVEs.
-3. Apply the `criteria_defined` prompt.
-4. Call the `gemini-3.5-flash` model.
-5. Save the structured JSON outputs to `outputs/prod/`.
+## POC Archive
 
----
+The archived experiment workflow is documented in [poc/README.md](poc/README.md). Use that folder when you want the model-and-prompt comparison history, experiment summaries, and triage helpers.
 
-## Phase 1: POC & Experiments (Archived)
+## Notes
 
-If you need to review or re-run the original experiments that led to the model selection, refer to the `poc/` directory.
-
-**The One-Command POC Pipeline:**
-
-```powershell
-.venv\Scripts\python poc\scripts\do_experiment.py --rows 1 --sleep 1.0 --judge-run ; \
-.venv\Scripts\python poc\scripts\summarize_experiments.py ; \
-.venv\Scripts\python poc\scripts\list_failing_runs.py --write-clean poc\outputs\experiments\comparison_summary_clean.csv ; \
-.venv\Scripts\python poc\scripts\visualize_experiments.py --csv poc\outputs\experiments\comparison_summary_clean.csv
-```
-
-You can evaluate model outputs using a stronger LLM acting as a "judge." The judge scores the output from 1 to 5 across four dimensions:
-
-1. **Actionability:** Are recommendations concrete?
-2. **Rationale Logic:** Is the risk rationale coherent for the CVE?
-3. **Safety & Accuracy:** Is the output free of hallucinations?
-4. **Formatting:** Is it clean, strictly formatted JSON?
-
-**How to Enable:**
-Pass `--judge-run` and specify the model via CLI, or set it in your `.env`:
-
-```env
-JUDGE_MODEL="CDG_gemini/gemini-3.1-pro-preview"
-JUDGE_RUN=true
-
-```
-
-- **Premium Judge:** `CDG_gemini/gemini-3.1-pro-preview` (Highly accurate, recommended).
-- **Fast/Cheap Judge:** `CDG_gemini/gemini-3.5-flash` (Good for large batches where speed/cost is a priority).
-
-_Note: Judge runs double the API calls (one extra call per output). To manage costs, consider enabling the judge only for your top-N candidates._
-
----
-
-## Data Outputs & Artifacts
-
-All outputs are saved in the `outputs/experiments/` directory.
-
-| File Type        | Naming Convention                  | Description                                                                          |
-| ---------------- | ---------------------------------- | ------------------------------------------------------------------------------------ |
-| **Raw Run Data** | `row_<n>__<model>__<variant>.json` | Contains prompt, raw API response, parsed JSON, token metrics, and judge evaluation. |
-| **Summary Data** | `comparison_summary.csv`           | One row per run combining automated scores, judge scores, and metadata.              |
-| **Dashboard**    | `comparison_summary.html`          | Clickable HTML report with top-N highlighting and judge overviews.                   |
-
-### Generated Charts
-
-Visualizations generated by `visualize_experiments.py`:
-
-- `chart_cost_vs_quality_avg.png`: Aggregated/averaged cost vs. quality.
-- `chart_cost_vs_quality_per_run.png`: Scatter plot of all individual runs.
-- `chart_model_performance_box_per_run.png`: Boxplot showing the spread of judge scores.
-- `chart_model_performance_bar_avg.png`: Bar chart of averaged judge scores.
-
----
-
-## Troubleshooting & Data Triage
-
-If a model receives unexpectedly low judge scores (e.g., 1s across the board), it usually means the model timed out, failed to parse JSON, or hallucinated formatting.
-
-We provide a script to separate successful runs from failed runs (timeouts, JSON errors, missing judge scores).
-
-**List failing runs:**
-
-```powershell
-python scripts\list_failing_runs.py --csv outputs/experiments/comparison_summary.csv
-
-```
-
-**Generate a cleaned dataset for analysis:**
-
-```powershell
-python scripts\list_failing_runs.py --write-clean outputs/experiments/comparison_summary_clean.csv
-
-```
-
-**Best Practices for Triage:**
-
-1. **Keep all raw data:** Maintain the original `comparison_summary.csv` to track operational reliability and failure rates.
-2. **Visualize cleaned data:** Point your visualization scripts to `comparison_summary_clean.csv` to accurately compare model _quality_ without the noise of API timeouts.
-3. **Debug individual failures:** Inspect the specific `row_<n>__<model>__<variant>.json` file to identify if a failure was caused by a prompt formatting issue, an API timeout, or a model hallucination.
-
-```
-
-```
+1. The repository root is now the main entrypoint for the current project.
+2. `poc/` is archived reference material, not the active production path.
+3. Generated outputs remain under [outputs/prod/](outputs/prod/) for production runs.
