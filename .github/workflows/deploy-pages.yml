@@ -1,0 +1,55 @@
+name: Deploy report to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Prepare site files
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p site
+          cp -R poc/outputs/experiments/. site/
+
+          latest_report=$(ls -1 site/AI_Executive_Conclusion_*.html 2>/dev/null | sort | tail -n 1 || true)
+          if [ -n "${latest_report}" ]; then
+            cp "${latest_report}" site/index.html
+          elif [ -f site/AI_Executive_Conclusion.html ]; then
+            cp site/AI_Executive_Conclusion.html site/index.html
+          else
+            echo "No executive report HTML file found under poc/outputs/experiments"
+            exit 1
+          fi
+
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
