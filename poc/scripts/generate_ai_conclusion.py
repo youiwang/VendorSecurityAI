@@ -272,7 +272,8 @@ Based on this data, please write the final evaluation report."""
                 
                 /* Code Blocks */
                 pre {{ background-color: #0f172a; color: #e6eef8; padding: 1rem; border-radius: 6px; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word; font-size: 0.9rem; }}
-                code {{ font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; color: #e6eef8; }}
+                code {{ font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; color: #0f172a; background-color: #e2e8f0; padding: 0.12rem 0.35rem; border-radius: 4px; }}
+                pre code {{ color: inherit; background-color: transparent; padding: 0; border-radius: 0; }}
                 
                 /* Images */
                 img {{ max-width: 100%; height: auto; border-radius: 6px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin-top: 1rem; margin-bottom: 2rem; border: 1px solid #e5e7eb; }}
