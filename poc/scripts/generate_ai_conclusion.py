@@ -9,8 +9,13 @@ from datetime import datetime
 from dotenv import load_dotenv
 
 def generate_report():
+    # Resolve stable paths based on this script location.
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    poc_root = os.path.dirname(script_dir)
+    repo_root = os.path.dirname(poc_root)
+
     # 1. Load environment variables
-    load_dotenv()
+    load_dotenv(os.path.join(repo_root, ".env"))
     api_endpoint = os.getenv("AI_ENDPOINT")
     api_key = os.getenv("API_KEY")
     
@@ -22,7 +27,7 @@ def generate_report():
         return
 
     # 2. Setup paths and load the data
-    output_dir = os.path.join("outputs", "experiments")
+    output_dir = os.path.join(poc_root, "outputs", "experiments")
     grouped_csv_path = os.path.join(output_dir, "grouped_summary.csv")
     reliability_csv_path = os.path.join(output_dir, "reliability_summary.csv")
     raw_csv_path = os.path.join(output_dir, "comparison_summary.csv")
@@ -218,8 +223,13 @@ Additional guidance:
             appendix_md += "</details>\n\n"
 
         # --- 5. Add Input Raw Data Sample ---
-        input_csv_path = "VendorDeploymentCVE_20250901.csv"
-        if os.path.exists(input_csv_path):
+        input_csv_candidates = [
+            os.path.join(repo_root, "data", "poc", "VendorDeploymentCVE_20250901.csv"),
+            os.path.join(poc_root, "VendorDeploymentCVE_20250901.csv"),
+            os.path.join(repo_root, "VendorDeploymentCVE_20250901.csv")
+        ]
+        input_csv_path = next((p for p in input_csv_candidates if os.path.exists(p)), None)
+        if input_csv_path:
             try:
                 df_input = pd.read_csv(input_csv_path)
                 appendix_md += "<details><summary><strong>5. Input Raw Data Sample (VendorDeploymentCVE_20250901)</strong></summary>\n\n"
