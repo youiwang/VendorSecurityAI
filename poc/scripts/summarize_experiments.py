@@ -99,6 +99,28 @@ def extract_usage_from_response(resp):
             fields[k] = resp[k]
     return fields or None
 
+def calculate_cost(model, prompt_tokens, completion_tokens):
+    if prompt_tokens is None or completion_tokens is None:
+        return None
+    
+    try:
+        p_tokens = int(prompt_tokens)
+        c_tokens = int(completion_tokens)
+    except (ValueError, TypeError):
+        return None
+        
+    if "3.1-pro" in model:
+        if p_tokens <= 200000:
+            return (p_tokens / 1_000_000) * 2.00 + (c_tokens / 1_000_000) * 12.00
+        else:
+            return (p_tokens / 1_000_000) * 4.00 + (c_tokens / 1_000_000) * 18.00
+    elif "3.1-flash-lite" in model:
+        return (p_tokens / 1_000_000) * 0.25 + (c_tokens / 1_000_000) * 1.50
+    elif "3.5-flash" in model:
+        return (p_tokens / 1_000_000) * 1.50 + (c_tokens / 1_000_000) * 9.00
+    else:
+        return None
+
 def extract_content_from_response(resp):
     # Try to return the main model text content
     if isinstance(resp, dict):
@@ -208,6 +230,11 @@ def summarize():
             file_rel = str(p.resolve().relative_to(Path.cwd().resolve()))
         except Exception:
             file_rel = str(p)
+            
+        p_tokens = usage.get('prompt_tokens') if isinstance(usage, dict) else None
+        c_tokens = usage.get('completion_tokens') if isinstance(usage, dict) else None
+        cost_usd = calculate_cost(model, p_tokens, c_tokens)
+        
         rows.append({
             'file': file_rel,
             'model': model,
@@ -225,8 +252,9 @@ def summarize():
             'schema_adherence_pct': schema_adherence_pct_field,
             'risk_level_valid': risk_level_valid_field,
             'total_tokens': usage.get('total_tokens') if isinstance(usage, dict) else None,
-            'prompt_tokens': usage.get('prompt_tokens') if isinstance(usage, dict) else None,
-            'completion_tokens': usage.get('completion_tokens') if isinstance(usage, dict) else None,
+            'prompt_tokens': p_tokens,
+            'completion_tokens': c_tokens,
+            'cost_usd': cost_usd,
             **judge_scores,
         })
     # compute top-N by automatic score and judge total score
@@ -241,7 +269,7 @@ def summarize():
 
     # write CSV
     with OUT_CSV.open('w', encoding='utf-8', newline='') as cf:
-        fieldnames = ['file','model','variant','error','keys_found','sources_count','length','score','content','judge_model','latency_ms','json_parse_success','parse_error','schema_adherence_pct','risk_level_valid','total_tokens','prompt_tokens','completion_tokens',
+        fieldnames = ['file','model','variant','error','keys_found','sources_count','length','score','content','judge_model','latency_ms','json_parse_success','parse_error','schema_adherence_pct','risk_level_valid','total_tokens','prompt_tokens','completion_tokens','cost_usd',
                   'judge_actionability','judge_rationale_logic','judge_safety_accuracy','judge_formatting','judge_total_score','judge_comments','judge_latency_ms']
         w = csv.DictWriter(cf, fieldnames=fieldnames)
         w.writeheader()
@@ -267,7 +295,7 @@ def summarize():
         # write table with thead/tbody and id for DataTables
         hf.write('<table id="exp-table" class="display">')
         hf.write('<thead>')
-        hf.write('<tr><th>File</th><th>Model</th><th>Variant</th><th>Error</th><th>Keys Found</th><th>Sources</th><th>Length</th><th>Score</th><th>Judge Model</th><th>Latency(ms)</th><th>ParseOK</th><th>Schema%</th><th>RiskValid</th><th>Tokens</th><th>Judge Score</th></tr>')
+        hf.write('<tr><th>File</th><th>Model</th><th>Variant</th><th>Error</th><th>Keys Found</th><th>Sources</th><th>Length</th><th>Score</th><th>Judge Model</th><th>Latency(ms)</th><th>ParseOK</th><th>Schema%</th><th>RiskValid</th><th>Tokens</th><th>Cost($)</th><th>Judge Score</th></tr>')
         hf.write('</thead><tbody>')
         for r in rows:
             file_link = r['file']
@@ -293,6 +321,8 @@ def summarize():
             hf.write(f"<td>{r.get('risk_level_valid','-')}</td>")
             tok_summary = f"total:{r.get('total_tokens','-')} p:{r.get('prompt_tokens','-')} c:{r.get('completion_tokens','-')}"
             hf.write(f"<td>{tok_summary}</td>")
+            cost_val = f"{r.get('cost_usd'):.6f}" if r.get('cost_usd') is not None else '-'
+            hf.write(f"<td>{cost_val}</td>")
             judge_cell = r.get('judge_total_score') or '-'
             hf.write(f"<td>{judge_cell}</td>")
             hf.write('</tr>')

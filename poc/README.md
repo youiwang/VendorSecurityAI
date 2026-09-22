@@ -29,6 +29,7 @@ The main pieces of the comparison were:
 - Model variants such as `CDG_gemini/gemini-3.1-flash-lite`, `CDG_gemini/gemini-3.5-flash`, and `CDG_gemini/gemini-3.1-pro-preview`.
 - Prompt styles such as `criteria_defined`, `mitigation_focused`, `cot_analytical`, and `devsecops_actionable`.
 - Output quality checks for JSON structure, risk-level format, source citations, and practical remediation guidance.
+- Cost efficiency analysis, calculating the actual API cost ($/run) based on prompt and completion token usage for each model.
 
 Each generated response was saved per row so the later scripts could summarize performance, identify failures, and compare the prompt variants side by side.
 
@@ -38,16 +39,17 @@ The archived experiment artifacts live under [outputs/experiments/](outputs/expe
 
 - Per-run JSON files for each model and prompt combination
 - `comparison_summary.csv` and `comparison_summary_clean.csv`
-- `comparison_summary.html`
+- `comparison_summary.html` (includes sortable metrics and calculated costs)
 - Supporting analysis files such as grouped, reliability, and dropped-row summaries
+- Visualizations including Cost vs. Quality scatter plots (`chart_cost_vs_quality_avg.png`) and model performance bar charts
 - Final writeups such as the AI executive conclusion Markdown and HTML files
 
 ## How The POC Workflow Worked
 
 1. Run [do_experiment.py](scripts/do_experiment.py) to generate raw experiment outputs.
-2. Run [summarize_experiments.py](scripts/summarize_experiments.py) to aggregate scores and metadata.
+2. Run [summarize_experiments.py](scripts/summarize_experiments.py) to aggregate scores, metadata, and calculate API costs ($/run).
 3. Run [list_failing_runs.py](scripts/list_failing_runs.py) to isolate failed or noisy runs.
-4. Run [visualize_experiments.py](scripts/visualize_experiments.py) to generate comparison charts.
+4. Run [visualize_experiments.py](scripts/visualize_experiments.py) to generate comparison charts (e.g., Cost vs. Quality).
 5. Use [generate_ai_conclusion.py](scripts/generate_ai_conclusion.py) to produce the final written summary.
 
 ## How Results Were Judged
@@ -58,6 +60,7 @@ Some runs also used a judge step to score the generated remediation text. The ju
 - Rationale logic: whether the risk level explanation matched the CVE.
 - Safety and accuracy: whether the model invented unsupported versions or sources.
 - Formatting: whether the response stayed close to the required JSON structure.
+- Cost Efficiency: balancing the judge's quality score against the actual API cost ($/run) to find the optimal model for production.
 
 That extra evaluation helped separate outputs that merely looked correct from outputs that were actually useful and trustworthy.
 

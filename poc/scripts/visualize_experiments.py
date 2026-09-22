@@ -51,6 +51,7 @@ def load_and_aggregate_data(csv_path: Path) -> pd.DataFrame:
         "schema_adherence_pct",
         "latency_ms",
         "total_tokens",
+        "cost_usd",
         "score",
         "judge_total_score",
     ]
@@ -73,7 +74,7 @@ def load_and_aggregate_data(csv_path: Path) -> pd.DataFrame:
         df["json_parse_success"] = df["json_parse_success"].apply(_to_percent)
 
     # Coerce numeric columns
-    for c in ("schema_adherence_pct", "latency_ms", "total_tokens", "score", "judge_total_score"):
+    for c in ("schema_adherence_pct", "latency_ms", "total_tokens", "cost_usd", "score", "judge_total_score"):
         if c in df.columns:
             df[c] = pd.to_numeric(df[c], errors="coerce")
 
@@ -94,6 +95,7 @@ def load_and_aggregate_data(csv_path: Path) -> pd.DataFrame:
             schema_adherence_pct_mean=("schema_adherence_pct", "mean"),
             latency_ms_mean=("latency_ms", "mean"),
             total_tokens_mean=("total_tokens", "mean"),
+            cost_usd_mean=("cost_usd", "mean"),
             score_mean=("score", "mean"),
             judge_total_score_mean=("judge_total_score", "mean"),
             count=("file", "count"),
@@ -106,6 +108,8 @@ def load_and_aggregate_data(csv_path: Path) -> pd.DataFrame:
     grouped["schema_adherence_pct_mean"] = grouped["schema_adherence_pct_mean"].round(2)
     grouped["score_mean"] = grouped["score_mean"].round(2)
     grouped["judge_total_score_mean"] = grouped["judge_total_score_mean"].round(2)
+    if "cost_usd_mean" in grouped.columns:
+        grouped["cost_usd_mean"] = grouped["cost_usd_mean"].round(6)
 
     grouped["latency_ms_mean"] = grouped["latency_ms_mean"].round(0).astype("Int64")
     grouped["total_tokens_mean"] = grouped["total_tokens_mean"].round(0).astype("Int64")
@@ -119,18 +123,22 @@ def load_and_aggregate_data(csv_path: Path) -> pd.DataFrame:
 
 
 def plot_scatter(df: pd.DataFrame, out_path: Path, palette: Optional[dict] = None, data_origin: Optional[str] = None) -> None:
-    """Plot cost (tokens) vs. judge score scatter plot.
+    """Plot cost (USD) vs. judge score scatter plot.
 
-    - X: total_tokens_mean
+    - X: cost_usd_mean (fallback to total_tokens_mean if missing)
     - Y: judge_total_score_mean
     - hue: model
     - style: variant
     """
     sns.set(style="whitegrid")
     plt.figure(figsize=(10, 6))
+    
+    x_col = "cost_usd_mean" if "cost_usd_mean" in df.columns and not df["cost_usd_mean"].isna().all() else "total_tokens_mean"
+    x_label = "Cost ($/run)" if x_col == "cost_usd_mean" else "Total Tokens"
+    
     ax = sns.scatterplot(
         data=df,
-        x="total_tokens_mean",
+        x=x_col,
         y="judge_total_score_mean",
         hue="model",
         hue_order=MODEL_ORDER,
@@ -140,7 +148,7 @@ def plot_scatter(df: pd.DataFrame, out_path: Path, palette: Optional[dict] = Non
         edgecolor="w",
     )
     ax.set_title("Cost vs Quality (Average)")
-    ax.set_xlabel("Total Tokens")
+    ax.set_xlabel(x_label)
     ax.set_ylabel("Judge Total Score")
     ax.grid(True)
     # annotate data origin (clean vs original)
@@ -156,7 +164,7 @@ def plot_scatter(df: pd.DataFrame, out_path: Path, palette: Optional[dict] = Non
 def plot_scatter_all_runs(raw_df: pd.DataFrame, out_path: Path, palette: Optional[dict] = None, jitter: float = 0.0, data_origin: Optional[str] = None) -> None:
     """Plot scatter of all individual runs (not aggregated).
 
-    - X: total_tokens
+    - X: cost_usd (fallback to total_tokens)
     - Y: judge_total_score
     - hue: model
     - style: variant
@@ -165,10 +173,16 @@ def plot_scatter_all_runs(raw_df: pd.DataFrame, out_path: Path, palette: Optiona
     plt.figure(figsize=(11, 7))
     # coerce numeric
     raw_df = raw_df.copy()
+    if "cost_usd" in raw_df.columns:
+        raw_df["cost_usd"] = pd.to_numeric(raw_df.get("cost_usd"), errors="coerce")
     raw_df["total_tokens"] = pd.to_numeric(raw_df.get("total_tokens"), errors="coerce")
     raw_df["judge_total_score"] = pd.to_numeric(raw_df.get("judge_total_score"), errors="coerce")
+    
+    x_col = "cost_usd" if "cost_usd" in raw_df.columns and not raw_df["cost_usd"].isna().all() else "total_tokens"
+    x_label = "Cost ($/run)" if x_col == "cost_usd" else "Total Tokens"
+    
     # optionally add jitter to the x axis to make overlapping points visible
-    x_vals = raw_df["total_tokens"].to_numpy()
+    x_vals = raw_df[x_col].to_numpy()
     if jitter and np.nanstd(x_vals) > 0:
         scale = float(np.nanstd(x_vals)) * float(jitter)
         x_plot = x_vals + np.random.normal(0, scale, size=x_vals.shape)
@@ -191,7 +205,7 @@ def plot_scatter_all_runs(raw_df: pd.DataFrame, out_path: Path, palette: Optiona
         edgecolor="w",
     )
     ax.set_title("Cost vs Quality (Per-run)")
-    ax.set_xlabel("Total Tokens")
+    ax.set_xlabel(x_label)
     ax.set_ylabel("Judge Total Score")
     ax.grid(True)
     # If multiple origins exist, plot markers per origin and add legend

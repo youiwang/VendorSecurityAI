@@ -1,4 +1,5 @@
 file,model,variant,parse_error,total_tokens,judge_total_score
+outputs\experiments\row_3__CDG_gemini_gemini-3.1-flash-lite__devsecops_actionable.json,CDG_gemini/gemini-3.1-flash-lite,devsecops_actionable,Invalid \escape: line 2 column 483 (char 484),662.0,19
 outputs\experiments\row_6__CDG_gemini_gemini-3.1-pro-preview__cot_analytical.json,CDG_gemini/gemini-3.1-pro-preview,cot_analytical,,,4
 outputs\experiments\row_6__CDG_gemini_gemini-3.1-pro-preview__devsecops_actionable.json,CDG_gemini/gemini-3.1-pro-preview,devsecops_actionable,,,4
 outputs\experiments\row_8__CDG_gemini_gemini-3.1-pro-preview__cot_analytical.json,CDG_gemini/gemini-3.1-pro-preview,cot_analytical,,,4
